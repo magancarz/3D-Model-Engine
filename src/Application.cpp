@@ -1,5 +1,4 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <Headers.h>
 #include <iostream>
 
 #include "renderEngine/Loader.h"
@@ -9,24 +8,13 @@
 #include "shaders/StaticShader.h"
 
 int main(void) {
-    const int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 800;
-    GLFWwindow* WINDOW;
     /* Initialize the library */
     if(!glfwInit())
         return -1;
 
     //Create window
-    const std::string WINDOW_TITLE = "3D Model Viewer";
-    WINDOW = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str(), NULL, NULL);
-    if(!WINDOW) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to create window!");
-    }
-
-    glfwMakeContextCurrent(WINDOW);
-
-    if(glewInit() != GLEW_OK)
-        std::cout << "Error!" << std::endl;
+    DisplayManager display;
+    display.createDisplay();
 
     //Logic
     Loader loader;
@@ -122,7 +110,7 @@ int main(void) {
     Camera camera;
 
     /* Loop until the user closes the window */
-    while(!glfwWindowShouldClose(WINDOW)) {
+    while(!glfwWindowShouldClose(display.getWindow())) {
         //Events
         //entity.increaseRotation(1.0f, 1.0f, 0.0f);
         camera.move();
@@ -140,7 +128,7 @@ int main(void) {
         shader.stop();
 
         /* Swap front and back buffers */
-        glfwSwapBuffers(WINDOW);
+        display.updateDisplay();
     }
 
     //Clean up resources

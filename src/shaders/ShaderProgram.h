@@ -1,12 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <Headers.h>
 
 class ShaderProgram {
 public:
