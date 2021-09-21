@@ -7,6 +7,8 @@
 #include "models/TexturedModel.h"
 #include "shaders/StaticShader.h"
 
+bool isCloseRequested = false;
+
 int main(void) {
     /* Initialize the library */
     if(!glfwInit())
@@ -110,7 +112,7 @@ int main(void) {
     Camera camera;
 
     /* Loop until the user closes the window */
-    while(!glfwWindowShouldClose(display.getWindow())) {
+    while(!isCloseRequested) {
         //Events
         //entity.increaseRotation(1.0f, 1.0f, 0.0f);
         camera.move();
@@ -136,6 +138,6 @@ int main(void) {
     shader.cleanUp();
     loader.cleanUp();
 
-    glfwTerminate();
+    display.closeDisplay();
     return 0;
 }
