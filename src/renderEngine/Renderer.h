@@ -1,9 +1,13 @@
 #pragma once
 
+#include "../Headers.h"
+
 #include "../entities/Entity.h"
 #include "../models/RawModel.h"
 #include "../models/TexturedModel.h"
 #include "../shaders/StaticShader.h"
+#include "../toolbox/Maths.h"
+#include "../renderEngine/DisplayManager.h"
 
 class Renderer {
 public:

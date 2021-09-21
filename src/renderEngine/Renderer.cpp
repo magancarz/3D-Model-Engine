@@ -10,7 +10,7 @@ Renderer::Renderer(StaticShader& shader) {
 void Renderer::prepare() {
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(1, 0, 0, 1);
+	glClearColor(0, 0, 0, 1);
 }
 
 void Renderer::render(const Entity& entity, StaticShader& shader) {
@@ -30,6 +30,5 @@ void Renderer::render(const Entity& entity, StaticShader& shader) {
 }
 
 void Renderer::createProjectionMatrix() {
-	float aspectRatio = (float)1280 / (float)800;
-	m_projectionMatrix = glm::perspective(glm::radians(FOV), aspectRatio, NEAR_PLANE, FAR_PLANE);
+	m_projectionMatrix = glm::perspective(glm::radians(70.0f), (float)(WINDOW_WIDTH / WINDOW_HEIGHT), 1.0f, 1000.0f);
 }

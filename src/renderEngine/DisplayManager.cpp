@@ -1,8 +1,33 @@
 #include "DisplayManager.h"
 
+//Mouse position
+float cursorXPosDiff = 0, cursorYPosDiff = 0;
+
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		isCloseRequested = true;
+	if(action == GLFW_PRESS) {
+		switch(key) {
+		case GLFW_KEY_ESCAPE:
+			glfwSetWindowShouldClose(window, true);
+			inputManager.setKeyDown(key, true);
+			break;
+		default:
+			inputManager.setKeyDown(key, true);
+			break;
+		}
+	} else if(action == GLFW_RELEASE) {
+		switch(key) {
+		case GLFW_KEY_ESCAPE:
+			inputManager.setKeyDown(key, false);
+			break;
+		default:
+			inputManager.setKeyDown(key, false);
+			break;
+		}
+	}
+}
+
+void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+
 }
 
 void DisplayManager::createDisplay() {
@@ -24,6 +49,7 @@ void DisplayManager::createDisplay() {
     glfwMakeContextCurrent(window);
 
 	glfwSetKeyCallback(window, keyCallback);
+	glfwSetCursorPosCallback(window, cursorPosCallback);
 
 	//Init GLEW after creating gl context
 	glewExperimental = GL_TRUE;
@@ -37,4 +63,8 @@ void DisplayManager::updateDisplay() {
 
 void DisplayManager::closeDisplay() {
 	glfwTerminate();
+}
+
+void DisplayManager::checkCloseRequests() {
+	isCloseRequested = glfwWindowShouldClose(window);
 }

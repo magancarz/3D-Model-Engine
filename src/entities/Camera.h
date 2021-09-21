@@ -1,8 +1,10 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "../Headers.h"
+
+#include "../toolbox/Input.h"
+
+extern Input inputManager;
 
 class Camera {
 public:
@@ -10,14 +12,18 @@ public:
 
 	void move();
 
+	void setPosition(glm::vec3 position) { m_position = position; };
+
+	glm::mat4 getView();
+
 	inline glm::vec3 getPosition() const { return m_position; };
-	inline float getPitch() const { return m_pitch; };
-	inline float getYaw() const { return m_yaw; };
-	inline float getRoll() const { return m_roll; };
+	inline float getRotX() const { return m_rx; };
+	inline float getRotY() const { return m_ry; };
+	inline float getRotZ() const { return m_rz; };
 
 private:
 	glm::vec3 m_position;
-	float m_pitch;
-	float m_yaw;
-	float m_roll;
+	float m_rx;
+	float m_ry;
+	float m_rz;
 };

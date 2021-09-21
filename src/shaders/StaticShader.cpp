@@ -15,11 +15,7 @@ void StaticShader::loadProjectionMatrix(glm::mat4 matrix) {
 }
 
 void StaticShader::loadViewMatrix(Camera& camera) {
-	glm::mat4 view = glm::lookAt(
-		glm::vec3(1.2f, 1.2f, 1.2f) * 2.0f,
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 0.0f, 1.0f)
-	);
+	glm::mat4 view = camera.getView();
 	loadMatrix(location_viewMatrix, view);
 }
 

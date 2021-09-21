@@ -1,17 +1,12 @@
 #include "Loader.h"
 
-#include <iostream>
-
-RawModel Loader::loadToVAO(const float* positions, const unsigned int positionsCount,
-	const float* textureCoords, unsigned int textureCoordsCount,
-	const unsigned int* indices, const unsigned int indicesCount) {
+RawModel Loader::loadToVAO(const std::vector<float> positions, const std::vector<float> textureCoords, const std::vector<unsigned int> indices) {
 	unsigned int vaoID = createVAO();
-	bindIndicesBuffer(indices, indicesCount);
-	storeDataInAttributeList(0, 3, positions, positionsCount);
-	storeDataInAttributeList(1, 2, textureCoords, textureCoordsCount);
+	bindIndicesBuffer(indices.data(), indices.size());
+	storeDataInAttributeList(0, 3, positions.data(), positions.size());
+	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
 	unbindVAO();
-	RawModel model(vaoID, indicesCount);
-	return model;
+	return RawModel(vaoID, indices.size());
 }
 
 unsigned int Loader::loadTexture(const std::string& fileName) {
@@ -23,7 +18,7 @@ unsigned int Loader::loadTexture(const std::string& fileName) {
 	unsigned char* image = stbi_load(fileName.c_str(), &width, &height, &channels, 0);
 	if(image == NULL)
 		std::cout << "Failed to load image!\n";
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	stbi_image_free(image);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

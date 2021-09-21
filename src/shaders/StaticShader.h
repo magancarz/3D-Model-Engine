@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <toolbox/Maths.h>
+#include "../Headers.h"
 
 #include "ShaderProgram.h"
 #include "../entities/Camera.h"

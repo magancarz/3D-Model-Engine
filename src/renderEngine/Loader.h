@@ -1,17 +1,12 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <vector>
-#include <string>
-#include <stb_image/stb_image.h>
+#include "../Headers.h"
 
 #include "../models/RawModel.h"
 
 class Loader {
 public:
-	RawModel loadToVAO(const float* positions, const unsigned int positionsCount,
-		const float* textureCoords, unsigned int textureCoordsCount,
-		const unsigned int* indices, const unsigned int indicesCount);
+	RawModel loadToVAO(const std::vector<float> positions, const std::vector<float> textureCoords, const std::vector<unsigned int> indices);
 	unsigned int loadTexture(const std::string& fileName);
 	void cleanUp();
 private:

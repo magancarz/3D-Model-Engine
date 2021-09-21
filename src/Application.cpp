@@ -1,13 +1,16 @@
-#include <Headers.h>
-#include <iostream>
+#include "Headers.h"
 
+#include "renderEngine/DisplayManager.h"
 #include "renderEngine/Loader.h"
 #include "renderEngine/Renderer.h"
+#include "renderEngine/OBJLoader.h"
+#include "shaders/StaticShader.h"
 #include "models/RawModel.h"
 #include "models/TexturedModel.h"
-#include "shaders/StaticShader.h"
+#include "entities/Camera.h"
 
 bool isCloseRequested = false;
+Input inputManager;
 
 int main(void) {
     /* Initialize the library */
@@ -22,99 +25,18 @@ int main(void) {
     Loader loader;
     StaticShader shader;
     Renderer renderer(shader);
-
-    float vertices[] = {
-                -0.5f,0.5f,-0.5f,
-                -0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,-0.5f,
-                0.5f,0.5f,-0.5f,
-
-                -0.5f,0.5f,0.5f,
-                -0.5f,-0.5f,0.5f,
-                0.5f,-0.5f,0.5f,
-                0.5f,0.5f,0.5f,
-
-                0.5f,0.5f,-0.5f,
-                0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,0.5f,
-                0.5f,0.5f,0.5f,
-
-                -0.5f,0.5f,-0.5f,
-                -0.5f,-0.5f,-0.5f,
-                -0.5f,-0.5f,0.5f,
-                -0.5f,0.5f,0.5f,
-
-                -0.5f,0.5f,0.5f,
-                -0.5f,0.5f,-0.5f,
-                0.5f,0.5f,-0.5f,
-                0.5f,0.5f,0.5f,
-
-                -0.5f,-0.5f,0.5f,
-                -0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,-0.5f,
-                0.5f,-0.5f,0.5f
-
-    };
-    unsigned int verticesCount = sizeof(vertices) / sizeof(*vertices);
-
-    unsigned int indices[] = {
-                0,1,3,
-                3,1,2,
-                4,5,7,
-                7,5,6,
-                8,9,11,
-                11,9,10,
-                12,13,15,
-                15,13,14,
-                16,17,19,
-                19,17,18,
-                20,21,23,
-                23,21,22
-
-    };
-    unsigned int indicesCount = sizeof(indices) / sizeof(*indices);
-
-    float textureCoords[] = {
-
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0,
-                0,0,
-                0,1,
-                1,1,
-                1,0
-
-
-    };
-    unsigned int textureCoordsCount = sizeof(textureCoords) / sizeof(*textureCoords);
-
-    RawModel model = loader.loadToVAO(vertices, verticesCount, textureCoords, textureCoordsCount, indices, indicesCount);
-    ModelTexture texture(loader.loadTexture("res/textures/512px.jpg"));
-    TexturedModel texturedModel(model, texture);
-    Entity entity(texturedModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
     Camera camera;
+    camera.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //Load models
+    RawModel stallModel = loadObjModel("res/models/stall.obj", loader);
+    ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
+    TexturedModel texturedStallModel(stallModel, stallTexture);
+    Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
-        //entity.increaseRotation(1.0f, 1.0f, 0.0f);
         camera.move();
 
         /* Poll for and process events */
@@ -126,11 +48,14 @@ int main(void) {
         //Draw here
         shader.start();
         shader.loadViewMatrix(camera);
-        renderer.render(entity, shader);
+        renderer.render(stall, shader);
         shader.stop();
 
         /* Swap front and back buffers */
         display.updateDisplay();
+
+        //Check if window needs to close
+        display.checkCloseRequests();
     }
 
     //Clean up resources

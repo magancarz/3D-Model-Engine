@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "../Headers.h"
 
 #include "../models/TexturedModel.h"
 
