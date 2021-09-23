@@ -9,7 +9,7 @@ void processVertex(int index1, int index2, int index3,
 
 	glm::vec2 currentTex = textures[index2];
 	textureArray[currentVertexPointer * 2] = currentTex.x;
-	textureArray[currentVertexPointer * 2 + 1] = currentTex.y;
+	textureArray[currentVertexPointer * 2 + 1] = 1 - currentTex.y;
 
 	glm::vec3 currentNorm = normals[index3];
 	normalsArray[currentVertexPointer * 3] = currentNorm.x;
