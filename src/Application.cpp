@@ -29,7 +29,7 @@ int main(void) {
     camera.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //Load models
-    RawModel stallModel = loadObjModel("res/models/stall.obj", loader);
+    RawModel stallModel = loadOBJ("res/models/stall.obj", loader);
     ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
     TexturedModel texturedStallModel(stallModel, stallTexture);
     Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);

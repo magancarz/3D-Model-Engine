@@ -25,7 +25,7 @@ void Camera::move() {
 glm::mat4 Camera::getView() {
 	return glm::lookAt(
 		m_position,
-		m_position + glm::vec3(0,0,1),
+		glm::vec3(0, m_position.y, 0),
 		glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 }
