@@ -1,12 +1,14 @@
 #include "Loader.h"
 
-RawModel Loader::loadToVAO(const std::vector<float> positions, const std::vector<float> textureCoords, const std::vector<unsigned int> indices) {
+RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vector<float>& textureCoords,
+	const std::vector<float>& normals, const std::vector<unsigned int>& indices) {
 	unsigned int vaoID = createVAO();
 	bindIndicesBuffer(indices.data(), indices.size());
 	storeDataInAttributeList(0, 3, positions.data(), positions.size());
 	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
+	storeDataInAttributeList(2, 3, normals.data(), normals.size());
 	unbindVAO();
-	return RawModel(vaoID, indices.size());
+	return new RawModel(vaoID, indices.size());
 }
 
 unsigned int Loader::loadTexture(const std::string& fileName) {

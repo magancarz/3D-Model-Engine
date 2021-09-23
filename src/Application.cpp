@@ -29,15 +29,19 @@ int main(void) {
     camera.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //Load models
-    RawModel stallModel = loadOBJ("res/models/stall.obj", loader);
+    RawModel* stallModel = loadOBJ("res/models/dragon.obj", loader);
     ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
-    TexturedModel texturedStallModel(stallModel, stallTexture);
+    TexturedModel texturedStallModel(*stallModel, stallTexture);
     Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
+
+    //Light
+    Light light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
         camera.move();
+        stall.increaseRotation(0, 1, 0);
 
         /* Poll for and process events */
         glfwPollEvents();
@@ -47,6 +51,7 @@ int main(void) {
 
         //Draw here
         shader.start();
+        shader.loadLight(light);
         shader.loadViewMatrix(camera);
         renderer.render(stall, shader);
         shader.stop();
@@ -59,6 +64,8 @@ int main(void) {
     }
 
     //Clean up resources
+    delete stallModel;
+
     shader.stop();
     shader.cleanUp();
     loader.cleanUp();

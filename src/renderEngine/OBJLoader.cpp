@@ -17,7 +17,7 @@ void processVertex(int index1, int index2, int index3,
 	normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
 }
 
-RawModel loadOBJ(const std::string& fileName, Loader& loader) {
+RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
 	std::ifstream inFile(fileName, std::ios::in);
 
 	if(!inFile) {
@@ -126,10 +126,10 @@ RawModel loadOBJ(const std::string& fileName, Loader& loader) {
 		verticesArray[vertexPointer++] = vertex.z;
 	}
 
-	for(int i = 0; i < indices.size(); i++) {
+	for(unsigned int i = 0; i < indices.size(); i++) {
 		indicesArray[i] = indices[i];
 	}
 
-	return loader.loadToVAO(verticesArray, textureArray, indicesArray);
+	return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 
 }
