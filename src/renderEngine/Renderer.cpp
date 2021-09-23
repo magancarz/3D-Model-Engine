@@ -13,7 +13,7 @@ void Renderer::prepare() {
 	glClearColor(0, 0, 0, 1);
 }
 
-void Renderer::render(const Entity& entity, StaticShader& shader) {
+void Renderer::render(Entity& entity, StaticShader& shader) {
 	TexturedModel texturedModel = entity.getTexturedModel();
 	RawModel model = texturedModel.getRawModel();
 	glBindVertexArray(model.getVaoID());
@@ -22,8 +22,10 @@ void Renderer::render(const Entity& entity, StaticShader& shader) {
 	glEnableVertexAttribArray(2);
 	glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 	shader.loadTransformationMatrix(transformationMatrix);
+	ModelTexture texture = texturedModel.getTexture();
+	shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texturedModel.getTexture().getID());
+	glBindTexture(GL_TEXTURE_2D, texture.getID());
 	glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

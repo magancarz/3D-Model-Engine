@@ -24,6 +24,11 @@ void StaticShader::loadLight(Light& light) {
 	loadVector3f(location_lightColor, light.getColor());
 }
 
+void StaticShader::loadShineVariables(float shineDamper, float reflectivity) {
+	loadFloat(location_shineDamper, shineDamper);
+	loadFloat(location_reflectivity, reflectivity);
+}
+
 void StaticShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -31,9 +36,14 @@ void StaticShader::bindAttributes() {
 }
 
 void StaticShader::getAllUniformLocations() {
+	//MVP calculation uniforms
 	location_transformationMatrix = getUniformLocation("model");
 	location_projectionMatrix = getUniformLocation("proj");
 	location_viewMatrix = getUniformLocation("view");
+
+	//Light calculation uniforms
 	location_lightPosition = getUniformLocation("lightPosition");
 	location_lightColor = getUniformLocation("lightColor");
+	location_shineDamper = getUniformLocation("shineDamper");
+	location_reflectivity = getUniformLocation("reflectivity");
 }

@@ -7,8 +7,8 @@ class TexturedModel {
 public:
 	TexturedModel(RawModel model, ModelTexture texture);
 
-	inline RawModel getRawModel() const { return m_rawModel; };
-	inline ModelTexture getTexture() const { return m_texture; };
+	inline RawModel& getRawModel() { return m_rawModel; };
+	inline ModelTexture& getTexture() { return m_texture; };
 private:
 	RawModel m_rawModel;
 	ModelTexture m_texture;

@@ -11,14 +11,14 @@ public:
 	void increasePosition(float dx, float dy, float dz);
 	void increaseRotation(float rx, float ry, float rz);
 
-	inline TexturedModel getTexturedModel() const { return m_model; };
+	inline TexturedModel& getTexturedModel() { return m_model; };
 	inline glm::vec3 getPosition() const { return m_position; };
 	inline float getRotX() const { return m_rx; };
 	inline float getRotY() const { return m_ry; };
 	inline float getRotZ() const { return m_rz; };
 	inline float getScale() const { return m_scale; };
 
-	void setTexturedModel(TexturedModel model) { m_model = model; };
+	void setTexturedModel(TexturedModel& model) { m_model = model; };
 	void setPosition(glm::vec3 position) { m_position = position; };
 	void setRotX(float rx) { m_rx = rx; };
 	void setRotY(float ry) { m_ry = ry; };

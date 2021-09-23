@@ -14,7 +14,7 @@ public:
 	Renderer(StaticShader& shader);
 
 	void prepare();
-	void render(const Entity& entity, StaticShader& shader);
+	void render(Entity& entity, StaticShader& shader);
 private:
 	void createProjectionMatrix();
 

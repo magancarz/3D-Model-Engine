@@ -32,6 +32,9 @@ int main(void) {
     RawModel* stallModel = loadOBJ("res/models/dragon.obj", loader);
     ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
     TexturedModel texturedStallModel(*stallModel, stallTexture);
+    ModelTexture& texture = texturedStallModel.getTexture();
+    texture.setShineDamper(10);
+    texture.setReflectivity(5.0f);
     Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
 
     //Light
