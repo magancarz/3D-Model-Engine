@@ -1,6 +1,9 @@
 #include "Renderer.h"
 
-Renderer::Renderer(StaticShader& shader) {
+Renderer::Renderer(StaticShader& shader)
+	: m_shader(shader) {
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	createProjectionMatrix();
 	shader.start();
 	shader.loadProjectionMatrix(m_projectionMatrix);
@@ -13,24 +16,49 @@ void Renderer::prepare() {
 	glClearColor(0, 0, 0, 1);
 }
 
-void Renderer::render(Entity& entity, StaticShader& shader) {
-	TexturedModel texturedModel = entity.getTexturedModel();
+void Renderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* entities) {
+	for(std::map<TexturedModel*, std::vector<Entity*>*>::iterator it = entities->begin(); it != entities->end(); it++) {
+		TexturedModel* texturedModel = (*it).first;
+		prepareTexturedModel(*texturedModel);
+		it = entities->find(texturedModel);
+		if(it != entities->end()) {
+			std::vector<Entity*>* batch = it->second;
+
+			for(std::vector<Entity*>::iterator sit = batch->begin(); sit != batch->end(); sit++) {
+				Entity* entity = *sit;
+				prepareInstance(*entity);
+				glDrawElements(GL_TRIANGLES, texturedModel->getRawModel().getVertexCount(), GL_UNSIGNED_INT, 0);
+			}
+
+			unbindTexturedModel();
+		}
+	}
+}
+
+void Renderer::prepareTexturedModel(TexturedModel& texturedModel) {
 	RawModel model = texturedModel.getRawModel();
 	glBindVertexArray(model.getVaoID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
-	shader.loadTransformationMatrix(transformationMatrix);
 	ModelTexture texture = texturedModel.getTexture();
-	shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
+	m_shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture.getID());
-	glDrawElements(GL_TRIANGLES, model.getVertexCount(), GL_UNSIGNED_INT, 0);
+}
+
+void Renderer::unbindTexturedModel() {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
 	glBindVertexArray(0);
+}
+
+void Renderer::prepareInstance(Entity& entity) {
+	glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+	m_shader.loadTransformationMatrix(transformationMatrix);
+	ModelTexture texture = entity.getTexturedModel().getTexture();
+	m_shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 }
 
 void Renderer::createProjectionMatrix() {

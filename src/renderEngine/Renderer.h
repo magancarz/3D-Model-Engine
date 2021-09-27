@@ -14,9 +14,15 @@ public:
 	Renderer(StaticShader& shader);
 
 	void prepare();
-	void render(Entity& entity, StaticShader& shader);
+	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entities);
 private:
+	void prepareTexturedModel(TexturedModel& texturedModel);
+	void unbindTexturedModel();
+	void prepareInstance(Entity& entity);
+
 	void createProjectionMatrix();
+
+	StaticShader m_shader;
 
 	glm::mat4 m_projectionMatrix;
 	const float FOV = 70.0f;

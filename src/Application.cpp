@@ -2,7 +2,7 @@
 
 #include "renderEngine/DisplayManager.h"
 #include "renderEngine/Loader.h"
-#include "renderEngine/Renderer.h"
+#include "renderEngine/MasterRenderer.h"
 #include "renderEngine/OBJLoader.h"
 #include "shaders/StaticShader.h"
 #include "models/RawModel.h"
@@ -23,13 +23,11 @@ int main(void) {
 
     //Logic
     Loader loader;
-    StaticShader shader;
-    Renderer renderer(shader);
     Camera camera;
     camera.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //Load models
-    RawModel* stallModel = loadOBJ("res/models/dragon.obj", loader);
+    RawModel* stallModel = loadOBJ("res/models/stall.obj", loader);
     ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
     TexturedModel texturedStallModel(*stallModel, stallTexture);
     ModelTexture& texture = texturedStallModel.getTexture();
@@ -44,20 +42,16 @@ int main(void) {
     while(!isCloseRequested) {
         //Events
         camera.move();
-        stall.increaseRotation(0, 1, 0);
+        //stall.increaseRotation(0, 1, 0);
 
         /* Poll for and process events */
         glfwPollEvents();
 
-        //Prepare window for drawing
-        renderer.prepare();
+        //Process entities
+        renderer.processEntity(stall);
 
         //Draw here
-        shader.start();
-        shader.loadLight(light);
-        shader.loadViewMatrix(camera);
-        renderer.render(stall, shader);
-        shader.stop();
+        renderer.render(light, camera);
 
         /* Swap front and back buffers */
         display.updateDisplay();
@@ -67,10 +61,7 @@ int main(void) {
     }
 
     //Clean up resources
-    delete stallModel;
-
-    shader.stop();
-    shader.cleanUp();
+    renderer.cleanUp();
     loader.cleanUp();
 
     display.closeDisplay();

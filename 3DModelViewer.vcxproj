@@ -27,6 +27,7 @@
     <ClCompile Include="src\models\TexturedModel.cpp" />
     <ClCompile Include="src\renderEngine\DisplayManager.cpp" />
     <ClCompile Include="src\renderEngine\Loader.cpp" />
+    <ClCompile Include="src\renderEngine\MasterRenderer.cpp" />
     <ClCompile Include="src\renderEngine\OBJLoader.cpp" />
     <ClCompile Include="src\renderEngine\Renderer.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="src\models\TexturedModel.h" />
     <ClInclude Include="src\renderEngine\DisplayManager.h" />
     <ClInclude Include="src\renderEngine\Loader.h" />
+    <ClInclude Include="src\renderEngine\MasterRenderer.h" />
     <ClInclude Include="src\renderEngine\OBJLoader.h" />
     <ClInclude Include="src\renderEngine\Renderer.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
