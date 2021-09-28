@@ -31,12 +31,14 @@ int main(void) {
     ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
     TexturedModel texturedStallModel(*stallModel, stallTexture);
     ModelTexture& texture = texturedStallModel.getTexture();
-    texture.setShineDamper(10);
-    texture.setReflectivity(5.0f);
+    //texture.setShineDamper(10);
+    //texture.setReflectivity(5.0f);
     Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
 
     //Light
     Light light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
+
+    MasterRenderer renderer;
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
@@ -61,7 +63,6 @@ int main(void) {
     }
 
     //Clean up resources
-    renderer.cleanUp();
     loader.cleanUp();
 
     display.closeDisplay();

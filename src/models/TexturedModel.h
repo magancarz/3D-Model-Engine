@@ -9,11 +9,7 @@ public:
 
 	inline RawModel& getRawModel() { return m_rawModel; };
 	inline ModelTexture& getTexture() { return m_texture; };
-
-	inline int getTexturedModelID() const { return m_texturedModelID; };
 private:
-	static int availableID;
-	int m_texturedModelID;
 
 	RawModel m_rawModel;
 	ModelTexture m_texture;

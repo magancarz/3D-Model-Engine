@@ -11,8 +11,6 @@
 
 class Renderer {
 public:
-	Renderer(StaticShader& shader);
-
 	void prepare();
 	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entities);
 private:

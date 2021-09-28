@@ -1,18 +1,10 @@
 #include "Renderer.h"
 
-Renderer::Renderer(StaticShader& shader)
-	: m_shader(shader) {
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	createProjectionMatrix();
-	shader.start();
-	shader.loadProjectionMatrix(m_projectionMatrix);
-	shader.stop();
-}
-
 void Renderer::prepare() {
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	glClearColor(0, 0, 0, 1);
 }
 
@@ -59,8 +51,4 @@ void Renderer::prepareInstance(Entity& entity) {
 	m_shader.loadTransformationMatrix(transformationMatrix);
 	ModelTexture texture = entity.getTexturedModel().getTexture();
 	m_shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
-}
-
-void Renderer::createProjectionMatrix() {
-	m_projectionMatrix = glm::perspective(glm::radians(70.0f), (float)(WINDOW_WIDTH / WINDOW_HEIGHT), 1.0f, 1000.0f);
 }

@@ -5,8 +5,6 @@
 #include "../shaders/StaticShader.h"
 #include "Renderer.h"
 
-MasterRenderer renderer;
-
 class MasterRenderer {
 public:
 	MasterRenderer();
@@ -21,5 +19,9 @@ private:
 	StaticShader m_shader;
 	Renderer m_renderer;
 
+	glm::mat4 m_projectionMatrix;
+
 	std::map<TexturedModel*, std::vector<Entity*>*>* m_entities;
+
+	void createProjectionMatrix();
 };
