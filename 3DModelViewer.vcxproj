@@ -32,6 +32,7 @@
     <ClCompile Include="src\renderEngine\Renderer.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\shaders\StaticShader.cpp" />
+    <ClCompile Include="src\terrains\Terrain.cpp" />
     <ClCompile Include="src\textures\ModelTexture.cpp" />
     <ClCompile Include="src\toolbox\Input.cpp" />
     <ClCompile Include="src\toolbox\Maths.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="src\renderEngine\Renderer.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\StaticShader.h" />
+    <ClInclude Include="src\terrains\Terrain.h" />
     <ClInclude Include="src\textures\ModelTexture.h" />
     <ClInclude Include="src\toolbox\Input.h" />
     <ClInclude Include="src\toolbox\Maths.h" />
