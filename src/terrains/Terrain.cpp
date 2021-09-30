@@ -1,9 +1,11 @@
 #include "Terrain.h"
 
-Terrain::Terrain(int gridX, int gridZ, Loader& loader, ModelTexture& texture)
-	: m_x(gridX* SIZE), m_z(gridZ* SIZE), m_texture(texture), m_model(nullptr) {}
+Terrain::Terrain(int gridX, int gridZ, Loader* loader, ModelTexture* texture)
+	: m_x(gridX * SIZE), m_z(gridZ * SIZE), m_texture(texture) {
+	m_model = generateTerrain(loader);
+}
 
-RawModel* Terrain::generateTerrain(Loader& loader) {
+RawModel* Terrain::generateTerrain(Loader* loader) {
 	int count = VERTEX_COUNT * VERTEX_COUNT;
 	std::vector<float> vertices;
 	std::vector<float> normals;
@@ -37,5 +39,5 @@ RawModel* Terrain::generateTerrain(Loader& loader) {
 		}
 	}
 
-	return loader.loadToVAO(vertices, textureCoords, normals, indices);
+	return loader->loadToVAO(vertices, textureCoords, normals, indices);
 }

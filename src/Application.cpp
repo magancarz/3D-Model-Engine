@@ -11,6 +11,7 @@
 
 bool isCloseRequested = false;
 Input inputManager;
+DisplayManager display;
 
 int main(void) {
     /* Initialize the library */
@@ -18,23 +19,26 @@ int main(void) {
         return -1;
 
     //Create window
-    DisplayManager display;
     display.createDisplay();
 
     //Logic
-    Loader loader;
-    Camera camera;
-    camera.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    Loader* loader = new Loader;
+    Camera* camera = new Camera;
+    camera->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+    //Terrain
+    ModelTexture* terrainTexture = new ModelTexture(loader->loadTexture("res/textures/grass.png"));
+    Terrain* terrain = new Terrain(0, 0, loader, terrainTexture);
 
     //Load models
-    RawModel* stallModel = loadOBJ("res/models/stall.obj", loader);
-    ModelTexture stallTexture(loader.loadTexture("res/models/stallTexture.png"));
+    RawModel* stallModel = loadOBJ("res/models/stall.obj", *loader);
+    ModelTexture stallTexture(loader->loadTexture("res/models/stallTexture.png"));
     TexturedModel texturedStallModel(*stallModel, stallTexture);
     ModelTexture& texture = texturedStallModel.getTexture();
     texture.setShineDamper(10);
     texture.setReflectivity(5.0f);
     Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
-
+    
     //Light
     Light light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
 
@@ -44,17 +48,20 @@ int main(void) {
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
-        camera.move();
+        camera->move();
         //stall.increaseRotation(0, 1, 0);
 
         /* Poll for and process events */
         glfwPollEvents();
+        
+        //Process terrains
+        renderer.processTerrain(terrain);
 
         //Process entities
         renderer.processEntity(stall);
-
+        
         //Draw here
-        renderer.render(light, camera);
+        renderer.render(light, *camera);
 
         /* Swap front and back buffers */
         display.updateDisplay();
@@ -64,8 +71,13 @@ int main(void) {
     }
 
     //Clean up resources
-    loader.cleanUp();
+    loader->cleanUp();
+
+    delete loader;
+    delete camera;
+    delete terrain;
 
     display.closeDisplay();
+
     return 0;
 }

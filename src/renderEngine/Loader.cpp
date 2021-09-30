@@ -17,14 +17,14 @@ unsigned int Loader::loadTexture(const std::string& fileName) {
 
 	int width, height, channels;
 	glBindTexture(GL_TEXTURE_2D, texture);
-	unsigned char* image = stbi_load(fileName.c_str(), &width, &height, &channels, 0);
+	unsigned char* image = stbi_load(fileName.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 	if(image == NULL)
 		std::cout << "Failed to load image!\n";
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	stbi_image_free(image);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

@@ -9,18 +9,20 @@
 #include "../toolbox/Maths.h"
 #include "../renderEngine/DisplayManager.h"
 
-class Renderer {
+class EntityRenderer {
 public:
-	void prepare();
+	EntityRenderer();
+	EntityRenderer(StaticShader& shader, glm::mat4 projectionMatrix);
+
 	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entities);
+
+	inline void setShader(StaticShader& shader) { m_shader = &shader; };
 private:
 	void prepareTexturedModel(TexturedModel& texturedModel);
 	void unbindTexturedModel();
 	void prepareInstance(Entity& entity);
 
-	void createProjectionMatrix();
-
-	StaticShader m_shader;
+	StaticShader* m_shader;
 
 	glm::mat4 m_projectionMatrix;
 	const float FOV = 70.0f;
