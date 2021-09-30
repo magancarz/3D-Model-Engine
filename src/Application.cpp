@@ -9,8 +9,14 @@
 #include "models/TexturedModel.h"
 #include "entities/Camera.h"
 
+///GLOBAL VARIABLES///
+//Main loop control
 bool isCloseRequested = false;
+
+//Input manager
 Input inputManager;
+
+//Display
 DisplayManager display;
 
 int main(void) {
@@ -23,8 +29,7 @@ int main(void) {
 
     //Logic
     Loader* loader = new Loader;
-    Camera* camera = new Camera;
-    camera->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f));
 
     //Terrain
     ModelTexture* terrainTexture = new ModelTexture(loader->loadTexture("res/textures/grass.png"));
@@ -35,9 +40,9 @@ int main(void) {
     ModelTexture stallTexture(loader->loadTexture("res/models/stallTexture.png"));
     TexturedModel texturedStallModel(*stallModel, stallTexture);
     ModelTexture& texture = texturedStallModel.getTexture();
-    texture.setShineDamper(10);
-    texture.setReflectivity(5.0f);
-    Entity stall(texturedStallModel, glm::vec3(0, 0, 0), 0, 0, 0, 1);
+    //texture.setShineDamper(10);
+    //texture.setReflectivity(5.0f);
+    Entity stall(texturedStallModel, glm::vec3(10, 0, 10), 0, 0, 0, 1);
     
     //Light
     Light light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
@@ -48,6 +53,7 @@ int main(void) {
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
+        display.rotateCamera(camera);
         camera->move();
         //stall.increaseRotation(0, 1, 0);
 

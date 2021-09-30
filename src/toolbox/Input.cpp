@@ -19,8 +19,3 @@ void Input::setKeyDown(unsigned int keyCode, bool value) {
 	}
 	keyDown[keyCode] = value;
 }
-
-void Input::moveMouse(float dx, float dy) {
-	dxTotal += dx;
-	dyTotal += dy;
-}

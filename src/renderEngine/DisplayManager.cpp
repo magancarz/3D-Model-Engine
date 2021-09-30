@@ -1,7 +1,9 @@
 #include "DisplayManager.h"
 
 //Mouse position
-float cursorXPosDiff = 0, cursorYPosDiff = 0;
+static float mouseOffsetX = 0, mouseOffsetY = 0;
+static bool firstMouse = true;
+static float lastMouseX = 0, lastMouseY = 0;
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if(action == GLFW_PRESS) {
@@ -27,7 +29,25 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 
 void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+	if(firstMouse) {
+		lastMouseX = xpos;
+		lastMouseY = ypos;
+		firstMouse = false;
+	}
 
+	//Calculate offset
+	mouseOffsetX = xpos - lastMouseX;
+	mouseOffsetY = ypos - lastMouseY;
+
+	//Set last X and Y
+	lastMouseX = xpos;
+	lastMouseY = ypos;
+}
+
+void DisplayManager::rotateCamera(Camera* camera) {
+	camera->rotate(mouseOffsetX, -mouseOffsetY, 0);
+
+	mouseOffsetX = mouseOffsetY = 0;
 }
 
 void DisplayManager::createDisplay() {
@@ -39,7 +59,6 @@ void DisplayManager::createDisplay() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-
 	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str(), NULL, NULL);
     if(!window) {
         glfwTerminate();
@@ -50,6 +69,8 @@ void DisplayManager::createDisplay() {
 
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetCursorPosCallback(window, cursorPosCallback);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	//Init GLEW after creating gl context
 	glewExperimental = GL_TRUE;
