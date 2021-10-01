@@ -11,9 +11,18 @@ public:
 
 	inline float& getShineDamper() { return m_shineDamper; };
 	inline float& getReflectivity() { return m_reflectivity; };
+
+	inline void setTransparency(bool value) { m_hasTransparency = value; };
+	inline bool getTransparency() { return m_hasTransparency; };
+
+	inline void useFakeLighting(bool value) { m_useFakeLighting = value; };
+	inline bool isUsingFakeLighting() { return m_useFakeLighting; };
 private:
 	unsigned int m_textureID;
 
 	float m_shineDamper = 1;
 	float m_reflectivity = 0;
+
+	bool m_hasTransparency = false;
+	bool m_useFakeLighting = false;
 };

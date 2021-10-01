@@ -29,6 +29,10 @@ void StaticShader::loadShineVariables(float shineDamper, float reflectivity) {
 	loadFloat(location_reflectivity, reflectivity);
 }
 
+void StaticShader::loadFakeLightingVariable(bool value) {
+	loadBoolean(location_useFakeLighting, value);
+}
+
 void StaticShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -46,4 +50,5 @@ void StaticShader::getAllUniformLocations() {
 	location_lightColor = getUniformLocation("lightColor");
 	location_shineDamper = getUniformLocation("shineDamper");
 	location_reflectivity = getUniformLocation("reflectivity");
+	location_useFakeLighting = getUniformLocation("useFakeLighting");
 }

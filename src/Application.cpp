@@ -29,7 +29,7 @@ int main(void) {
 
     //Logic
     Loader* loader = new Loader;
-    Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 0.0f));
+    Camera* camera = new Camera(glm::vec3(-5.0f, 6.0f, -5.0f));
 
     //Terrain
     ModelTexture* terrainTexture = new ModelTexture(loader->loadTexture("res/textures/grass.png"));

@@ -1,5 +1,14 @@
 #include "MasterRenderer.h"
 
+void enableCulling() {
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+}
+
+void disableCulling() {
+	glDisable(GL_CULL_FACE);
+}
+
 MasterRenderer::MasterRenderer() {
 	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;
 	m_terrains = new std::vector<Terrain*>;
@@ -23,8 +32,7 @@ MasterRenderer::MasterRenderer() {
 	m_terrainShader->loadProjectionMatrix(m_projectionMatrix);
 	m_terrainShader->stop();
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	enableCulling();
 }
 
 MasterRenderer::~MasterRenderer() {
@@ -63,6 +71,7 @@ void MasterRenderer::prepare() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0, 0, 0, 1);
 }
+
 
 void MasterRenderer::processEntity(Entity& entity) {
 	TexturedModel& entityModel = entity.getTexturedModel();

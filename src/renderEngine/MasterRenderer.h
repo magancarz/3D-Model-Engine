@@ -7,6 +7,9 @@
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
 
+void enableCulling();
+void disableCulling();
+
 class MasterRenderer {
 public:
 	MasterRenderer();
@@ -14,6 +17,7 @@ public:
 
 	void render(Light& sun, Camera& camera);
 	void prepare();
+
 
 	void processEntity(Entity& entity);
 	void processTerrain(Terrain* terrain);

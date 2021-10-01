@@ -15,6 +15,7 @@ public:
 	void loadViewMatrix(Camera& camera);
 	void loadLight(Light& light);
 	void loadShineVariables(float shineDamper, float reflectivity);
+	void loadFakeLightingVariable(bool value);
 protected:
 	void virtual bindAttributes() override;
 	void virtual getAllUniformLocations() override;
@@ -30,4 +31,5 @@ private:
 	unsigned int location_lightColor;
 	unsigned int location_shineDamper;
 	unsigned int location_reflectivity;
+	unsigned int location_useFakeLighting;
 };
