@@ -16,6 +16,7 @@ public:
 	void loadLight(Light& light);
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadFakeLightingVariable(bool value);
+	void loadSkyColor(float r, float g, float b);
 protected:
 	void virtual bindAttributes() override;
 	void virtual getAllUniformLocations() override;
@@ -32,4 +33,5 @@ private:
 	unsigned int location_shineDamper;
 	unsigned int location_reflectivity;
 	unsigned int location_useFakeLighting;
+	unsigned int location_skyColor;
 };

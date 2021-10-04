@@ -34,6 +34,8 @@ private:
 	const float FOV = 70.0f;
 	const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
 
+	const float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
+
 	std::map<TexturedModel*, std::vector<Entity*>*>* m_entities;
 	std::vector<Terrain*>* m_terrains;
 

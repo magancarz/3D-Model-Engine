@@ -29,6 +29,10 @@ void TerrainShader::loadShineVariables(float shineDamper, float reflectivity) {
 	loadFloat(location_reflectivity, reflectivity);
 }
 
+void TerrainShader::loadSkyColor(float r, float g, float b) {
+	loadVector3f(location_skyColor, glm::vec3(r, g, b));
+}
+
 void TerrainShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -46,4 +50,7 @@ void TerrainShader::getAllUniformLocations() {
 	location_lightColor = getUniformLocation("lightColor");
 	location_shineDamper = getUniformLocation("shineDamper");
 	location_reflectivity = getUniformLocation("reflectivity");
+
+	//Fog calculation uniforms
+	location_skyColor = getUniformLocation("skyColor");
 }

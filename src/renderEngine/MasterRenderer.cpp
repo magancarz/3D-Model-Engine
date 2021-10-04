@@ -52,6 +52,7 @@ MasterRenderer::~MasterRenderer() {
 void MasterRenderer::render(Light& sun, Camera& camera) {
 	prepare();
 	m_shader->start();
+	m_shader->loadSkyColor(RED, GREEN, BLUE);
 	m_shader->loadLight(sun);
 	m_shader->loadViewMatrix(camera);
 	m_renderer->render(m_entities);
@@ -59,6 +60,7 @@ void MasterRenderer::render(Light& sun, Camera& camera) {
 	m_entities->clear();
 
 	m_terrainShader->start();
+	m_terrainShader->loadSkyColor(RED, GREEN, BLUE);
 	m_terrainShader->loadLight(sun);
 	m_terrainShader->loadViewMatrix(camera);
 	m_terrainRenderer->render(m_terrains);
@@ -69,7 +71,7 @@ void MasterRenderer::render(Light& sun, Camera& camera) {
 void MasterRenderer::prepare() {
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0, 0, 0, 1);
+	glClearColor(RED, GREEN, BLUE, 1);
 }
 
 

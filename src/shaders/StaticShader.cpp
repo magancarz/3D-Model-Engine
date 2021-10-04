@@ -33,6 +33,10 @@ void StaticShader::loadFakeLightingVariable(bool value) {
 	loadBoolean(location_useFakeLighting, value);
 }
 
+void StaticShader::loadSkyColor(float r, float g, float b) {
+	loadVector3f(location_skyColor, glm::vec3(r, g, b));
+}
+
 void StaticShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -51,4 +55,7 @@ void StaticShader::getAllUniformLocations() {
 	location_shineDamper = getUniformLocation("shineDamper");
 	location_reflectivity = getUniformLocation("reflectivity");
 	location_useFakeLighting = getUniformLocation("useFakeLighting");
+
+	//Fog calculation uniform
+	location_skyColor = getUniformLocation("skyColor");
 }
