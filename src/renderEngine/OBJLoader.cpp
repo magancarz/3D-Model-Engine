@@ -1,20 +1,72 @@
 #include "OBJLoader.h"
 
-void processVertex(int index1, int index2, int index3,
-	std::vector<GLuint>& indices, std::vector<glm::vec2>& textures,
-	std::vector<glm::vec3>& normals, std::vector<GLfloat>& textureArray,
-	std::vector<GLfloat>& normalsArray) {
-	GLuint currentVertexPointer = index1;
-	indices.push_back(currentVertexPointer);
+void dealWithAlreadyProcessedVertex(Vertex* previousVertex, int newTextureIndex, int newNormalIndex,
+	std::vector<unsigned int>& indices, std::vector<Vertex*>& vertices) {
+	if(previousVertex->hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
+		indices.push_back(previousVertex->getIndex());
+	} else {
+		Vertex* anotherVertex = previousVertex->getDuplicateVertex();
+		if(anotherVertex != nullptr) {
+			dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex, indices, vertices);
+		} else {
+			Vertex* duplicateVertex = new Vertex(vertices.size(), previousVertex->getPosition());
+			duplicateVertex->setTextureIndex(newTextureIndex);
+			duplicateVertex->setNormalIndex(newNormalIndex);
+			previousVertex->setDuplicateVertex(duplicateVertex);
+			vertices.push_back(duplicateVertex);
+			indices.push_back(duplicateVertex->getIndex());
+		}
+	}
+}
 
-	glm::vec2 currentTex = textures[index2];
-	textureArray[currentVertexPointer * 2] = currentTex.x;
-	textureArray[currentVertexPointer * 2 + 1] = 1 - currentTex.y;
+void processVertex(int index, int textureIndex, int normalIndex, std::vector<Vertex*>& vertices, std::vector<unsigned int>& indices) {
+	Vertex* currentVertex = vertices[index];
+	if(!currentVertex->isSet()) {
+		currentVertex->setTextureIndex(textureIndex);
+		currentVertex->setNormalIndex(normalIndex);
+		indices.push_back(index);
+	} else {
+		dealWithAlreadyProcessedVertex(currentVertex, textureIndex, normalIndex, indices, vertices);
+	}
+}
 
-	glm::vec3 currentNorm = normals[index3];
-	normalsArray[currentVertexPointer * 3] = currentNorm.x;
-	normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
-	normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
+float convertDataToArrays(std::vector<Vertex*>& vertices, std::vector<glm::vec2>& textures,
+	std::vector<glm::vec3>& normals, std::vector<float>& verticesArray,
+	std::vector<float>& texturesArray, std::vector<float>& normalsArray) {
+	float furthestPoint = 0;
+
+	for(size_t i = 0; i < vertices.size(); i++) {
+		Vertex* currentVertex = vertices[i];
+		if(currentVertex->getLength() > furthestPoint)
+			furthestPoint = currentVertex->getLength();
+
+		glm::vec3 position = currentVertex->getPosition();
+		glm::vec2 textureCoord = textures[currentVertex->getTextureIndex()];
+		glm::vec3 normalVector = normals[currentVertex->getNormalIndex()];
+
+		verticesArray.push_back(position[0]);
+		verticesArray.push_back(position[1]);
+		verticesArray.push_back(position[2]);
+		texturesArray.push_back(textureCoord[0]);
+		texturesArray.push_back(1.0f - textureCoord[1]);
+		normalsArray.push_back(normalVector[0]);
+		normalsArray.push_back(normalVector[1]);
+		normalsArray.push_back(normalVector[2]);
+	}
+
+	return furthestPoint;
+}
+
+void removeUnusedVertices(std::vector<Vertex*>& vertices) {
+	std::vector<Vertex*>::iterator it;
+
+	for(it = vertices.begin(); it != vertices.end(); it++) {
+		Vertex* vertex = *it;
+		if(!vertex->isSet()) {
+			vertex->setTextureIndex(0);
+			vertex->setNormalIndex(0);
+		}
+	}
 }
 
 RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
@@ -26,15 +78,10 @@ RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
 	}
 
 	std::string line;
-	std::vector<glm::vec3> vertices;
+	std::vector<Vertex*> vertices;
 	std::vector<glm::vec2> textures;
 	std::vector<glm::vec3> normals;
 	std::vector<GLuint> indices;
-
-	std::vector<GLfloat> verticesArray;
-	std::vector<GLfloat> normalsArray;
-	std::vector<GLfloat> textureArray;
-	std::vector<GLuint> indicesArray;
 
 	//This loop collects the vertices, texture coords and normals from the obj file.
 	while(!inFile.eof()) {
@@ -51,7 +98,8 @@ RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
 			//e.g. v 3.227124 -0.065127 -1.000000
 			iss >> x >> y >> z;
 			glm::vec3 vertex(x, y, z);
-			vertices.push_back(vertex);
+			Vertex* newVertex = new Vertex(vertices.size(), vertex);
+			vertices.push_back(newVertex);
 		} else if(starts == "vt") {
 			//e.g. vt 0.905299 0.932320
 			iss >> x >> y;
@@ -63,14 +111,15 @@ RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
 			glm::vec3 normal(x, y, z);
 			normals.push_back(normal);
 		} else if(starts == "f") {
-			textureArray.resize(vertices.size() * 2);
-			normalsArray.resize(vertices.size() * 3);
 			//break when faces start
 			break;
 		}
 	}
 
-	int faces = 0;
+	std::vector<GLfloat> verticesArray;
+	std::vector<GLfloat> normalsArray;
+	std::vector<GLfloat> textureArray;
+	std::vector<GLuint> indicesArray;
 
 	//read the faces in a second loop
 	while(!inFile.eof()) {
@@ -107,28 +156,25 @@ RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
 			}
 
 			//process vertices
-			processVertex(u[0], u[1], u[2], indices, textures, normals, textureArray, normalsArray);
-			processVertex(u[3], u[4], u[5], indices, textures, normals, textureArray, normalsArray);
-			processVertex(u[6], u[7], u[8], indices, textures, normals, textureArray, normalsArray);
-
-			faces++;
+			processVertex(u[0], u[1], u[2], vertices, indices);
+			processVertex(u[3], u[4], u[5], vertices, indices);
+			processVertex(u[6], u[7], u[8], vertices, indices);
 		}
 
 		getline(inFile, line);
 	}
-	verticesArray.resize(vertices.size() * 3);
-	indicesArray.resize(indices.size());
+	
+	removeUnusedVertices(vertices);
+	
+	float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, textureArray, normalsArray);
 
-	int vertexPointer = 0;
-	for(auto& vertex : vertices) {
-		verticesArray[vertexPointer++] = vertex.x;
-		verticesArray[vertexPointer++] = vertex.y;
-		verticesArray[vertexPointer++] = vertex.z;
+	for(int i = 0; i < (int)indices.size(); i++) {
+		unsigned int u = indices[i];
+		indicesArray.push_back(u);
 	}
 
-	for(unsigned int i = 0; i < indices.size(); i++) {
-		indicesArray[i] = indices[i];
-	}
+	for(int i = 0; i < (int)vertices.size(); i++)
+		delete vertices[i];
 
 	return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 

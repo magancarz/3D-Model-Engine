@@ -14,6 +14,7 @@ RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vect
 unsigned int Loader::loadTexture(const std::string& fileName) {
 	unsigned int texture;
 	glGenTextures(1, &texture);
+	textures.push_back(texture);
 
 	int width, height, channels;
 	glBindTexture(GL_TEXTURE_2D, texture);

@@ -79,6 +79,8 @@ int main(void) {
     //Clean up resources
     loader->cleanUp();
 
+    delete stallModel;
+
     delete loader;
     delete camera;
     delete terrain;
