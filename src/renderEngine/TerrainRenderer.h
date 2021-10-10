@@ -17,6 +17,7 @@ public:
 	inline void setShader(TerrainShader* shader) { m_shader = shader; };
 private:
 	void prepareTerrain(Terrain* terrain);
+	void bindTextures(Terrain* terrain);
 	void unbindTexturedModel();
 	void loadModelMatrix(Terrain* terrain);
 

@@ -1,7 +1,7 @@
 #include "Terrain.h"
 
-Terrain::Terrain(int gridX, int gridZ, Loader* loader, ModelTexture* texture)
-	: m_x(gridX * SIZE), m_z(gridZ * SIZE), m_texture(texture) {
+Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack* texturePack, TerrainTexture* blendMap)
+	: m_x(gridX * SIZE), m_z(gridZ * SIZE), m_texturePack(texturePack), m_blendMap(blendMap) {
 	m_model = generateTerrain(loader);
 }
 

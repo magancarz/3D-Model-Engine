@@ -16,6 +16,7 @@ protected:
 	void bindAttribute(const unsigned int attribute, const char* variableName);
 
 	int getUniformLocation(const std::string& uniformName);
+	void loadInt(unsigned int location, int value);
 	void loadFloat(unsigned int location, float value);
 	void loadBoolean(unsigned int location, bool value);
 	void loadVector3f(unsigned int location, glm::vec3 vector);

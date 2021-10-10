@@ -23,7 +23,7 @@ void main(void) {
 	vec4 worldPosition = model * vec4(position, 1.0);
 	vec4 positionRelativeToCam = view * worldPosition;
 	gl_Position = proj * view * model * vec4(position, 1.0);
-	pass_textureCoords = textureCoords * 40.0;
+	pass_textureCoords = textureCoords;
 
 	surfaceNormal = (model * vec4(normal, 0.0)).xyz;
 	toLightVector = lightPosition - worldPosition.xyz;

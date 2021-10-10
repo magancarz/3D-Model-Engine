@@ -34,6 +34,10 @@ int ShaderProgram::getUniformLocation(const std::string& uniformName) {
 	return glGetUniformLocation(m_programID, uniformName.c_str());
 }
 
+void ShaderProgram::loadInt(unsigned int location, int value) {
+	glUniform1i(location, value);
+}
+
 void ShaderProgram::loadFloat(unsigned int location, float value) {
 	glUniform1f(location, value);
 }

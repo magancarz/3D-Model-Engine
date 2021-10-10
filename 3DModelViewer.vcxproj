@@ -67,6 +67,8 @@
     <ClInclude Include="src\shaders\TerrainShader.h" />
     <ClInclude Include="src\terrains\Terrain.h" />
     <ClInclude Include="src\textures\ModelTexture.h" />
+    <ClInclude Include="src\textures\TerrainTexture.h" />
+    <ClInclude Include="src\textures\TerrainTexturePack.h" />
     <ClInclude Include="src\toolbox\Input.h" />
     <ClInclude Include="src\toolbox\Maths.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />

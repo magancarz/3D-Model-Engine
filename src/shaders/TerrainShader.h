@@ -14,6 +14,8 @@ public:
 	void loadLight(Light& light);
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadSkyColor(float r, float g, float b);
+
+	void connectTextureUnits();
 protected:
 	void virtual bindAttributes() override;
 	void virtual getAllUniformLocations() override;
@@ -31,4 +33,10 @@ private:
 	unsigned int location_reflectivity;
 
 	unsigned int location_skyColor;
+
+	unsigned int location_backgroundTexture;
+	unsigned int location_rTexture;
+	unsigned int location_gTexture;
+	unsigned int location_bTexture;
+	unsigned int location_blendMap;
 };

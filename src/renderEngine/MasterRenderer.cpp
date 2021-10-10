@@ -16,21 +16,17 @@ MasterRenderer::MasterRenderer() {
 	m_shader = new StaticShader();
 	m_terrainShader = new TerrainShader();
 
+	createProjectionMatrix();
+
 	m_renderer = new EntityRenderer();
-	m_terrainRenderer = new TerrainRenderer();
+	m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
 
 	m_renderer->setShader(*m_shader);
 	m_terrainRenderer->setShader(m_terrainShader);
 
-	createProjectionMatrix();
-
 	m_shader->start();
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
 	m_shader->stop();
-
-	m_terrainShader->start();
-	m_terrainShader->loadProjectionMatrix(m_projectionMatrix);
-	m_terrainShader->stop();
 
 	enableCulling();
 }

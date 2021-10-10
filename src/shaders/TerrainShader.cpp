@@ -53,4 +53,19 @@ void TerrainShader::getAllUniformLocations() {
 
 	//Fog calculation uniforms
 	location_skyColor = getUniformLocation("skyColor");
+
+	//Texture samplers
+	location_backgroundTexture = getUniformLocation("backgroundTexture");
+	location_rTexture = getUniformLocation("rTexture");
+	location_gTexture = getUniformLocation("gTexture");
+	location_bTexture = getUniformLocation("bTexture");
+	location_blendMap = getUniformLocation("blendMap");
+}
+
+void TerrainShader::connectTextureUnits() {
+	loadInt(location_backgroundTexture, 0);
+	loadInt(location_rTexture, 1);
+	loadInt(location_gTexture, 2);
+	loadInt(location_bTexture, 3);
+	loadInt(location_blendMap, 4);
 }
