@@ -7,9 +7,6 @@
 const unsigned int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 800;
 const std::string WINDOW_TITLE = "3D Model Viewer";
 
-extern bool isCloseRequested;
-extern Input inputManager;
-
 class DisplayManager {
 public:
 	void createDisplay();
@@ -20,7 +17,17 @@ public:
 
 	void rotateCamera(Camera* camera);
 
+	long getCurrentTime();
+	float getFrameTimeSeconds();
+
 	inline GLFWwindow* getWindow() { return window; };
 private:
 	GLFWwindow* window;
+
+	long lastFrameTime;
+	float delta;
 };
+
+extern DisplayManager display;
+extern bool isCloseRequested;
+extern Input inputManager;

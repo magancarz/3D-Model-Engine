@@ -19,6 +19,7 @@ Camera::Camera(glm::vec3 position)
 void Camera::move() {
 	updateCameraVectors();
 
+	/*
 	if(inputManager.isKeyDown(GLFW_KEY_W))
 		m_position += m_front * m_movementSpeed;
 	else if(inputManager.isKeyDown(GLFW_KEY_S))
@@ -27,6 +28,7 @@ void Camera::move() {
 		m_position -= m_right * m_movementSpeed;
 	else if(inputManager.isKeyDown(GLFW_KEY_D))
 		m_position += m_right * m_movementSpeed;
+	*/
 }
 
 void Camera::updateCameraVectors() {

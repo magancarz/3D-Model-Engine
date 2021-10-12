@@ -3,10 +3,12 @@
 #include "../Headers.h"
 
 #include "../models/TexturedModel.h"
+#include "toolbox/Input.h"
+#include "renderEngine/DisplayManager.h"
 
 class Entity {
 public:
-	Entity(TexturedModel model, glm::vec3 position, float rx, float ry, float rz, float scale);
+	Entity(TexturedModel& model, glm::vec3 position, float rx, float ry, float rz, float scale);
 
 	void increasePosition(float dx, float dy, float dz);
 	void increaseRotation(float rx, float ry, float rz);
@@ -25,9 +27,15 @@ public:
 	void setRotZ(float rz) { m_rz = rz; };
 	void setScale(float scale) { m_scale = scale; };
 
+protected:
+	const float GRAVITY = -50.0f,
+				TERRAIN_HEIGHT = 0;
+	
+	bool isInAir = false;
+
 private:
-	TexturedModel m_model;
 	glm::vec3 m_position;
+	TexturedModel& m_model;
 	float m_rx, m_ry, m_rz;
 	float m_scale;
 };

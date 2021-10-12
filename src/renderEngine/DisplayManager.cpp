@@ -76,10 +76,15 @@ void DisplayManager::createDisplay() {
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 		std::cout << "[GLEW] failed to initialize GLEW!" << std::endl;
+
+	lastFrameTime = getCurrentTime();
 }
 
 void DisplayManager::updateDisplay() {
 	glfwSwapBuffers(window);
+	long currentFrameTime = getCurrentTime();
+	delta = (currentFrameTime - lastFrameTime) / 1000.0f;
+	lastFrameTime = currentFrameTime;
 }
 
 void DisplayManager::closeDisplay() {
@@ -88,4 +93,12 @@ void DisplayManager::closeDisplay() {
 
 void DisplayManager::checkCloseRequests() {
 	isCloseRequested = glfwWindowShouldClose(window);
+}
+
+long DisplayManager::getCurrentTime() {
+	return glfwGetTime() * 1000;
+}
+
+float DisplayManager::getFrameTimeSeconds() {
+	return delta;
 }

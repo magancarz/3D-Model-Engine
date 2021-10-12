@@ -8,6 +8,7 @@
 #include "models/RawModel.h"
 #include "models/TexturedModel.h"
 #include "entities/Camera.h"
+#include "entities/Player.h"
 
 ///GLOBAL VARIABLES///
 //Main loop control
@@ -57,11 +58,15 @@ int main(void) {
     //Create renderer
     MasterRenderer renderer;
 
+    //Create player
+    Player player(texturedStallModel, glm::vec3(100, 0, -50), 0, 0, 0, 1);
+
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
         display.rotateCamera(camera);
         camera->move();
+        player.move();
         //stall.increaseRotation(0, 1, 0);
 
         /* Poll for and process events */
@@ -72,6 +77,7 @@ int main(void) {
 
         //Process entities
         renderer.processEntity(stall);
+        renderer.processEntity(player);
         
         //Draw here
         renderer.render(light, *camera);

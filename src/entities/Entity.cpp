@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-Entity::Entity(TexturedModel model, glm::vec3 position, float rx, float ry, float rz, float scale)
+Entity::Entity(TexturedModel& model, glm::vec3 position, float rx, float ry, float rz, float scale)
 	: m_model(model), m_position(position), m_rx(rx), m_ry(ry), m_rz(rz), m_scale(scale) {
 
 }
