@@ -63,6 +63,7 @@
     <ClInclude Include="src\renderEngine\OBJLoader.h" />
     <ClInclude Include="src\renderEngine\EntityRenderer.h" />
     <ClInclude Include="src\renderEngine\TerrainRenderer.h" />
+    <ClInclude Include="src\renderEngine\TextureData.h" />
     <ClInclude Include="src\renderEngine\Vertex.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\StaticShader.h" />

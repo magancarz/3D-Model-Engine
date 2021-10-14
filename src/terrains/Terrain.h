@@ -3,6 +3,7 @@
 #include "../Headers.h"
 
 #include "../renderEngine/Loader.h"
+#include "../renderEngine/TextureData.h"
 #include "../models/RawModel.h"
 #include "../textures/ModelTexture.h"
 #include "../textures/TerrainTexturePack.h"
@@ -19,10 +20,14 @@ public:
 	inline TerrainTexture* getBlendMap() { return m_blendMap; };
 
 private:
-	RawModel* generateTerrain(Loader* loader);
+	RawModel* generateTerrain(Loader* loader, std::string);
 
-	const float SIZE = 800;
-	const int VERTEX_COUNT = 128;
+	float getHeight(int x, int z, TextureData* textureData);
+	glm::vec3 calculateNormal(int x, int z, TextureData* textureData);
+
+	const float SIZE = 800,
+				MAX_HEIGHT = 40,
+				MAX_PIXEL_COLOR = 256 + 256 + 256;
 
 	float m_x, m_z;
 	RawModel* m_model;
