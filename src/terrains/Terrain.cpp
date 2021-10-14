@@ -5,6 +5,13 @@ Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack* textu
 	m_model = generateTerrain(loader, "res/textures/heightMap.png");
 }
 
+Terrain::~Terrain() {
+	for(int i = 0; i < m_heightsSize; i++)
+		delete m_heights[i];
+
+	delete m_heights;
+}
+
 RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 	int width, height, channels;
 	unsigned char* image = stbi_load(heightMap.c_str(), &width, &height, &channels, STBI_rgb_alpha);
@@ -13,8 +20,14 @@ RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 
 	TextureData* textureData = new TextureData(image, width, height);
 
-	int VERTEX_COUNT = height;
+
+	int VERTEX_COUNT = m_heightsSize = height;
 	int count = VERTEX_COUNT * VERTEX_COUNT;
+
+	m_heights = new float*[VERTEX_COUNT];
+	for(int i = 0; i < VERTEX_COUNT; i++)
+		m_heights[i] = new float[VERTEX_COUNT];
+
 	std::vector<float> vertices;
 	std::vector<float> normals;
 	std::vector<float> textureCoords;
@@ -23,7 +36,9 @@ RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 	for(int i = 0; i < VERTEX_COUNT; i++) {
 		for(int j = 0; j < VERTEX_COUNT; j++) {
 			vertices.push_back((float)j / ((float)VERTEX_COUNT - 1) * SIZE);
-			vertices.push_back(getHeight(j, i, textureData));
+			float height = getHeight(j, i, textureData);
+			m_heights[j][i] = height;
+			vertices.push_back(height);
 			vertices.push_back((float)i/((float)VERTEX_COUNT - 1) * SIZE);
 
 			glm::vec3 normal = calculateNormal(j, i, textureData);
@@ -51,6 +66,7 @@ RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 
 	//Clean up
 	delete textureData;
+	stbi_image_free(image);
 
 	return loader->loadToVAO(vertices, textureCoords, normals, indices);
 }
@@ -83,4 +99,32 @@ glm::vec3 Terrain::calculateNormal(int x, int z, TextureData* textureData) {
 	normal = glm::normalize(normal);
 
 	return normal;
+}
+
+float Terrain::getHeightOfTerrain(float worldX, float worldZ) {
+	float terrainX = worldX - m_x;
+	float terrainZ = worldZ - m_z;
+	float gridSquareSize = SIZE / ((float)m_heightsSize - 1);
+	int gridX = (int) glm::floor(terrainX / gridSquareSize);
+	int gridZ = (int) glm::floor(terrainZ / gridSquareSize);
+	if(gridX >= m_heightsSize - 1 || gridZ >= m_heightsSize - 1 || gridX < 0 || gridZ < 0) 
+		return 0;
+
+	float xCoord = glm::modf(terrainX, gridSquareSize) / gridSquareSize;
+	float zCoord = glm::modf(terrainZ, gridSquareSize) / gridSquareSize;
+
+	float answer;
+	if(xCoord <= (1 - zCoord)) {
+		answer = barycentric(glm::vec3(0, m_heights[gridX][gridZ], 0),
+							 glm::vec3(1, m_heights[gridX + 1][gridZ], 0),
+							 glm::vec3(0, m_heights[gridX][gridZ + 1], 1),
+							 glm::vec2(xCoord, zCoord));
+	} else {
+		answer = barycentric(glm::vec3(1, m_heights[gridX + 1][gridZ], 0),
+							 glm::vec3(1, m_heights[gridX + 1][gridZ + 1], 0),
+							 glm::vec3(0, m_heights[gridX][gridZ + 1], 1),
+							 glm::vec2(xCoord, zCoord));
+	}
+
+	return answer;
 }

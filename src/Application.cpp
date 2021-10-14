@@ -68,7 +68,7 @@ int main(void) {
         //Events
         //camera->rotate();
         camera->move();
-        player.move();
+        player.move(*terrain1);
         //stall.increaseRotation(0, 1, 0);
 
         //Reset input values

@@ -5,7 +5,7 @@ Player::Player(TexturedModel& model, glm::vec3 position, float rotX, float rotY,
 
 }
 
-void Player::move() {
+void Player::move(Terrain& terrain) {
 	checkInputs();
 	increaseRotation(0, m_currentTurnSpeed * display.getFrameTimeSeconds(), 0);
 	float distance = m_currentSpeed * display.getFrameTimeSeconds();
@@ -15,9 +15,10 @@ void Player::move() {
 	m_upwardsSpeed += GRAVITY * display.getFrameTimeSeconds();
 	increasePosition(0, m_upwardsSpeed * display.getFrameTimeSeconds(), 0);
 	glm::vec3 pos = getPosition();
-	if(pos.y < TERRAIN_HEIGHT) {
+	float terrainHeight = terrain.getHeightOfTerrain(pos.x, pos.z);
+	if(pos.y < terrainHeight) {
 		m_upwardsSpeed = 0;
-		setPosition(glm::vec3(pos.x, TERRAIN_HEIGHT, pos.z));
+		setPosition(glm::vec3(pos.x, terrainHeight, pos.z));
 		isInAir = false;
 	}
 }

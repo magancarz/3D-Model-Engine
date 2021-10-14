@@ -2,13 +2,14 @@
 
 #include "Headers.h"
 #include "Entity.h"
+#include "../terrains/Terrain.h"
 #include "renderEngine/DisplayManager.h"
 
 class Player : public Entity {
 public:
 	Player(TexturedModel& model, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
 
-	void move();
+	void move(Terrain& terrain);
 private:
 	void checkInputs();
 	void jump();
