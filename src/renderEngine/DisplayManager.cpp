@@ -5,6 +5,8 @@ static float mouseOffsetX = 0, mouseOffsetY = 0;
 static bool firstMouse = true;
 static float lastMouseX = 0, lastMouseY = 0;
 
+static float mouseWheel;
+
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if(action == GLFW_PRESS) {
 		switch(key) {
@@ -28,6 +30,20 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 }
 
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+	if(action == GLFW_PRESS) {
+		if(button == GLFW_MOUSE_BUTTON_LEFT)
+			inputManager.setLeftMouseButtonDown(true);
+		if(button == GLFW_MOUSE_BUTTON_RIGHT)
+			inputManager.setRightMouseButtonDown(true);
+	} else if(action == GLFW_RELEASE) {
+		if(button == GLFW_MOUSE_BUTTON_LEFT)
+			inputManager.setLeftMouseButtonDown(false);
+		if(button == GLFW_MOUSE_BUTTON_RIGHT)
+			inputManager.setRightMouseButtonDown(false);
+	}
+}
+
 void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
 	if(firstMouse) {
 		lastMouseX = xpos;
@@ -44,10 +60,20 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
 	lastMouseY = ypos;
 }
 
-void DisplayManager::rotateCamera(Camera* camera) {
-	camera->rotate(mouseOffsetX, -mouseOffsetY, 0);
+void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
+	mouseWheel += yoffset;
+}
 
-	mouseOffsetX = mouseOffsetY = 0;
+float DisplayManager::getMouseXOffset() {
+	return mouseOffsetX;
+}
+
+float DisplayManager::getMouseYOffset() {
+	return mouseOffsetY;
+}
+
+float DisplayManager::getDWheel() {
+	return mouseWheel;
 }
 
 void DisplayManager::createDisplay() {
@@ -68,7 +94,9 @@ void DisplayManager::createDisplay() {
     glfwMakeContextCurrent(window);
 
 	glfwSetKeyCallback(window, keyCallback);
+	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 	glfwSetCursorPosCallback(window, cursorPosCallback);
+	glfwSetScrollCallback(window, scrollCallback);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -93,6 +121,12 @@ void DisplayManager::closeDisplay() {
 
 void DisplayManager::checkCloseRequests() {
 	isCloseRequested = glfwWindowShouldClose(window);
+}
+
+void DisplayManager::resetInputValues() {
+	mouseOffsetX = 0;
+	mouseOffsetY = 0;
+	mouseWheel = 0;
 }
 
 long DisplayManager::getCurrentTime() {

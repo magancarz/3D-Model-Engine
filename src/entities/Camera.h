@@ -3,6 +3,7 @@
 #include "../Headers.h"
 
 #include "../toolbox/Input.h"
+#include "entities/Player.h"
 
 extern Input inputManager;
 
@@ -10,11 +11,11 @@ enum direction {FORWARD, BACKWARD, LEFT, RIGHT};
 
 class Camera {
 public:
-	Camera(glm::vec3 position);
+	Camera(Player& player, glm::vec3 position);
 
 	void move();
 	void updateCameraVectors();
-	void rotate(float pitch, float yaw, float roll);
+	void rotate();
 
 	void setPosition(glm::vec3 position) { m_position = position; };
 	void setPitch(float pitch) { m_pitch = pitch; };
@@ -34,6 +35,17 @@ public:
 	inline float getSensitivity() const { return m_sensitivity; };
 
 private:
+	void calculateCameraPosition(float horizontalDistance, float verticalDistance);
+	float calculateHorizontalDistance();
+	float calculateVerticalDistance();
+	void calculateZoom();
+	void calculatePitch();
+	void calculateAngleAroundThePlayer();
+
+	Player& m_player;
+	float m_distanceFromThePlayer = 50.0f,
+		  m_angleAroundThePlayer = 0;
+
 	glm::vec3 m_position;
 	glm::vec3 m_worldUp, m_front, m_right, m_up;
 

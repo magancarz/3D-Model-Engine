@@ -30,7 +30,6 @@ int main(void) {
 
     //Logic
     Loader* loader = new Loader;
-    Camera* camera = new Camera(glm::vec3(-5.0f, 6.0f, -5.0f));
 
     //Terrain
     TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grassy2.png"));
@@ -61,17 +60,23 @@ int main(void) {
     //Create player
     Player player(texturedStallModel, glm::vec3(100, 0, -50), 0, 0, 0, 1);
 
+    //Camera
+    Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
+
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
-        display.rotateCamera(camera);
+        //camera->rotate();
         camera->move();
         player.move();
         //stall.increaseRotation(0, 1, 0);
 
+        //Reset input values
+        display.resetInputValues();
+
         /* Poll for and process events */
         glfwPollEvents();
-        
+
         //Process terrains
         renderer.processTerrain(terrain1);
 

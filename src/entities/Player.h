@@ -2,6 +2,7 @@
 
 #include "Headers.h"
 #include "Entity.h"
+#include "renderEngine/DisplayManager.h"
 
 class Player : public Entity {
 public:

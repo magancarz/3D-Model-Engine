@@ -3,8 +3,6 @@
 #include "../Headers.h"
 
 #include "../models/TexturedModel.h"
-#include "toolbox/Input.h"
-#include "renderEngine/DisplayManager.h"
 
 class Entity {
 public:

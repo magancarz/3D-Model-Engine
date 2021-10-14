@@ -2,7 +2,6 @@
 
 #include "../Headers.h"
 #include "../toolbox/Input.h"
-#include "../entities/Camera.h"
 
 const unsigned int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 800;
 const std::string WINDOW_TITLE = "3D Model Viewer";
@@ -15,7 +14,11 @@ public:
 
 	void checkCloseRequests();
 
-	void rotateCamera(Camera* camera);
+	void resetInputValues();
+
+	float getMouseXOffset();
+	float getMouseYOffset();
+	float getDWheel();
 
 	long getCurrentTime();
 	float getFrameTimeSeconds();
