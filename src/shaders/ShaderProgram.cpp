@@ -46,6 +46,10 @@ void ShaderProgram::loadBoolean(unsigned int location, bool value) {
 	glUniform1i(location, value ? 1 : 0);
 }
 
+void ShaderProgram::loadVector2f(unsigned int location, glm::vec2 vector) {
+	glUniform2f(location, vector.x, vector.y);
+}
+
 void ShaderProgram::loadVector3f(unsigned int location, glm::vec3 vector) {
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }

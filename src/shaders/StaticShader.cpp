@@ -37,6 +37,14 @@ void StaticShader::loadSkyColor(float r, float g, float b) {
 	loadVector3f(location_skyColor, glm::vec3(r, g, b));
 }
 
+void StaticShader::loadNumberOfRows(float value) {
+	loadFloat(location_numberOfRows, value);
+}
+
+void StaticShader::loadOffset(glm::vec2 offset) {
+	loadVector2f(location_offset, offset);
+}
+
 void StaticShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -58,4 +66,8 @@ void StaticShader::getAllUniformLocations() {
 
 	//Fog calculation uniform
 	location_skyColor = getUniformLocation("skyColor");
+
+	//Texture atlases uniforms
+	location_numberOfRows = getUniformLocation("numberOfRows");
+	location_offset = getUniformLocation("offset");
 }

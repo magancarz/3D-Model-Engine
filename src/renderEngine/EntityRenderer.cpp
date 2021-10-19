@@ -30,12 +30,13 @@ void EntityRenderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* ent
 }
 
 void EntityRenderer::prepareTexturedModel(TexturedModel& texturedModel) {
-	RawModel model = texturedModel.getRawModel();
+	RawModel& model = texturedModel.getRawModel();
 	glBindVertexArray(model.getVaoID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	ModelTexture texture = texturedModel.getTexture();
+	ModelTexture& texture = texturedModel.getTexture();
+	m_shader->loadNumberOfRows(texture.getNumberOfRows());
 	if(texture.getTransparency())
 		disableCulling();
 	m_shader->loadFakeLightingVariable(texture.isUsingFakeLighting());
@@ -55,6 +56,7 @@ void EntityRenderer::unbindTexturedModel() {
 void EntityRenderer::prepareInstance(Entity& entity) {
 	glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 	m_shader->loadTransformationMatrix(transformationMatrix);
+	m_shader->loadOffset(glm::vec2(entity.getTextureXOffset(), entity.getTextureYOffset()));
 	ModelTexture texture = entity.getTexturedModel().getTexture();
 	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 }

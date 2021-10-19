@@ -17,6 +17,9 @@ public:
 
 	inline void useFakeLighting(bool value) { m_useFakeLighting = value; };
 	inline bool isUsingFakeLighting() { return m_useFakeLighting; };
+
+	inline void setNumberOfRows(int value) { m_numberOfRows = value; };
+	inline bool getNumberOfRows() { return m_numberOfRows; };
 private:
 	unsigned int m_textureID;
 
@@ -25,4 +28,6 @@ private:
 
 	bool m_hasTransparency = false;
 	bool m_useFakeLighting = false;
+
+	int m_numberOfRows = 1;
 };

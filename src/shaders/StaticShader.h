@@ -17,6 +17,8 @@ public:
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadFakeLightingVariable(bool value);
 	void loadSkyColor(float r, float g, float b);
+	void loadNumberOfRows(float value);
+	void loadOffset(glm::vec2 offset);
 protected:
 	void virtual bindAttributes() override;
 	void virtual getAllUniformLocations() override;
@@ -34,4 +36,6 @@ private:
 	unsigned int location_reflectivity;
 	unsigned int location_useFakeLighting;
 	unsigned int location_skyColor;
+	unsigned int location_numberOfRows;
+	unsigned int location_offset;
 };

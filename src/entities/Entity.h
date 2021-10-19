@@ -8,8 +8,13 @@ class Entity {
 public:
 	Entity(TexturedModel& model, glm::vec3 position, float rx, float ry, float rz, float scale);
 
+	Entity(TexturedModel& model, int textureIndex, glm::vec3 position, float rx, float ry, float rz, float scale);
+	
 	void increasePosition(float dx, float dy, float dz);
 	void increaseRotation(float rx, float ry, float rz);
+
+	float getTextureXOffset();
+	float getTextureYOffset();
 
 	inline TexturedModel& getTexturedModel() { return m_model; };
 	inline glm::vec3 getPosition() const { return m_position; };
@@ -32,8 +37,11 @@ protected:
 	bool isInAir = false;
 
 private:
-	glm::vec3 m_position;
 	TexturedModel& m_model;
+
+	glm::vec3 m_position;
 	float m_rx, m_ry, m_rz;
 	float m_scale;
+
+	int m_textureIndex = 0;
 };
