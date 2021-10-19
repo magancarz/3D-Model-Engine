@@ -11,6 +11,14 @@ RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vect
 	return new RawModel(vaoID, indices.size());
 }
 
+RawModel* Loader::loadToVAO(const std::vector<float> positions) {
+	int vaoID = createVAO();
+	storeDataInAttributeList(0, 2, positions.data(), positions.size());
+	unbindVAO();
+
+	return new RawModel(vaoID, positions.size() / 2);
+}
+
 unsigned int Loader::loadTexture(const std::string& fileName) {
 	unsigned int texture;
 	glGenTextures(1, &texture);

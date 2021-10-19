@@ -9,6 +9,8 @@
 #include "models/TexturedModel.h"
 #include "entities/Camera.h"
 #include "entities/Player.h"
+#include "guis/GuiRenderer.h"
+#include "guis/GuiTexture.h"
 
 ///GLOBAL VARIABLES///
 //Main loop control
@@ -54,8 +56,15 @@ int main(void) {
     //Light
     Light light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
 
+    //GUI
+    std::vector<GuiTexture>* guis = new std::vector<GuiTexture>;
+    GuiTexture gui(loader->loadTexture("res/textures/512px.jpg"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f));
+    guis->push_back(gui);
+
     //Create renderer
     MasterRenderer renderer;
+
+    GuiRenderer guiRenderer(loader);
 
     //Create player
     Player player(texturedStallModel, glm::vec3(100, 0, -50), 0, 0, 0, 1);
@@ -87,6 +96,9 @@ int main(void) {
         //Draw here
         renderer.render(light, *camera);
 
+        //Render GUI
+        guiRenderer.render(guis);
+
         /* Swap front and back buffers */
         display.updateDisplay();
 
@@ -96,6 +108,8 @@ int main(void) {
 
     //Clean up resources
     loader->cleanUp();
+
+    delete guis;
 
     delete stallModel;
 

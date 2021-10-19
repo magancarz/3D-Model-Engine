@@ -9,6 +9,8 @@ public:
 	RawModel* loadToVAO(const std::vector<float>& positions, const std::vector<float>& textureCoords,
 		const std::vector<float>& normals, const std::vector<unsigned int>& indices);
 	unsigned int loadTexture(const std::string& fileName);
+	RawModel* loadToVAO(const std::vector<float> positions);
+
 	void cleanUp();
 private:
 	std::vector<unsigned int> vaos;

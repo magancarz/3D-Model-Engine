@@ -24,6 +24,8 @@
     <ClCompile Include="src\entities\Entity.cpp" />
     <ClCompile Include="src\entities\Light.cpp" />
     <ClCompile Include="src\entities\Player.cpp" />
+    <ClCompile Include="src\guis\GuiRenderer.cpp" />
+    <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\models\RawModel.cpp" />
     <ClCompile Include="src\models\TexturedModel.cpp" />
     <ClCompile Include="src\renderEngine\DisplayManager.cpp" />
@@ -32,6 +34,7 @@
     <ClCompile Include="src\renderEngine\OBJLoader.cpp" />
     <ClCompile Include="src\renderEngine\EntityRenderer.cpp" />
     <ClCompile Include="src\renderEngine\TerrainRenderer.cpp" />
+    <ClCompile Include="src\shaders\GuiShader.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\shaders\StaticShader.cpp" />
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
@@ -53,6 +56,8 @@
     <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\entities\Light.h" />
     <ClInclude Include="src\entities\Player.h" />
+    <ClInclude Include="src\guis\GuiRenderer.h" />
+    <ClInclude Include="src\guis\GuiTexture.h" />
     <ClInclude Include="src\Headers.h" />
     <ClInclude Include="src\models\RawModel.h" />
     <ClInclude Include="src\models\TexturedModel.h" />
@@ -65,6 +70,7 @@
     <ClInclude Include="src\renderEngine\TerrainRenderer.h" />
     <ClInclude Include="src\renderEngine\TextureData.h" />
     <ClInclude Include="src\renderEngine\Vertex.h" />
+    <ClInclude Include="src\shaders\GuiShader.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\StaticShader.h" />
     <ClInclude Include="src\shaders\TerrainShader.h" />
