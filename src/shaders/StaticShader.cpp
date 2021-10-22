@@ -19,9 +19,16 @@ void StaticShader::loadViewMatrix(Camera& camera) {
 	loadMatrix(location_viewMatrix, view);
 }
 
-void StaticShader::loadLight(Light& light) {
-	loadVector3f(location_lightPosition, light.getPosition());
-	loadVector3f(location_lightColor, light.getColor());
+void StaticShader::loadLights(std::vector<Light*>& lights) {
+	for(size_t i = 0; i < MAX_LIGHTS; i++) {
+		if(i < lights.size()) {
+			loadVector3f(location_lightPosition[i], lights[i]->getPosition());
+			loadVector3f(location_lightColor[i], lights[i]->getColor());
+		} else {
+			loadVector3f(location_lightPosition[i], glm::vec3(0));
+			loadVector3f(location_lightColor[i], glm::vec3(0));
+		}
+	}
 }
 
 void StaticShader::loadShineVariables(float shineDamper, float reflectivity) {
@@ -58,8 +65,10 @@ void StaticShader::getAllUniformLocations() {
 	location_viewMatrix = getUniformLocation("view");
 
 	//Light calculation uniforms
-	location_lightPosition = getUniformLocation("lightPosition");
-	location_lightColor = getUniformLocation("lightColor");
+	for(int i = 0; i < MAX_LIGHTS; i++) {
+		location_lightPosition[i] = getUniformLocation("lightPosition[" + std::to_string(i) + "]");
+		location_lightColor[i] = getUniformLocation("lightColor[" + std::to_string(i) + "]");
+	}
 	location_shineDamper = getUniformLocation("shineDamper");
 	location_reflectivity = getUniformLocation("reflectivity");
 	location_useFakeLighting = getUniformLocation("useFakeLighting");

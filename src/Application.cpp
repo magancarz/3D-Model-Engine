@@ -54,7 +54,15 @@ int main(void) {
     Entity stall(texturedStallModel, glm::vec3(10, 0, 10), 0, 0, 0, 1);
     
     //Light
-    Light light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
+    Light* light1 = new Light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
+    Light* light2 = new Light(glm::vec3(10, 0, 10), glm::vec3(1,0,0));
+    Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0));
+    Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1));
+    std::vector<Light*> lights;
+    lights.push_back(light1);
+    lights.push_back(light2);
+    lights.push_back(light3);
+    lights.push_back(light4);
 
     //GUI
     std::vector<GuiTexture>* guis = new std::vector<GuiTexture>;
@@ -94,7 +102,7 @@ int main(void) {
         renderer.processEntity(player);
         
         //Draw here
-        renderer.render(light, *camera);
+        renderer.render(lights, *camera);
 
         //Render GUI
         guiRenderer.render(guis);
@@ -108,6 +116,11 @@ int main(void) {
 
     //Clean up resources
     loader->cleanUp();
+
+    delete light1;
+    delete light2;
+    delete light3;
+    delete light4;
 
     delete guis;
 

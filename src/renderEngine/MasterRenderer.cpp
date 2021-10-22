@@ -45,11 +45,11 @@ MasterRenderer::~MasterRenderer() {
 	delete m_entities;
 }
 
-void MasterRenderer::render(Light& sun, Camera& camera) {
+void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera) {
 	prepare();
 	m_shader->start();
 	m_shader->loadSkyColor(RED, GREEN, BLUE);
-	m_shader->loadLight(sun);
+	m_shader->loadLights(lights);
 	m_shader->loadViewMatrix(camera);
 	m_renderer->render(m_entities);
 	m_shader->stop();
@@ -57,7 +57,7 @@ void MasterRenderer::render(Light& sun, Camera& camera) {
 
 	m_terrainShader->start();
 	m_terrainShader->loadSkyColor(RED, GREEN, BLUE);
-	m_terrainShader->loadLight(sun);
+	m_terrainShader->loadLights(lights);
 	m_terrainShader->loadViewMatrix(camera);
 	m_terrainRenderer->render(m_terrains);
 	m_terrainShader->stop();

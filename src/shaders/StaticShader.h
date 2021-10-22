@@ -13,7 +13,7 @@ public:
 	void loadTransformationMatrix(glm::mat4 matrix);
 	void loadProjectionMatrix(glm::mat4 matrix);
 	void loadViewMatrix(Camera& camera);
-	void loadLight(Light& light);
+	void loadLights(std::vector<Light*>& lights);
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadFakeLightingVariable(bool value);
 	void loadSkyColor(float r, float g, float b);
@@ -26,12 +26,14 @@ private:
 	const std::string VERTEX_FILE = "res/shaders/vert.shader";
 	const std::string FRAGMENT_FILE = "res/shaders/frag.shader";
 
+	static const int MAX_LIGHTS = 4;
+
 	unsigned int location_transformationMatrix;
 	unsigned int location_projectionMatrix;
 	unsigned int location_viewMatrix;
 
-	unsigned int location_lightPosition;
-	unsigned int location_lightColor;
+	unsigned int location_lightPosition[MAX_LIGHTS];
+	unsigned int location_lightColor[MAX_LIGHTS];
 	unsigned int location_shineDamper;
 	unsigned int location_reflectivity;
 	unsigned int location_useFakeLighting;
