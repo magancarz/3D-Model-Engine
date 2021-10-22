@@ -54,10 +54,10 @@ int main(void) {
     Entity stall(texturedStallModel, glm::vec3(10, 0, 10), 0, 0, 0, 1);
     
     //Light
-    Light* light1 = new Light(glm::vec3(0, 0, -10), glm::vec3(1,1,1));
-    Light* light2 = new Light(glm::vec3(10, 0, 10), glm::vec3(1,0,0));
-    Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0));
-    Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1));
+    Light* light1 = new Light(glm::vec3(0, 1000, -7000), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0, 0));
+    Light* light2 = new Light(glm::vec3(10, 0, 10), glm::vec3(1,0,0), glm::vec3(1, 0.01f, 0.002f));
+    Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
+    Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
     std::vector<Light*> lights;
     lights.push_back(light1);
     lights.push_back(light2);

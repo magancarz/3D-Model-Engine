@@ -31,6 +31,7 @@ private:
 
 	unsigned int location_lightPosition[MAX_LIGHTS];
 	unsigned int location_lightColor[MAX_LIGHTS];
+	unsigned int location_attenuation[MAX_LIGHTS];
 	unsigned int location_shineDamper;
 	unsigned int location_reflectivity;
 
