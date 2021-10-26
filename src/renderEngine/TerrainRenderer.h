@@ -9,7 +9,6 @@
 
 class TerrainRenderer {
 public:
-	TerrainRenderer();
 	TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatrix);
 
 	void render(std::vector<Terrain*>* terrains);

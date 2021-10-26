@@ -9,7 +9,7 @@ void disableCulling() {
 	glDisable(GL_CULL_FACE);
 }
 
-MasterRenderer::MasterRenderer() {
+MasterRenderer::MasterRenderer(Loader* loader) {
 	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;
 	m_terrains = new std::vector<Terrain*>;
 
@@ -18,11 +18,9 @@ MasterRenderer::MasterRenderer() {
 
 	createProjectionMatrix();
 
-	m_renderer = new EntityRenderer();
+	m_renderer = new EntityRenderer(m_shader, m_projectionMatrix);
 	m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
-
-	m_renderer->setShader(*m_shader);
-	m_terrainRenderer->setShader(m_terrainShader);
+	m_skyboxRenderer = new SkyboxRenderer(loader, m_projectionMatrix);
 
 	m_shader->start();
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
@@ -35,10 +33,12 @@ MasterRenderer::~MasterRenderer() {
 	m_terrainShader->cleanUp();
 	m_shader->cleanUp();
 
-	delete m_terrainRenderer;
-	delete m_renderer;
+	delete m_skyboxRenderer;
 
+	delete m_terrainRenderer;
 	delete m_terrainShader;
+	
+	delete m_renderer;
 	delete m_shader;
 
 	delete m_terrains;
@@ -62,6 +62,8 @@ void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera) {
 	m_terrainRenderer->render(m_terrains);
 	m_terrainShader->stop();
 	m_terrains->clear();
+
+	m_skyboxRenderer->render(camera);
 }
 
 void MasterRenderer::prepare() {

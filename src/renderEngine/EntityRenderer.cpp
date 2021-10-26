@@ -1,10 +1,7 @@
 #include "EntityRenderer.h"
 
-EntityRenderer::EntityRenderer() {
-}
-
-EntityRenderer::EntityRenderer(StaticShader& shader, glm::mat4 projectionMatrix)
-	: m_shader(&shader) {
+EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix)
+	: m_shader(shader), m_projectionMatrix(projectionMatrix) {
 	m_shader->start();
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
 	m_shader->stop();

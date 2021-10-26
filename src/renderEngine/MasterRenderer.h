@@ -4,15 +4,17 @@
 
 #include "../shaders/StaticShader.h"
 #include "../shaders/TerrainShader.h"
+#include "../skybox/SkyboxShader.h"
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
+#include "../skybox/SkyboxRenderer.h"
 
 void enableCulling();
 void disableCulling();
 
 class MasterRenderer {
 public:
-	MasterRenderer();
+	MasterRenderer(Loader* loader);
 	~MasterRenderer();
 
 	void render(std::vector<Light*>& lights, Camera& camera);
@@ -29,6 +31,8 @@ private:
 
 	TerrainShader* m_terrainShader;
 	TerrainRenderer* m_terrainRenderer;
+
+	SkyboxRenderer* m_skyboxRenderer;
 
 	glm::mat4 m_projectionMatrix;
 	const float FOV = 70.0f;

@@ -11,12 +11,12 @@ RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vect
 	return new RawModel(vaoID, indices.size());
 }
 
-RawModel* Loader::loadToVAO(const std::vector<float> positions) {
+RawModel* Loader::loadToVAO(const std::vector<float> positions, int dimensions) {
 	int vaoID = createVAO();
-	storeDataInAttributeList(0, 2, positions.data(), positions.size());
+	storeDataInAttributeList(0, dimensions, positions.data(), positions.size());
 	unbindVAO();
 
-	return new RawModel(vaoID, positions.size() / 2);
+	return new RawModel(vaoID, positions.size() / dimensions);
 }
 
 unsigned int Loader::loadTexture(const std::string& fileName) {
@@ -26,12 +26,11 @@ unsigned int Loader::loadTexture(const std::string& fileName) {
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	int width, height, channels;
-	unsigned char* image = stbi_load(fileName.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-	if(image == NULL)
-		std::cout << "Failed to load image!\n";
+	TextureData* data = loadImage(fileName);
+	int width = data->getWidth(),
+		height = data->getHeight();
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->getData());
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	
@@ -39,9 +38,45 @@ unsigned int Loader::loadTexture(const std::string& fileName) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
 
-	stbi_image_free(image);
+	//Clean up
+	stbi_image_free(data->getData());
+	delete data;
 
 	return texture;
+}
+
+//!!!Remember to use stbi_image_free after using data!!!
+TextureData* Loader::loadImage(std::string fileName) {
+	int width, height, format;
+	unsigned char* image = stbi_load(fileName.c_str(), &width, &height, &format, STBI_rgb_alpha);
+	if(image == NULL)
+		std::cout << "Failed to load image!\n";
+	
+	return new TextureData(image, width, height);
+}
+
+int Loader::loadCubeMap(std::vector<std::string> textureFiles) {
+	unsigned int texID; 
+	glGenTextures(1, &texID);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texID);
+
+	//Texture files size should be always 6
+	for(int i = 0; i < textureFiles.size(); i++) {
+		int width, height, format;
+		TextureData* data = loadImage(textureFiles[i]);
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data->getWidth(), data->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->getData());
+
+		//Clean up
+		stbi_image_free(data->getData());
+		delete data;
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	textures.push_back(texID);
+
+	return texID;
 }
 
 void Loader::cleanUp() {

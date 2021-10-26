@@ -70,7 +70,7 @@ int main(void) {
     guis->push_back(gui);
 
     //Create renderer
-    MasterRenderer renderer;
+    MasterRenderer renderer(loader);
 
     GuiRenderer guiRenderer(loader);
 

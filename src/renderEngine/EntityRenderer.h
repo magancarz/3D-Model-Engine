@@ -15,7 +15,7 @@ extern void disableCulling();
 class EntityRenderer {
 public:
 	EntityRenderer();
-	EntityRenderer(StaticShader& shader, glm::mat4 projectionMatrix);
+	EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix);
 
 	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entities);
 

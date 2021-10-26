@@ -21,8 +21,9 @@ const float gradient = 1.5;
 
 void main(void) {
 	vec4 worldPosition = model * vec4(position, 1.0);
+
 	vec4 positionRelativeToCam = view * worldPosition;
-	gl_Position = proj * view * model * vec4(position, 1.0);
+	gl_Position = proj * positionRelativeToCam;
 	pass_textureCoords = textureCoords;
 
 	surfaceNormal = (model * vec4(normal, 0.0)).xyz;
