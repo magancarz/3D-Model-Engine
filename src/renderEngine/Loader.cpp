@@ -64,7 +64,7 @@ int Loader::loadCubeMap(std::vector<std::string> textureFiles) {
 	//Texture files size should be always 6
 	for(int i = 0; i < textureFiles.size(); i++) {
 		int width, height, format;
-		TextureData* data = loadImage(textureFiles[i]);
+		TextureData* data = loadImage("res/textures/" + textureFiles[i] + ".png");
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data->getWidth(), data->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->getData());
 
 		//Clean up
