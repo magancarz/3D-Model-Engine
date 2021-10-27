@@ -12,7 +12,7 @@ void SkyboxShader::bindAttributes() {
 void SkyboxShader::getAllUniformLocations() {
 	location_projectionMatrix = getUniformLocation("projectionMatrix");
 	location_viewMatrix = getUniformLocation("viewMatrix");
-	location_skyColor = getUniformLocation("skyColor");
+	location_fogColor = getUniformLocation("fogColor");
 	location_cubeMap = getUniformLocation("cubeMap");
 	location_cubeMap2 = getUniformLocation("cubeMap2");
 	location_blendFactor = getUniformLocation("blendFactor");
@@ -32,10 +32,9 @@ void SkyboxShader::loadViewMatrix(Camera& camera) {
 	loadMatrix(location_viewMatrix, view);
 }
 
-void SkyboxShader::loadFogColor(GLfloat r, GLfloat g, GLfloat b)
-{
+void SkyboxShader::loadFogColor(GLfloat r, GLfloat g, GLfloat b) {
 	glm::vec3 vec(r, g, b);
-	loadVector3f(location_skyColor, vec);
+	loadVector3f(location_fogColor, vec);
 }
 
 void SkyboxShader::connectTextureUnits() {

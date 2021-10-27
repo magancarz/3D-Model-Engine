@@ -16,9 +16,10 @@ SkyboxRenderer::~SkyboxRenderer() {
 	delete m_shader;
 }
 
-void SkyboxRenderer::render(Camera& camera) {
+void SkyboxRenderer::render(Camera& camera, float r, float g, float b) {
 	m_shader->start();
 	m_shader->loadViewMatrix(camera);
+	m_shader->loadFogColor(r, g, b);
 	glBindVertexArray(m_cube->getVaoID());
 	glEnableVertexAttribArray(0);
 	glActiveTexture(GL_TEXTURE0);

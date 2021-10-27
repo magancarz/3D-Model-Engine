@@ -63,7 +63,7 @@ void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera) {
 	m_terrainShader->stop();
 	m_terrains->clear();
 
-	m_skyboxRenderer->render(camera);
+	m_skyboxRenderer->render(camera, RED, GREEN, BLUE);
 }
 
 void MasterRenderer::prepare() {

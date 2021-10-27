@@ -9,7 +9,7 @@ public:
 	SkyboxRenderer(Loader* loader, glm::mat4 projectionMatrix);
 	~SkyboxRenderer();
 
-	void render(Camera& camera);
+	void render(Camera& camera, float r, float g, float b);
 private:
 	static constexpr float SIZE = 500.0f;
 
