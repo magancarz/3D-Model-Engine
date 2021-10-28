@@ -2,7 +2,7 @@
 
 MousePicker::MousePicker(
 	Camera& camera,
-	glm::mat4& projection,
+	glm::mat4 projection,
 	Terrain* terrain): camera(camera)
 {
 	this->projectionMatrix = projection;

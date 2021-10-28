@@ -83,7 +83,7 @@ int main(void) {
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
     
     //Mouse picking
-    MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix());
+    MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix(), terrain1);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {

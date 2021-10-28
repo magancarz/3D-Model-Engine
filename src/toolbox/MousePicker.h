@@ -6,7 +6,7 @@
 class MousePicker
 {
 public:
-	MousePicker(Camera& camera, glm::mat4& projection, Terrain* terrain);
+	MousePicker(Camera& camera, glm::mat4 projection, Terrain* terrain);
 
 	glm::vec3* getCurrentTerrainPoint() {
 		if (currentTerrainPointIsOK) {
