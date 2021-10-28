@@ -11,6 +11,7 @@
 #include "entities/Player.h"
 #include "guis/GuiRenderer.h"
 #include "guis/GuiTexture.h"
+#include "toolbox/MousePicker.h"
 
 ///GLOBAL VARIABLES///
 //Main loop control
@@ -74,19 +75,24 @@ int main(void) {
 
     GuiRenderer guiRenderer(loader);
 
+
     //Create player
     Player player(texturedStallModel, glm::vec3(100, 0, -50), 0, 0, 0, 1);
 
     //Camera
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
+    
+    //Mouse picking
+    MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix());
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
-        //camera->rotate();
-        camera->move();
         player.move(*terrain1);
-        //stall.increaseRotation(0, 1, 0);
+        camera->move();
+
+        mousePicker->update();
+        std::cout << mousePicker->getCurrentRay().x << std::endl;
 
         //Reset input values
         display.resetInputValues();
@@ -116,6 +122,8 @@ int main(void) {
 
     //Clean up resources
     loader->cleanUp();
+
+    delete mousePicker;
 
     delete light1;
     delete light2;

@@ -64,17 +64,14 @@ void scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 	mouseWheel += yoffset;
 }
 
-float DisplayManager::getMouseXOffset() {
-	return mouseOffsetX;
-}
+float DisplayManager::getMouseX() { return lastMouseX; };
+float DisplayManager::getMouseY() { return lastMouseY; };
 
-float DisplayManager::getMouseYOffset() {
-	return mouseOffsetY;
-}
+float DisplayManager::getMouseXOffset() { return mouseOffsetX; };
+float DisplayManager::getMouseYOffset() { return mouseOffsetY; };
 
-float DisplayManager::getDWheel() {
-	return mouseWheel;
-}
+float DisplayManager::getDWheel() { return mouseWheel; };
+
 
 void DisplayManager::createDisplay() {
 	//Create GLFW window and gl context
@@ -85,34 +82,34 @@ void DisplayManager::createDisplay() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str(), NULL, NULL);
-    if(!window) {
+	m_window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str(), NULL, NULL);
+    if(!m_window) {
         glfwTerminate();
         throw std::runtime_error("Failed to create window!");
     }
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(m_window);
 
-	glfwSetKeyCallback(window, keyCallback);
-	glfwSetMouseButtonCallback(window, mouseButtonCallback);
-	glfwSetCursorPosCallback(window, cursorPosCallback);
-	glfwSetScrollCallback(window, scrollCallback);
+	glfwSetKeyCallback(m_window, keyCallback);
+	glfwSetMouseButtonCallback(m_window, mouseButtonCallback);
+	glfwSetCursorPosCallback(m_window, cursorPosCallback);
+	glfwSetScrollCallback(m_window, scrollCallback);
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	//Init GLEW after creating gl context
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 		std::cout << "[GLEW] failed to initialize GLEW!" << std::endl;
 
-	lastFrameTime = getCurrentTime();
+	m_lastFrameTime = getCurrentTime();
 }
 
 void DisplayManager::updateDisplay() {
-	glfwSwapBuffers(window);
+	glfwSwapBuffers(m_window);
 	long currentFrameTime = getCurrentTime();
-	delta = (currentFrameTime - lastFrameTime) / 1000.0f;
-	lastFrameTime = currentFrameTime;
+	m_delta = (currentFrameTime - m_lastFrameTime) / 1000.0f;
+	m_lastFrameTime = currentFrameTime;
 }
 
 void DisplayManager::closeDisplay() {
@@ -120,7 +117,7 @@ void DisplayManager::closeDisplay() {
 }
 
 void DisplayManager::checkCloseRequests() {
-	isCloseRequested = glfwWindowShouldClose(window);
+	isCloseRequested = glfwWindowShouldClose(m_window);
 }
 
 void DisplayManager::resetInputValues() {
@@ -134,5 +131,5 @@ long DisplayManager::getCurrentTime() {
 }
 
 float DisplayManager::getFrameTimeSeconds() {
-	return delta;
+	return m_delta;
 }

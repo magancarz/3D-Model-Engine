@@ -16,6 +16,8 @@ public:
 
 	void resetInputValues();
 
+	float getMouseX();
+	float getMouseY();
 	float getMouseXOffset();
 	float getMouseYOffset();
 	float getDWheel();
@@ -23,12 +25,12 @@ public:
 	long getCurrentTime();
 	float getFrameTimeSeconds();
 
-	inline GLFWwindow* getWindow() { return window; };
+	inline GLFWwindow* getWindow() { return m_window; };
 private:
-	GLFWwindow* window;
+	GLFWwindow* m_window;
 
-	long lastFrameTime;
-	float delta;
+	long m_lastFrameTime;
+	float m_delta;
 };
 
 extern DisplayManager display;

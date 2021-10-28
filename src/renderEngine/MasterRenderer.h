@@ -24,6 +24,8 @@ public:
 	void processEntity(Entity& entity);
 	void processTerrain(Terrain* terrain);
 
+	inline glm::mat4 getProjectionMatrix() { return m_projectionMatrix; };
+
 	void cleanUp();
 private:
 	StaticShader* m_shader;
