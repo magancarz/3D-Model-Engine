@@ -16,6 +16,10 @@ Camera::Camera(Player& player, glm::vec3 position)
 	updateCameraVectors();
 }
 
+void Camera::invertPitch() {
+	m_pitch = -m_pitch;
+}
+
 glm::mat4 Camera::getView() {
 	return glm::lookAt(
 		m_position,

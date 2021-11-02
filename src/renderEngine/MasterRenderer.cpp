@@ -45,23 +45,23 @@ MasterRenderer::~MasterRenderer() {
 	delete m_entities;
 }
 
-void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera) {
+void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera, glm::vec4 clipPlane) {
 	prepare();
 	m_shader->start();
+	m_shader->loadClipPlane(clipPlane);
 	m_shader->loadSkyColor(RED, GREEN, BLUE);
 	m_shader->loadLights(lights);
 	m_shader->loadViewMatrix(camera);
 	m_renderer->render(m_entities);
 	m_shader->stop();
-	m_entities->clear();
 
 	m_terrainShader->start();
+	m_terrainShader->loadClipPlane(clipPlane);
 	m_terrainShader->loadSkyColor(RED, GREEN, BLUE);
 	m_terrainShader->loadLights(lights);
 	m_terrainShader->loadViewMatrix(camera);
 	m_terrainRenderer->render(m_terrains);
 	m_terrainShader->stop();
-	m_terrains->clear();
 
 	m_skyboxRenderer->render(camera, RED, GREEN, BLUE);
 }
@@ -90,6 +90,11 @@ void MasterRenderer::processEntity(Entity& entity) {
 
 void MasterRenderer::processTerrain(Terrain* terrain) {
 	m_terrains->push_back(terrain);
+}
+
+void MasterRenderer::cleanUp() {
+	m_entities->clear();
+	m_terrains->clear();
 }
 
 void MasterRenderer::createProjectionMatrix() {

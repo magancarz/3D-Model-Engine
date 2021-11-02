@@ -19,6 +19,7 @@ public:
 	void loadSkyColor(float r, float g, float b);
 	void loadNumberOfRows(float value);
 	void loadOffset(glm::vec2 offset);
+	void loadClipPlane(glm::vec4 plane);
 protected:
 	void virtual bindAttributes() override;
 	void virtual getAllUniformLocations() override;
@@ -41,4 +42,5 @@ private:
 	unsigned int location_skyColor;
 	unsigned int location_numberOfRows;
 	unsigned int location_offset;
+	unsigned int location_plane;
 };

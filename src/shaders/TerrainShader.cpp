@@ -42,6 +42,10 @@ void TerrainShader::loadSkyColor(float r, float g, float b) {
 	loadVector3f(location_skyColor, glm::vec3(r, g, b));
 }
 
+void TerrainShader::loadClipPlane(glm::vec4 plane) {
+	loadVector4f(location_plane, plane);
+}
+
 void TerrainShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -72,6 +76,9 @@ void TerrainShader::getAllUniformLocations() {
 	location_gTexture = getUniformLocation("gTexture");
 	location_bTexture = getUniformLocation("bTexture");
 	location_blendMap = getUniformLocation("blendMap");
+
+	//Clip plane
+	location_plane = getUniformLocation("plane");
 }
 
 void TerrainShader::connectTextureUnits() {

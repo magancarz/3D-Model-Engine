@@ -21,6 +21,7 @@ protected:
 	void loadBoolean(unsigned int location, bool value);
 	void loadVector2f(unsigned int location, glm::vec2 vector);
 	void loadVector3f(unsigned int location, glm::vec3 vector);
+	void loadVector4f(unsigned int location, glm::vec4 vector);
 	void loadMatrix(unsigned int location, glm::mat4 matrix);
 private:
 	unsigned int m_programID;

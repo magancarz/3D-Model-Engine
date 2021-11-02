@@ -90,12 +90,15 @@ int main(void) {
     //**********Water renderer setup**********//
     WaterShader* waterShader = new WaterShader();
     WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
-    std::vector<WaterTile*> water;
-    water.push_back(new WaterTile(60, 60, 0));
+    std::vector<WaterTile*> waters;
+    WaterTile* water = new WaterTile(60, 60, 0);
+    waters.push_back(water);
 
     WaterFrameBuffers* fbos = new WaterFrameBuffers();
-    GuiTexture gui2(fbos->getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
-    guis->push_back(gui2);
+    GuiTexture reflection(fbos->getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.3f, 0.3f));
+    GuiTexture refraction(fbos->getRefractionTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.3f, 0.3f));
+    guis->push_back(reflection);
+    guis->push_back(refraction);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
@@ -112,6 +115,9 @@ int main(void) {
         /* Poll for and process events */
         glfwPollEvents();
 
+        //OpenGL calls
+        glEnable(GL_CLIP_DISTANCE0);
+
         //Process terrains
         renderer.processTerrain(terrain1);
 
@@ -121,20 +127,27 @@ int main(void) {
         
         //Water
         fbos->bindReflectionFrameBuffer();
-        renderer.render(lights, *camera);
+        float distance = 2 * (camera->getPosition().y - water->getHeight());
+        camera->getPosition().y -= distance;
+        camera->invertPitch();
+        renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water->getHeight()));
+        camera->getPosition().y += distance;
+        camera->invertPitch();
         fbos->unbindCurrentFrameBuffer();
 
-        //Process terrains
-        renderer.processTerrain(terrain1);
+        fbos->bindRefractionFrameBuffer();
+        renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight()));
+        fbos->unbindCurrentFrameBuffer();
 
-        //Process entities
-        renderer.processEntity(stall);
-        renderer.processEntity(player);
+        glDisable(GL_CLIP_DISTANCE0);
 
         //Draw here
-        renderer.render(lights, *camera);
+        renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
 
-        waterRenderer->render(water, *camera);
+        waterRenderer->render(waters, *camera);
+
+        //Clean up renderer
+        renderer.cleanUp();
 
         //Render GUI
         guiRenderer.render(guis);

@@ -14,6 +14,7 @@ public:
 	void loadLights(std::vector<Light*>& lights);
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadSkyColor(float r, float g, float b);
+	void loadClipPlane(glm::vec4 plane);
 
 	void connectTextureUnits();
 protected:
@@ -42,4 +43,6 @@ private:
 	unsigned int location_gTexture;
 	unsigned int location_bTexture;
 	unsigned int location_blendMap;
+
+	unsigned int location_plane;
 };

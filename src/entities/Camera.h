@@ -26,9 +26,11 @@ public:
 	void increaseYaw(float yaw) { m_yaw += yaw * m_sensitivity; };
 	void increaseRoll(float roll) { m_roll += roll * m_sensitivity; };
 
+	void invertPitch();
+
 	glm::mat4 getView();
 
-	inline glm::vec3 getPosition() const { return m_position; };
+	inline glm::vec3& getPosition() { return m_position; };
 	inline float getPitch() const { return m_pitch; };
 	inline float getYaw() const { return m_yaw; };
 	inline float getRoll() const { return m_roll; };

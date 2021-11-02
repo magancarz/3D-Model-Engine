@@ -16,11 +16,15 @@ uniform mat4 proj;
 
 uniform vec3 lightPosition[4];
 
+uniform vec4 plane;
+
 const float density = 0.007;
 const float gradient = 1.5;
 
 void main(void) {
 	vec4 worldPosition = model * vec4(position, 1.0);
+
+	gl_ClipDistance[0] = dot(worldPosition, plane);
 
 	vec4 positionRelativeToCam = view * worldPosition;
 	gl_Position = proj * positionRelativeToCam;

@@ -54,6 +54,10 @@ void StaticShader::loadOffset(glm::vec2 offset) {
 	loadVector2f(location_offset, offset);
 }
 
+void StaticShader::loadClipPlane(glm::vec4 plane) {
+	loadVector4f(location_plane, plane);
+}
+
 void StaticShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -82,4 +86,7 @@ void StaticShader::getAllUniformLocations() {
 	//Texture atlases uniforms
 	location_numberOfRows = getUniformLocation("numberOfRows");
 	location_offset = getUniformLocation("offset");
+
+	//Clip plane
+	location_plane = getUniformLocation("plane");
 }

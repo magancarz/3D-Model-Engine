@@ -17,7 +17,7 @@ public:
 	MasterRenderer(Loader* loader);
 	~MasterRenderer();
 
-	void render(std::vector<Light*>& lights, Camera& camera);
+	void render(std::vector<Light*>& lights, Camera& camera, glm::vec4 clipPlane);
 	void prepare();
 
 
