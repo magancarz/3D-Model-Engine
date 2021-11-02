@@ -1,5 +1,11 @@
 #include "WaterShader.h"
 
+WaterShader::WaterShader()
+	: ShaderProgram("res/shaders/waterVert.shader", "res/shaders/waterFrag.shader") {
+	bindAttributes();
+	getAllUniformLocations();
+}
+
 void WaterShader::bindAttributes() {
 	bindAttribute(0, "position");
 }

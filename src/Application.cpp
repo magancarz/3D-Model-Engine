@@ -12,6 +12,8 @@
 #include "guis/GuiRenderer.h"
 #include "guis/GuiTexture.h"
 #include "toolbox/MousePicker.h"
+#include "water/WaterRenderer.h"
+#include "water/WaterFrameBuffers.h"
 
 ///GLOBAL VARIABLES///
 //Main loop control
@@ -85,6 +87,16 @@ int main(void) {
     //Mouse picking
     MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix(), terrain1);
 
+    //**********Water renderer setup**********//
+    WaterShader* waterShader = new WaterShader();
+    WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
+    std::vector<WaterTile*> water;
+    water.push_back(new WaterTile(60, 60, 0));
+
+    WaterFrameBuffers* fbos = new WaterFrameBuffers();
+    GuiTexture gui2(fbos->getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
+    guis->push_back(gui2);
+
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
@@ -107,8 +119,22 @@ int main(void) {
         renderer.processEntity(stall);
         renderer.processEntity(player);
         
+        //Water
+        fbos->bindReflectionFrameBuffer();
+        renderer.render(lights, *camera);
+        fbos->unbindCurrentFrameBuffer();
+
+        //Process terrains
+        renderer.processTerrain(terrain1);
+
+        //Process entities
+        renderer.processEntity(stall);
+        renderer.processEntity(player);
+
         //Draw here
         renderer.render(lights, *camera);
+
+        waterRenderer->render(water, *camera);
 
         //Render GUI
         guiRenderer.render(guis);
@@ -122,6 +148,10 @@ int main(void) {
 
     //Clean up resources
     loader->cleanUp();
+
+    delete waterRenderer;
+    delete waterShader;
+    delete fbos;
 
     delete mousePicker;
 

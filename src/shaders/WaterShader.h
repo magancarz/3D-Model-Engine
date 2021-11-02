@@ -5,8 +5,7 @@
 
 class WaterShader : public ShaderProgram {
 public:
-	WaterShader()
-		: ShaderProgram("res/shaders/waterFrag.shader", "res/shaders/waterVert.shader") {}
+	WaterShader();
 
 	void loadProjectionMatrix(glm::mat4 projection);
 	void loadViewMatrix(Camera& camera);

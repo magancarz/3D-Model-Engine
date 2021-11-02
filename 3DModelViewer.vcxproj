@@ -38,6 +38,7 @@
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\shaders\StaticShader.cpp" />
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
+    <ClCompile Include="src\shaders\WaterShader.cpp" />
     <ClCompile Include="src\skybox\SkyboxRenderer.cpp" />
     <ClCompile Include="src\skybox\SkyboxShader.cpp" />
     <ClCompile Include="src\terrains\Terrain.cpp" />
@@ -47,6 +48,8 @@
     <ClCompile Include="src\toolbox\MousePicker.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\water\WaterFrameBuffers.cpp" />
+    <ClCompile Include="src\water\WaterRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\GLEW\include\GL\eglew.h" />
@@ -77,6 +80,7 @@
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\StaticShader.h" />
     <ClInclude Include="src\shaders\TerrainShader.h" />
+    <ClInclude Include="src\shaders\WaterShader.h" />
     <ClInclude Include="src\skybox\SkyboxRenderer.h" />
     <ClInclude Include="src\skybox\SkyboxShader.h" />
     <ClInclude Include="src\terrains\Terrain.h" />
@@ -369,6 +373,9 @@
     <ClInclude Include="src\vendor\glm\vec4.hpp" />
     <ClInclude Include="src\vendor\glm\vector_relational.hpp" />
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
+    <ClInclude Include="src\water\WaterFrameBuffers.h" />
+    <ClInclude Include="src\water\WaterRenderer.h" />
+    <ClInclude Include="src\water\WaterTile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\GLEW\doc\advanced.html" />
