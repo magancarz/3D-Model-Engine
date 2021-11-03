@@ -6,6 +6,9 @@ WaterRenderer::WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 proj
 	m_shader->connectTextureUnits();
 	m_shader->loadProjectionMatrix(projection);
 	m_shader->stop();
+
+	m_dudvTexture = loader->loadTexture("res/textures/waterDUDV.png");
+
 	setUpVAO(*loader);
 }
 
@@ -22,12 +25,17 @@ void WaterRenderer::render(std::vector<WaterTile*>& water, Camera& camera) {
 void WaterRenderer::prepareRender(Camera& camera) {
 	m_shader->start();
 	m_shader->loadViewMatrix(camera);
+	moveFactor += WAVE_SPEED * display.getFrameTimeSeconds();
+	moveFactor = fmod(moveFactor, 1.0);
+	m_shader->loadMoveFactor(moveFactor);
 	glBindVertexArray(quad->getVaoID());
 	glEnableVertexAttribArray(0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_fbos->getReflectionTexture());
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, m_fbos->getRefractionTexture());
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_dudvTexture);
 }
 
 void WaterRenderer::unbind() {

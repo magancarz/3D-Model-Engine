@@ -15,7 +15,12 @@ private:
 	void unbind();
 	void setUpVAO(Loader& loader);
 
+	static constexpr float WAVE_SPEED = 0.3f;
+
 	RawModel* quad;
 	WaterShader* m_shader;
 	WaterFrameBuffers* m_fbos;
+
+	unsigned int m_dudvTexture;
+	unsigned float moveFactor = 0;
 };

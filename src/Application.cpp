@@ -92,7 +92,7 @@ int main(void) {
     WaterFrameBuffers* fbos = new WaterFrameBuffers();
     WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
     std::vector<WaterTile*> waters;
-    WaterTile* water = new WaterTile(80, 80, -10);
+    WaterTile* water = new WaterTile(120, 140, -8);
     waters.push_back(water);
 
     /* Loop until the user closes the window */
