@@ -89,16 +89,11 @@ int main(void) {
 
     //**********Water renderer setup**********//
     WaterShader* waterShader = new WaterShader();
-    WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
-    std::vector<WaterTile*> waters;
-    WaterTile* water = new WaterTile(60, 60, 0);
-    waters.push_back(water);
-
     WaterFrameBuffers* fbos = new WaterFrameBuffers();
-    GuiTexture reflection(fbos->getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.3f, 0.3f));
-    GuiTexture refraction(fbos->getRefractionTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.3f, 0.3f));
-    guis->push_back(reflection);
-    guis->push_back(refraction);
+    WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
+    std::vector<WaterTile*> waters;
+    WaterTile* water = new WaterTile(80, 80, -10);
+    waters.push_back(water);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {

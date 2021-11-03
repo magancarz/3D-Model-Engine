@@ -1,8 +1,9 @@
 #include "WaterRenderer.h"
 
-WaterRenderer::WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 projection)
-	: m_shader(shader) {
+WaterRenderer::WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 projection, WaterFrameBuffers* fbos)
+	: m_shader(shader), m_fbos(fbos) {
 	m_shader->start();
+	m_shader->connectTextureUnits();
 	m_shader->loadProjectionMatrix(projection);
 	m_shader->stop();
 	setUpVAO(*loader);
@@ -23,6 +24,10 @@ void WaterRenderer::prepareRender(Camera& camera) {
 	m_shader->loadViewMatrix(camera);
 	glBindVertexArray(quad->getVaoID());
 	glEnableVertexAttribArray(0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_fbos->getReflectionTexture());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_fbos->getRefractionTexture());
 }
 
 void WaterRenderer::unbind() {

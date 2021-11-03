@@ -23,7 +23,7 @@ uniform vec2 offset;
 
 uniform vec4 plane;
 
-const float density = 0.007;
+const float density = 0.002;
 const float gradient = 1.5;
 
 void main(void) {
