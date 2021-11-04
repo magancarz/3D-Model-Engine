@@ -9,9 +9,9 @@ class WaterRenderer {
 public:
 	WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 projection, WaterFrameBuffers* fbos);
 
-	void render(std::vector<WaterTile*>& water, Camera& camera);
+	void render(std::vector<WaterTile*>& water, Camera& camera, Light& sun);
 private:
-	void prepareRender(Camera& camera);
+	void prepareRender(Camera& camera, Light& sun);
 	void unbind();
 	void setUpVAO(Loader& loader);
 
@@ -22,5 +22,6 @@ private:
 	WaterFrameBuffers* m_fbos;
 
 	unsigned int m_dudvTexture;
-	unsigned float moveFactor = 0;
+	unsigned int m_normalMap;
+	float moveFactor = 0;
 };

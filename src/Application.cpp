@@ -79,7 +79,7 @@ int main(void) {
 
 
     //Create player
-    Player player(texturedStallModel, glm::vec3(100, 0, -50), 0, 0, 0, 1);
+    Player player(texturedStallModel, glm::vec3(100, 0, 50), 0, 0, 0, 1);
 
     //Camera
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
@@ -139,7 +139,7 @@ int main(void) {
         //Draw here
         renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
 
-        waterRenderer->render(waters, *camera);
+        waterRenderer->render(waters, *camera, *light1);
 
         //Clean up renderer
         renderer.cleanUp();

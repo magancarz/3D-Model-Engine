@@ -17,7 +17,10 @@ void WaterShader::getAllUniformLocations() {
 	location_reflectionTexture = getUniformLocation("reflectionTexture");
 	location_refractionTexture = getUniformLocation("refractionTexture");
 	location_dudvMap = getUniformLocation("dudvMap");
+	location_normalMap = getUniformLocation("normalMap");
 	location_moveFactor = getUniformLocation("moveFactor");
+	location_lightPosition = getUniformLocation("lightPosition");
+	location_lightColor = getUniformLocation("lightColor");
 	location_cameraPosition = getUniformLocation("cameraPosition");
 }
 
@@ -39,8 +42,14 @@ void WaterShader::loadMoveFactor(float value) {
 	loadFloat(location_moveFactor, value);
 }
 
+void WaterShader::loadLight(Light& sun) {
+	loadVector3f(location_lightPosition, sun.getPosition());
+	loadVector3f(location_lightColor, sun.getColor());
+}
+
 void WaterShader::connectTextureUnits() {
 	loadInt(location_reflectionTexture, 0);
 	loadInt(location_refractionTexture, 1);
 	loadInt(location_dudvMap, 2);
+	loadInt(location_normalMap, 3);
 }
