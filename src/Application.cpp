@@ -125,13 +125,13 @@ int main(void) {
         float distance = 2 * (camera->getPosition().y - water->getHeight());
         camera->getPosition().y -= distance;
         camera->invertPitch();
-        renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water->getHeight()));
+        renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water->getHeight() + 1.0f));
         camera->getPosition().y += distance;
         camera->invertPitch();
         fbos->unbindCurrentFrameBuffer();
 
         fbos->bindRefractionFrameBuffer();
-        renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight()));
+        renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight() + 1.0f));
         fbos->unbindCurrentFrameBuffer();
 
         glDisable(GL_CLIP_DISTANCE0);

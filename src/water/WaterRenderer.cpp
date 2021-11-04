@@ -8,7 +8,7 @@ WaterRenderer::WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 proj
 	m_shader->stop();
 
 	m_dudvTexture = loader->loadTexture("res/textures/waterDUDV.png");
-	m_normalMap = loader->loadTexture("res/textures/normalMap.png");
+	m_normalMap = loader->loadTexture("res/textures/matchingNormalMap.png");
 
 	setUpVAO(*loader);
 }
@@ -40,9 +40,15 @@ void WaterRenderer::prepareRender(Camera& camera, Light& sun) {
 	glBindTexture(GL_TEXTURE_2D, m_dudvTexture);
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, m_normalMap);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, m_fbos->getRefractionDepthTexture());
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void WaterRenderer::unbind() {
+	glDisable(GL_BLEND);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
 	m_shader->stop();

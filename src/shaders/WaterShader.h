@@ -25,6 +25,7 @@ private:
 	unsigned int location_refractionTexture;
 	unsigned int location_dudvMap;
 	unsigned int location_normalMap;
+	unsigned int location_depthMap;
 	unsigned int location_moveFactor;
 	unsigned int location_lightPosition;
 	unsigned int location_lightColor;

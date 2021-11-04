@@ -14,6 +14,7 @@ public:
 
 	inline int getReflectionTexture() { return m_reflectionTexture; };
 	inline int getRefractionTexture() { return m_refractionTexture; };
+	inline int getRefractionDepthTexture() { return m_refractionDepthTexture; };
 
 private:
 	void initialiseReflectionFrameBuffer();
