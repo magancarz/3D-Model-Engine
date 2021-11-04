@@ -18,6 +18,7 @@ void WaterShader::getAllUniformLocations() {
 	location_refractionTexture = getUniformLocation("refractionTexture");
 	location_dudvMap = getUniformLocation("dudvMap");
 	location_moveFactor = getUniformLocation("moveFactor");
+	location_cameraPosition = getUniformLocation("cameraPosition");
 }
 
 void WaterShader::loadProjectionMatrix(glm::mat4 projection) {
@@ -27,6 +28,7 @@ void WaterShader::loadProjectionMatrix(glm::mat4 projection) {
 void WaterShader::loadViewMatrix(Camera& camera) {
 	glm::mat4 viewMatrix = camera.getView();
 	loadMatrix(location_viewMatrix, viewMatrix);
+	loadVector3f(location_cameraPosition, camera.getPosition());
 }
 
 void WaterShader::loadModelMatrix(glm::mat4 modelMatrix) {
