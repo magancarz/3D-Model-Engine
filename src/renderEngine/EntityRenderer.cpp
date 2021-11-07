@@ -24,6 +24,7 @@ void EntityRenderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* ent
 			unbindTexturedModel();
 		}
 	}
+	m_shader->stop();
 }
 
 void EntityRenderer::prepareTexturedModel(TexturedModel& texturedModel) {

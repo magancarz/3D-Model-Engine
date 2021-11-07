@@ -9,6 +9,9 @@ public:
 
 	inline unsigned int getID() { return m_textureID; };
 
+	inline void setNormalMap(int value) { m_normalMap = value; };
+	inline int getNormalMap() { return m_normalMap; };
+
 	inline float& getShineDamper() { return m_shineDamper; };
 	inline float& getReflectivity() { return m_reflectivity; };
 
@@ -22,6 +25,7 @@ public:
 	inline bool getNumberOfRows() { return m_numberOfRows; };
 private:
 	unsigned int m_textureID;
+	int m_normalMap;
 
 	float m_shineDamper = 1;
 	float m_reflectivity = 0;

@@ -4,6 +4,7 @@
 #include "renderEngine/Loader.h"
 #include "renderEngine/MasterRenderer.h"
 #include "renderEngine/OBJLoader.h"
+#include "normalMappingRenderer/NormalMappingOBJLoader.h"
 #include "shaders/StaticShader.h"
 #include "models/RawModel.h"
 #include "models/TexturedModel.h"
@@ -35,6 +36,7 @@ int main(void) {
 
     //Logic
     Loader* loader = new Loader;
+    NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
 
     //Terrain
     TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grassy2.png"));
@@ -55,6 +57,15 @@ int main(void) {
     //texture.setShineDamper(10);
     //texture.setReflectivity(5.0f);
     Entity stall(texturedStallModel, glm::vec3(10, 0, 10), 0, 0, 0, 1);
+
+    RawModel* barrelModel = normalMappedLoader->loadNormalMappedOBJ("res/models/barrel.obj", *loader);
+    ModelTexture barrelTexture(loader->loadTexture("res/textures/barrel.png"));
+    TexturedModel texturedBarrelModel(*barrelModel, barrelTexture);
+    ModelTexture& texture2 = texturedBarrelModel.getTexture();
+    texture2.setNormalMap(loader->loadTexture("res/textures/barrelNormal.png"));
+    //texture2.setShineDamper(10);
+    //texture2.setReflectivity(5.0f);
+    Entity barrel(texturedBarrelModel, glm::vec3(30, 6, 30), 0, 0, 0, 1);
     
     //Light
     Light* light1 = new Light(glm::vec3(0, 1000, -7000), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0, 0));
@@ -102,7 +113,6 @@ int main(void) {
         camera->move();
 
         mousePicker->update();
-        std::cout << mousePicker->getCurrentRay().x << std::endl;
 
         //Reset input values
         display.resetInputValues();
@@ -119,6 +129,7 @@ int main(void) {
         //Process entities
         renderer.processEntity(stall);
         renderer.processEntity(player);
+        renderer.processNormalMapEntity(barrel);
         
         //Water
         fbos->bindReflectionFrameBuffer();
@@ -174,6 +185,7 @@ int main(void) {
 
     delete texturePack;
 
+    delete normalMappedLoader;
     delete loader;
     delete camera;
     delete terrain1;

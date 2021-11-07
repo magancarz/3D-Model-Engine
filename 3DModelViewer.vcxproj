@@ -28,6 +28,9 @@
     <ClCompile Include="src\guis\GuiTexture.cpp" />
     <ClCompile Include="src\models\RawModel.cpp" />
     <ClCompile Include="src\models\TexturedModel.cpp" />
+    <ClCompile Include="src\normalMappingRenderer\NormalMappingOBJLoader.cpp" />
+    <ClCompile Include="src\normalMappingRenderer\NormalMappingRenderer.cpp" />
+    <ClCompile Include="src\normalMappingRenderer\VertexNM.cpp" />
     <ClCompile Include="src\renderEngine\DisplayManager.cpp" />
     <ClCompile Include="src\renderEngine\Loader.cpp" />
     <ClCompile Include="src\renderEngine\MasterRenderer.cpp" />
@@ -35,6 +38,7 @@
     <ClCompile Include="src\renderEngine\EntityRenderer.cpp" />
     <ClCompile Include="src\renderEngine\TerrainRenderer.cpp" />
     <ClCompile Include="src\shaders\GuiShader.cpp" />
+    <ClCompile Include="src\shaders\NormalMappingShader.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\shaders\StaticShader.cpp" />
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
@@ -67,6 +71,10 @@
     <ClInclude Include="src\Headers.h" />
     <ClInclude Include="src\models\RawModel.h" />
     <ClInclude Include="src\models\TexturedModel.h" />
+    <ClInclude Include="src\normalMappingRenderer\ModelDataNM.h" />
+    <ClInclude Include="src\normalMappingRenderer\NormalMappingOBJLoader.h" />
+    <ClInclude Include="src\normalMappingRenderer\NormalMappingRenderer.h" />
+    <ClInclude Include="src\normalMappingRenderer\VertexNM.h" />
     <ClInclude Include="src\renderEngine\DisplayManager.h" />
     <ClInclude Include="src\renderEngine\Loader.h" />
     <ClInclude Include="src\renderEngine\MasterRenderer.h" />
@@ -77,6 +85,7 @@
     <ClInclude Include="src\renderEngine\TextureData.h" />
     <ClInclude Include="src\renderEngine\Vertex.h" />
     <ClInclude Include="src\shaders\GuiShader.h" />
+    <ClInclude Include="src\shaders\NormalMappingShader.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\StaticShader.h" />
     <ClInclude Include="src\shaders\TerrainShader.h" />

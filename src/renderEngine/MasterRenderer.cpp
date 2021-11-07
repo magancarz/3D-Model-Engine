@@ -11,6 +11,7 @@ void disableCulling() {
 
 MasterRenderer::MasterRenderer(Loader* loader) {
 	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;
+	m_normalMappingEntities = new std::map<TexturedModel*, std::vector<Entity*>*>;
 	m_terrains = new std::vector<Terrain*>;
 
 	m_shader = new StaticShader();
@@ -21,6 +22,7 @@ MasterRenderer::MasterRenderer(Loader* loader) {
 	m_renderer = new EntityRenderer(m_shader, m_projectionMatrix);
 	m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
 	m_skyboxRenderer = new SkyboxRenderer(loader, m_projectionMatrix);
+	m_normalMappingRenderer = new NormalMappingRenderer(m_projectionMatrix);
 
 	m_shader->start();
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
@@ -33,8 +35,8 @@ MasterRenderer::~MasterRenderer() {
 	m_terrainShader->cleanUp();
 	m_shader->cleanUp();
 
+	delete m_normalMappingRenderer;
 	delete m_skyboxRenderer;
-
 	delete m_terrainRenderer;
 	delete m_terrainShader;
 	
@@ -54,6 +56,8 @@ void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera, glm::ve
 	m_shader->loadViewMatrix(camera);
 	m_renderer->render(m_entities);
 	m_shader->stop();
+
+	m_normalMappingRenderer->render(m_normalMappingEntities, clipPlane, lights, camera);
 
 	m_terrainShader->start();
 	m_terrainShader->loadClipPlane(clipPlane);
@@ -88,12 +92,28 @@ void MasterRenderer::processEntity(Entity& entity) {
 	}
 }
 
+void MasterRenderer::processNormalMapEntity(Entity& entity) {
+	TexturedModel& entityModel = entity.getTexturedModel();
+	std::map<TexturedModel*, std::vector<Entity*>*>::iterator it;
+
+	it = m_normalMappingEntities->find(&entityModel);
+	if(it != m_normalMappingEntities->end()) {
+		std::vector<Entity*>* batch = it->second;
+		batch->push_back(&entity);
+	} else {
+		std::vector<Entity*>* newBatch = new std::vector<Entity*>();
+		newBatch->push_back(&entity);
+		m_normalMappingEntities->insert(std::make_pair(&entityModel, newBatch));
+	}
+}
+
 void MasterRenderer::processTerrain(Terrain* terrain) {
 	m_terrains->push_back(terrain);
 }
 
 void MasterRenderer::cleanUp() {
 	m_entities->clear();
+	m_normalMappingEntities->clear();
 	m_terrains->clear();
 }
 

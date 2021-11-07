@@ -9,6 +9,8 @@ class Loader {
 public:
 	RawModel* loadToVAO(const std::vector<float>& positions, const std::vector<float>& textureCoords,
 		const std::vector<float>& normals, const std::vector<unsigned int>& indices);
+	RawModel* loadToVAO(const std::vector<float>& positions, const std::vector<float>& textureCoords,
+		const std::vector<float>& normals, const std::vector<float>& tangents, const std::vector<unsigned int>& indices);
 	unsigned int loadTexture(const std::string& fileName);
 	RawModel* loadToVAO(const std::vector<float> positions, int dimensions);
 	TextureData* loadImage(std::string fileName);
