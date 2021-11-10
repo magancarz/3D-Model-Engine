@@ -23,6 +23,14 @@ RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vect
 	return new RawModel(vaoID, indices.size());
 }
 
+int Loader::loadToVAO(std::vector<float>& positions, std::vector<float>& textureCoords) {
+	unsigned int vaoID = createVAO();
+	storeDataInAttributeList(0, 2, positions.data(), positions.size());
+	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
+	unbindVAO();
+	return vaoID;
+}
+
 RawModel* Loader::loadToVAO(const std::vector<float> positions, int dimensions) {
 	int vaoID = createVAO();
 	storeDataInAttributeList(0, dimensions, positions.data(), positions.size());

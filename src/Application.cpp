@@ -15,6 +15,7 @@
 #include "toolbox/MousePicker.h"
 #include "water/WaterRenderer.h"
 #include "water/WaterFrameBuffers.h"
+#include "fontRendering/TextMaster.h"
 
 ///GLOBAL VARIABLES///
 //Main loop control
@@ -37,6 +38,10 @@ int main(void) {
     //Logic
     Loader* loader = new Loader;
     NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
+    textMaster.init(loader);
+
+    FontType font(loader->loadTexture("res/textures/arial.png"), "res/textures/arial.fnt");
+    GUIText text("Sample text!", 1, &font, glm::vec2(0, 0), 1.0f, true);
 
     //Terrain
     TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grassy2.png"));
@@ -158,6 +163,9 @@ int main(void) {
         //Render GUI
         guiRenderer.render(guis);
 
+        //Render texts
+        textMaster.render();
+
         /* Swap front and back buffers */
         display.updateDisplay();
 
@@ -167,6 +175,7 @@ int main(void) {
 
     //Clean up resources
     loader->cleanUp();
+    textMaster.cleanUp();
 
     delete waterRenderer;
     delete waterShader;
