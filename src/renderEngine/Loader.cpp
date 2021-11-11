@@ -39,7 +39,7 @@ RawModel* Loader::loadToVAO(const std::vector<float> positions, int dimensions) 
 	return new RawModel(vaoID, positions.size() / dimensions);
 }
 
-unsigned int Loader::loadTexture(const std::string& fileName) {
+unsigned int Loader::loadTexture(const std::string& fileName, float lodValue) {
 	unsigned int texture;
 	glGenTextures(1, &texture);
 	textures.push_back(texture);
@@ -56,13 +56,21 @@ unsigned int Loader::loadTexture(const std::string& fileName) {
 	
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, lodValue);
 
 	//Clean up
 	stbi_image_free(data->getData());
 	delete data;
 
 	return texture;
+}
+
+unsigned int Loader::loadTexture(const std::string& fileName) {
+	return loadTexture(fileName, -0.4);
+}
+
+unsigned int Loader::loadFontTexture(const std::string& fileName) {
+	return loadTexture(fileName, 0.0);
 }
 
 //!!!Remember to use stbi_image_free after using data!!!

@@ -40,7 +40,7 @@ int main(void) {
     NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
     textMaster.init(loader);
 
-    FontType font(loader->loadTexture("res/textures/arial.png"), "res/textures/arial.fnt");
+    FontType font(loader->loadFontTexture("res/textures/arial.png"), "res/textures/arial.fnt");
     GUIText text("Sample text!", 1, &font, glm::vec2(0, 0), 1.0f, true);
 
     //Terrain
