@@ -40,8 +40,8 @@ int main(void) {
     NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
     textMaster.init(loader);
 
-    FontType font(loader->loadFontTexture("res/textures/arial.png"), "res/textures/arial.fnt");
-    GUIText text("Sample text!", 1, &font, glm::vec2(0, 0), 1.0f, true);
+    FontType font(loader->loadFontTexture("res/textures/candara.png"), "res/textures/candara.fnt");
+    GUIText text("Sample text!", 3, &font, glm::vec2(0, 0), 1.0f, true);
 
     //Terrain
     TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grassy2.png"));
