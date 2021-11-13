@@ -4,6 +4,8 @@
 
 #include "../models/TexturedModel.h"
 
+const float GRAVITY = -50.0f;
+
 class Entity {
 public:
 	Entity(TexturedModel& model, glm::vec3 position, float rx, float ry, float rz, float scale);
@@ -31,8 +33,7 @@ public:
 	void setScale(float scale) { m_scale = scale; };
 
 protected:
-	const float GRAVITY = -50.0f,
-				TERRAIN_HEIGHT = 0;
+	const float TERRAIN_HEIGHT = 0;
 	
 	bool isInAir = false;
 

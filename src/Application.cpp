@@ -16,6 +16,8 @@
 #include "water/WaterRenderer.h"
 #include "water/WaterFrameBuffers.h"
 #include "fontRendering/TextMaster.h"
+#include "particles/ParticleMaster.h"
+#include "particles/ParticleSystem.h"
 
 ///GLOBAL VARIABLES///
 //Main loop control
@@ -26,6 +28,9 @@ Input inputManager;
 
 //Display
 DisplayManager display;
+
+//Particle master
+ParticleMaster* particleMaster;
 
 int main(void) {
     /* Initialize the library */
@@ -93,6 +98,7 @@ int main(void) {
 
     GuiRenderer guiRenderer(loader);
 
+    particleMaster = new ParticleMaster(loader, renderer.getProjectionMatrix());
 
     //Create player
     Player player(texturedStallModel, glm::vec3(100, 0, 50), 0, 0, 0, 1);
@@ -111,6 +117,9 @@ int main(void) {
     WaterTile* water = new WaterTile(120, 140, -8);
     waters.push_back(water);
 
+    //Particle system
+    ParticleSystem* system = new ParticleSystem(50, 25, 0.3f, 4);
+
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
@@ -118,6 +127,8 @@ int main(void) {
         camera->move();
 
         mousePicker->update();
+
+        system->generateParticles(glm::vec3(0));
 
         //Reset input values
         display.resetInputValues();
@@ -160,6 +171,9 @@ int main(void) {
         //Clean up renderer
         renderer.cleanUp();
 
+        //Particles
+        particleMaster->renderParticles(camera);
+
         //Render GUI
         guiRenderer.render(guis);
 
@@ -177,6 +191,7 @@ int main(void) {
     loader->cleanUp();
     textMaster.cleanUp();
 
+    delete particleMaster;
     delete waterRenderer;
     delete waterShader;
     delete fbos;

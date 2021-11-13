@@ -42,6 +42,11 @@
     <ClCompile Include="src\normalMappingRenderer\NormalMappingOBJLoader.cpp" />
     <ClCompile Include="src\normalMappingRenderer\NormalMappingRenderer.cpp" />
     <ClCompile Include="src\normalMappingRenderer\VertexNM.cpp" />
+    <ClCompile Include="src\particles\ParticleMaster.cpp" />
+    <ClCompile Include="src\particles\ParticleRenderer.cpp" />
+    <ClCompile Include="src\particles\Particles.cpp" />
+    <ClCompile Include="src\particles\ParticleShader.cpp" />
+    <ClCompile Include="src\particles\ParticleSystem.cpp" />
     <ClCompile Include="src\renderEngine\DisplayManager.cpp" />
     <ClCompile Include="src\renderEngine\Loader.cpp" />
     <ClCompile Include="src\renderEngine\MasterRenderer.cpp" />
@@ -98,6 +103,11 @@
     <ClInclude Include="src\normalMappingRenderer\NormalMappingOBJLoader.h" />
     <ClInclude Include="src\normalMappingRenderer\NormalMappingRenderer.h" />
     <ClInclude Include="src\normalMappingRenderer\VertexNM.h" />
+    <ClInclude Include="src\particles\Particle.h" />
+    <ClInclude Include="src\particles\ParticleMaster.h" />
+    <ClInclude Include="src\particles\ParticleRenderer.h" />
+    <ClInclude Include="src\particles\ParticleShader.h" />
+    <ClInclude Include="src\particles\ParticleSystem.h" />
     <ClInclude Include="src\renderEngine\DisplayManager.h" />
     <ClInclude Include="src\renderEngine\Loader.h" />
     <ClInclude Include="src\renderEngine\MasterRenderer.h" />
