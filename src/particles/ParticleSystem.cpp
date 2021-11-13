@@ -2,8 +2,8 @@
 #include "../renderEngine/DisplayManager.h"
 #include "Particle.h"
 
-ParticleSystem::ParticleSystem(float pps, float speed, float gravityComplient, float lifeLength)
-	: m_pps(pps), m_speed(speed), m_gravityComplient(gravityComplient), m_lifeLength(lifeLength) {
+ParticleSystem::ParticleSystem(ParticleTexture* texture, float pps, float speed, float gravityComplient, float lifeLength)
+	: m_texture(texture), m_pps(pps), m_speed(speed), m_gravityComplient(gravityComplient), m_lifeLength(lifeLength) {
 	
 }
 
@@ -28,5 +28,5 @@ void ParticleSystem::emitParticle(glm::vec3 center) {
 	velocity *= glm::vec3(m_speed);
 
 	// adds particle to the particle master
-	Particle* particle = new Particle(glm::vec3(center), velocity, m_gravityComplient, m_lifeLength, 0, 1);
+	Particle* particle = new Particle(m_texture, glm::vec3(center), velocity, m_gravityComplient, m_lifeLength, 0, 1);
 }

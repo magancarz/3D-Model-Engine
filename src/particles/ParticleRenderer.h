@@ -11,7 +11,7 @@ class ParticleRenderer {
 public:
 	ParticleRenderer(Loader* loader, glm::mat4 projectionMatrix);
 	~ParticleRenderer();
-	void render(std::vector<Particle*>* particles, Camera* camera);
+	void render(std::map<ParticleTexture*, std::vector<Particle*>*>* particles, Camera* camera);
 	void updateModelViewMatrix(glm::vec3 position, float rotation, float scale, glm::mat4 viewMatrix);
 	void prepare();
 	void finishRendering();

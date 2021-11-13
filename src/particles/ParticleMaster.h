@@ -10,12 +10,12 @@ class ParticleMaster {
 public:
 	ParticleMaster(Loader* loader, glm::mat4 projectionMatrix);
 	~ParticleMaster();
-	void update();
+	void update(Camera* camera);
 	void renderParticles(Camera* camera);
 	void addParticle(Particle* particle);
 
 private:
-	std::vector<Particle*>* m_particles = new std::vector<Particle*>;
+	std::map<ParticleTexture*, std::vector<Particle*>*>* m_particles = new std::map<ParticleTexture*, std::vector<Particle*>*>;
 	ParticleRenderer* m_renderer;
 
 };

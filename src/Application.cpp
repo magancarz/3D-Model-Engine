@@ -118,7 +118,8 @@ int main(void) {
     waters.push_back(water);
 
     //Particle system
-    ParticleSystem* system = new ParticleSystem(50, 25, 0.3f, 4);
+    ParticleTexture* particleTexture = new ParticleTexture(loader->loadTexture("res/textures/fire.png"), 8);
+    ParticleSystem* system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
@@ -129,6 +130,7 @@ int main(void) {
         mousePicker->update();
 
         system->generateParticles(glm::vec3(0));
+        particleMaster->update(camera);
 
         //Reset input values
         display.resetInputValues();
