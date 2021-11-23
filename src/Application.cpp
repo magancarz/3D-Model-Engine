@@ -119,7 +119,12 @@ int main(void) {
 
     //Particle system
     ParticleTexture* particleTexture = new ParticleTexture(loader->loadTexture("res/textures/fire.png"), 8);
-    ParticleSystem* system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4);
+    ParticleSystem* system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4.0f, 5.0f);
+    system->randomizeRotation();
+    system->setDirection(glm::vec3(0, 1, 0), 0.2f);
+    system->setLifeError(0.5f);
+    system->setSpeedError(0.5f);
+    system->setScaleError(0.5f);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
@@ -129,7 +134,7 @@ int main(void) {
 
         mousePicker->update();
 
-        system->generateParticles(glm::vec3(0));
+        system->generateParticles(glm::vec3(player.getPosition()));
         particleMaster->update(camera);
 
         //Reset input values

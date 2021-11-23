@@ -13,8 +13,6 @@ bool Particle::update(Camera* camera) {
 	glm::vec3 change(m_velocity);
 	change *= display.getFrameTimeSeconds();
 	m_position += change;
-	glm::vec3 d = camera->getPosition() - m_position;
-	m_distance = d.x * d.x + d.y * d.y + d.z * d.z;
 	updateTextureCoordInfo();
 	m_elapsedTime += display.getFrameTimeSeconds();
 	return m_elapsedTime < m_lifeLength;
@@ -34,6 +32,6 @@ void Particle::updateTextureCoordInfo() {
 void Particle::setTextureOffset(glm::vec2& offset, int index) {
 	int column = index % m_texture->getNumberOfRows();
 	int row = index / m_texture->getNumberOfRows();
-	offset.x = column / m_texture->getNumberOfRows();
-	offset.y = row / m_texture->getNumberOfRows();
+	offset.x = (float)column / m_texture->getNumberOfRows();
+	offset.y = (float)row / m_texture->getNumberOfRows();
 }

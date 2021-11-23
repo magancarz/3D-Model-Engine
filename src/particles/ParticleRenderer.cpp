@@ -21,24 +21,21 @@ ParticleRenderer::~ParticleRenderer() {
 void ParticleRenderer::render(std::map<ParticleTexture*, std::vector<Particle*>*>* particlesMap, Camera* camera) {
 	glm::mat4 viewMatrix = camera->getView();
 	prepare();
-	for (auto mit = particlesMap->begin();  mit != particlesMap->end(); mit++) {
-		ParticleTexture* texture = mit->first;
-		std::vector<Particle*>* particles = mit->second;
+
+	for(std::map<ParticleTexture*, std::vector<Particle*>*>::iterator pit = particlesMap->begin();  pit != particlesMap->end(); pit++) {
+		ParticleTexture* texture = pit->first;
+		std::vector<Particle*>* particles = pit->second;
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
-		//pointer = 0;
-		//std::vector<GLfloat> vboData(particles->size() * INSTANCE_DATA_LENGTH);
-
-		for (auto vit = particles->begin(); vit != particles->end(); vit++) {
-			Particle* particle = *vit;
+		
+		for(std::vector<Particle*>::iterator it = particles->begin(); it != particles->end(); it++) {
+			Particle* particle = *it;
 
 			updateModelViewMatrix(particle->getPosition(), particle->getRotation(),
 					      particle->getScale(), viewMatrix);
 			m_shader->loadTextureCoordInfo(particle->getTexOffset1(), particle->getTexOffset2(), texture->getNumberOfRows(), particle->getBlend());
+			glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->getVertexCount());
 		}
-		//loader->updateVbo(vboID, vboData);
-		glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, quad->getVertexCount(), particles->size());
-
 	}
 	finishRendering();
 }
@@ -69,7 +66,7 @@ void ParticleRenderer::prepare() {
 	glBindVertexArray(quad->getVaoID());
 	glEnableVertexAttribArray(0);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glDepthMask(false);
 }
 

@@ -41,7 +41,7 @@ void ParticleMaster::renderParticles(Camera* camera) {
 
 void ParticleMaster::addParticle(Particle* particle) {
 	ParticleTexture* texture = particle->getTexture();
-	auto it = m_particles->find(texture);
+	std::map<ParticleTexture*, std::vector<Particle*>*>::iterator it = m_particles->find(texture);
 	if(it != m_particles->end()) {
 		std::vector<Particle*>* particles = it->second;
 		particles->push_back(particle);
