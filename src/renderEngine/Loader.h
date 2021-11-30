@@ -15,6 +15,9 @@ public:
 	unsigned int loadTexture(const std::string& fileName);
 	unsigned int loadFontTexture(const std::string& fileName);
 	int loadToVAO(std::vector<float>& positions, std::vector<float>& textureCoords);
+	int createEmptyVBO(std::vector<GLfloat>& data);
+	void addInstanceAttribute(unsigned int vaoID, unsigned int vboID, unsigned int attribute, int dataSize, GLsizei instancedDataLength, int offset);
+	void updateVBO(unsigned int vboID, std::vector<float>& data);
 	RawModel* loadToVAO(const std::vector<float> positions, int dimensions);
 	TextureData* loadImage(std::string fileName);
 	int loadCubeMap(std::vector<std::string> textureFiles);

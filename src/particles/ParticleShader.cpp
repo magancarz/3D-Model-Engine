@@ -7,27 +7,21 @@ ParticleShader::ParticleShader()
 }
 
 void ParticleShader::getAllUniformLocations() {
-	location_modelViewMatrix = getUniformLocation("modelViewMatrix");
+	location_numberOfRows = getUniformLocation("numberOfRows");
 	location_projectionMatrix = getUniformLocation("projectionMatrix");
-	location_texOffset1 = getUniformLocation("texOffset1");
-	location_texOffset2 = getUniformLocation("texOffset2");
-	location_texCoordInfo = getUniformLocation("texCoordInfo");
 }
 
 void ParticleShader::bindAttributes() {
 	bindAttribute(0, "position");
+	bindAttribute(1, "modelView");
+	bindAttribute(2, "texOffsets");
+	bindAttribute(3, "blendFactor");
 }
 
-void ParticleShader::loadModelViewMatrix(glm::mat4 modelViewMatrix) {
-	loadMatrix(location_modelViewMatrix, modelViewMatrix);
+void ParticleShader::loadNumberOfRows(float numberOfRows) {
+	loadFloat(location_numberOfRows, numberOfRows);
 }
 
 void ParticleShader::loadProjectionMatrix(glm::mat4 projectionMatrix) {
 	loadMatrix(location_projectionMatrix, projectionMatrix);
-}
-
-void ParticleShader::loadTextureCoordInfo(glm::vec2 offset1, glm::vec2 offset2, float numRows, float blend) {
-	loadVector2f(location_texOffset1, offset1);
-	loadVector2f(location_texOffset2, offset2);
-	loadVector2f(location_texCoordInfo, glm::vec2(numRows, blend));
 }

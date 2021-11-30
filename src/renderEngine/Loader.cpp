@@ -31,6 +31,32 @@ int Loader::loadToVAO(std::vector<float>& positions, std::vector<float>& texture
 	return vaoID;
 }
 
+int Loader::createEmptyVBO(std::vector<GLfloat>& data) {
+	unsigned int vbo = 0;
+	glGenBuffers(1, &vbo);
+	vbos.push_back(vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(GLfloat), &data[0], GL_STREAM_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	return vbo;
+}
+
+void Loader::addInstanceAttribute(unsigned int vaoID, unsigned int vboID, unsigned int attribute, int dataSize, GLsizei instancedDataLength, int offset) {
+	glBindBuffer(GL_ARRAY_BUFFER, vboID);
+	glBindVertexArray(vaoID);
+	glVertexAttribPointer(attribute, dataSize, GL_FLOAT, GL_FALSE, instancedDataLength * sizeof(float), (const void*)(offset * sizeof(float)));
+	glVertexAttribDivisor(attribute, 1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
+
+void Loader::updateVBO(unsigned int vboID, std::vector<float>& data) {
+	glBindBuffer(GL_ARRAY_BUFFER, vboID);
+	glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STREAM_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, data.size() * sizeof(float), &data[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 RawModel* Loader::loadToVAO(const std::vector<float> positions, int dimensions) {
 	int vaoID = createVAO();
 	storeDataInAttributeList(0, dimensions, positions.data(), positions.size());

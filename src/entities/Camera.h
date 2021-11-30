@@ -3,7 +3,7 @@
 #include "../Headers.h"
 
 #include "../toolbox/Input.h"
-#include "entities/Player.h"
+#include "Player.h"
 
 extern Input inputManager;
 

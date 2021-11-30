@@ -42,17 +42,17 @@
     <ClCompile Include="src\normalMappingRenderer\NormalMappingOBJLoader.cpp" />
     <ClCompile Include="src\normalMappingRenderer\NormalMappingRenderer.cpp" />
     <ClCompile Include="src\normalMappingRenderer\VertexNM.cpp" />
+    <ClCompile Include="src\particles\Particle.cpp" />
     <ClCompile Include="src\particles\ParticleMaster.cpp" />
     <ClCompile Include="src\particles\ParticleRenderer.cpp" />
-    <ClCompile Include="src\particles\Particle.cpp" />
     <ClCompile Include="src\particles\ParticleShader.cpp" />
     <ClCompile Include="src\particles\ParticleSystem.cpp" />
     <ClCompile Include="src\particles\ParticleTexture.cpp" />
     <ClCompile Include="src\renderEngine\DisplayManager.cpp" />
+    <ClCompile Include="src\renderEngine\EntityRenderer.cpp" />
     <ClCompile Include="src\renderEngine\Loader.cpp" />
     <ClCompile Include="src\renderEngine\MasterRenderer.cpp" />
     <ClCompile Include="src\renderEngine\OBJLoader.cpp" />
-    <ClCompile Include="src\renderEngine\EntityRenderer.cpp" />
     <ClCompile Include="src\renderEngine\TerrainRenderer.cpp" />
     <ClCompile Include="src\shaders\FontShader.cpp" />
     <ClCompile Include="src\shaders\GuiShader.cpp" />
@@ -74,12 +74,7 @@
     <ClCompile Include="src\water\WaterRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dependencies\GLEW\include\GL\eglew.h" />
-    <ClInclude Include="Dependencies\GLEW\include\GL\glew.h" />
-    <ClInclude Include="Dependencies\GLEW\include\GL\glxew.h" />
-    <ClInclude Include="Dependencies\GLEW\include\GL\wglew.h" />
-    <ClInclude Include="Dependencies\GLFW\include\GLFW\glfw3.h" />
-    <ClInclude Include="Dependencies\GLFW\include\GLFW\glfw3native.h" />
+    <ClInclude Include="src\Headers.h" />
     <ClInclude Include="src\entities\Camera.h" />
     <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\entities\Light.h" />
@@ -97,7 +92,6 @@
     <ClInclude Include="src\fontRendering\Word.h" />
     <ClInclude Include="src\guis\GuiRenderer.h" />
     <ClInclude Include="src\guis\GuiTexture.h" />
-    <ClInclude Include="src\Headers.h" />
     <ClInclude Include="src\models\RawModel.h" />
     <ClInclude Include="src\models\TexturedModel.h" />
     <ClInclude Include="src\normalMappingRenderer\ModelDataNM.h" />
@@ -111,11 +105,11 @@
     <ClInclude Include="src\particles\ParticleSystem.h" />
     <ClInclude Include="src\particles\ParticleTexture.h" />
     <ClInclude Include="src\renderEngine\DisplayManager.h" />
+    <ClInclude Include="src\renderEngine\EntityRenderer.h" />
     <ClInclude Include="src\renderEngine\Loader.h" />
     <ClInclude Include="src\renderEngine\MasterRenderer.h" />
     <ClInclude Include="src\renderEngine\ModelData.h" />
     <ClInclude Include="src\renderEngine\OBJLoader.h" />
-    <ClInclude Include="src\renderEngine\EntityRenderer.h" />
     <ClInclude Include="src\renderEngine\TerrainRenderer.h" />
     <ClInclude Include="src\renderEngine\TextureData.h" />
     <ClInclude Include="src\renderEngine\Vertex.h" />
