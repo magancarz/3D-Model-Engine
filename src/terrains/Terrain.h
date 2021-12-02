@@ -8,6 +8,7 @@
 #include "../textures/ModelTexture.h"
 #include "../textures/TerrainTexturePack.h"
 #include "../textures/TerrainTexture.h"
+#include "HeightsGenerator.h"
 
 class Terrain {
 public:
@@ -25,8 +26,8 @@ public:
 private:
 	RawModel* generateTerrain(Loader* loader, std::string);
 
-	float getHeight(int x, int z, TextureData* textureData);
-	glm::vec3 calculateNormal(int x, int z, TextureData* textureData);
+	float getHeight(int x, int z, HeightsGenerator* generator);
+	glm::vec3 calculateNormal(int x, int z, HeightsGenerator* generator);
 
 	const float SIZE = 800,
 				MAX_HEIGHT = 40,

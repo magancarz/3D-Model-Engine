@@ -63,6 +63,7 @@
     <ClCompile Include="src\shaders\WaterShader.cpp" />
     <ClCompile Include="src\skybox\SkyboxRenderer.cpp" />
     <ClCompile Include="src\skybox\SkyboxShader.cpp" />
+    <ClCompile Include="src\terrains\HeightsGenerator.cpp" />
     <ClCompile Include="src\terrains\Terrain.cpp" />
     <ClCompile Include="src\textures\ModelTexture.cpp" />
     <ClCompile Include="src\toolbox\Input.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="src\shaders\WaterShader.h" />
     <ClInclude Include="src\skybox\SkyboxRenderer.h" />
     <ClInclude Include="src\skybox\SkyboxShader.h" />
+    <ClInclude Include="src\terrains\HeightsGenerator.h" />
     <ClInclude Include="src\terrains\Terrain.h" />
     <ClInclude Include="src\textures\ModelTexture.h" />
     <ClInclude Include="src\textures\TerrainTexture.h" />
