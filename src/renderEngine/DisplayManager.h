@@ -2,9 +2,9 @@
 
 #include "../Headers.h"
 #include "../toolbox/Input.h"
-
-const unsigned int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 800;
-const std::string WINDOW_TITLE = "3D Model Viewer";
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 800
+#define WINDOW_TITLE "3D Model Viewer"
 
 class DisplayManager {
 public:

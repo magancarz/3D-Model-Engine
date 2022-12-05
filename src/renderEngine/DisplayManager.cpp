@@ -82,7 +82,7 @@ void DisplayManager::createDisplay() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	m_window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE.c_str(), NULL, NULL);
+	m_window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, NULL, NULL);
     if(!m_window) {
         glfwTerminate();
         throw std::runtime_error("Failed to create window!");
