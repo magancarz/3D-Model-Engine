@@ -1,13 +1,16 @@
 #include "Loader.h"
 
-RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vector<float>& textureCoords,
-	const std::vector<float>& normals, const std::vector<unsigned int>& indices) {
+RawModel* Loader::loadToVAO(const std::vector<float>& positions,
+							const std::vector<float>& textureCoords,
+							const std::vector<float>& normals,
+							const std::vector<unsigned int>& indices) {
 	unsigned int vaoID = createVAO();
 	bindIndicesBuffer(indices.data(), indices.size());
 	storeDataInAttributeList(0, 3, positions.data(), positions.size());
 	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
 	storeDataInAttributeList(2, 3, normals.data(), normals.size());
 	unbindVAO();
+
 	return new RawModel(vaoID, indices.size());
 }
 
@@ -20,6 +23,7 @@ RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vect
 	storeDataInAttributeList(2, 3, normals.data(), normals.size());
 	storeDataInAttributeList(3, 3, tangents.data(), tangents.size());
 	unbindVAO();
+
 	return new RawModel(vaoID, indices.size());
 }
 
@@ -28,6 +32,7 @@ int Loader::loadToVAO(std::vector<float>& positions, std::vector<float>& texture
 	storeDataInAttributeList(0, 2, positions.data(), positions.size());
 	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
 	unbindVAO();
+
 	return vaoID;
 }
 
@@ -38,6 +43,7 @@ int Loader::createEmptyVBO(std::vector<GLfloat>& data) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(GLfloat), &data[0], GL_STREAM_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	return vbo;
 }
 
@@ -83,6 +89,25 @@ unsigned int Loader::loadTexture(const std::string& fileName, float lodValue) {
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, lodValue);
+	
+	// check if anisotropic filtering is supported
+	int no_of_extensions = 0;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &no_of_extensions);
+
+	std::set<std::string> ogl_extensions;
+	for(int i = 0; i < no_of_extensions; i++) {
+		ogl_extensions.insert((const char*) glGetStringi(GL_EXTENSIONS, i));
+	}
+
+	bool anisotropicFilteringEnabled = ogl_extensions.find("GL_EXT_texture_filter_anisotropic") != ogl_extensions.end();
+	if(anisotropicFilteringEnabled) {
+		float maxAniso = 0.0f;
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAniso);
+		float amount = std::min(4.0f, maxAniso);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
+	} else {
+		std::cout << "WARNING: Anisotropic filtering is not supported\n";
+	}
 
 	//Clean up
 	stbi_image_free(data->getData());
@@ -150,6 +175,7 @@ unsigned int Loader::createVAO() {
 	glGenVertexArrays(1, &vaoID);
 	vaos.push_back(vaoID);
 	glBindVertexArray(vaoID);
+
 	return vaoID;
 }
 
