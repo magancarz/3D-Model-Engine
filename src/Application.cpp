@@ -19,7 +19,7 @@
 #include "particles/ParticleMaster.h"
 #include "particles/ParticleSystem.h"
 
-///GLOBAL VARIABLES///
+//=====GLOBAL VARIABLES=====//
 //Main loop control
 bool isCloseRequested = false;
 
@@ -33,23 +33,23 @@ DisplayManager display;
 ParticleMaster* particleMaster;
 
 int main(void) {
-    /* Initialize the library */
+    /* initialize the glfw library */
     if(!glfwInit())
         return -1;
 
-    //Create window
+    /* initialize display */
     display.createDisplay();
 
-    //Logic
+    /* initialize model loaders */
     Loader* loader = new Loader;
     NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
+
+    /* initialize fonts */
+    FontType font(loader->loadFontTexture("res/textures/candara.png"), "res/textures/candara.fnt");
     textMaster.init(loader);
 
-    FontType font(loader->loadFontTexture("res/textures/candara.png"), "res/textures/candara.fnt");
-    GUIText text("Sample text!", 3, &font, glm::vec2(0, 0), 1.0f, true);
-
-    //Terrain
-    TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grassy2.png"));
+    /* create terrain */
+    TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grass.png"));
     TerrainTexture rTexture(loader->loadTexture("res/textures/mud.png"));
     TerrainTexture gTexture(loader->loadTexture("res/textures/grassFlowers.png"));
     TerrainTexture bTexture(loader->loadTexture("res/textures/path.png"));
@@ -57,17 +57,25 @@ int main(void) {
     TerrainTexturePack* texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
     TerrainTexture blendMap(loader->loadTexture("res/textures/blendMap.png"));
 
-    Terrain* terrain1 = new Terrain(0, 0, loader, texturePack, &blendMap);
+    Terrain* terrain = new Terrain(0, 0, loader, texturePack, &blendMap);
 
-    //Load models
-    RawModel* stallModel = loadOBJ("res/models/stall.obj", *loader);
-    ModelTexture stallTexture(loader->loadTexture("res/models/stallTexture.png"));
+    /* load 3d models */
+    //=====OBJECTS=====///
+    RawModel* stallModel = loadOBJ("res/models/stall.obj", loader);
+    ModelTexture stallTexture(loader->loadTexture("res/textures/stallTexture.png"));
     TexturedModel texturedStallModel(*stallModel, stallTexture);
-    ModelTexture& texture = texturedStallModel.getTexture();
-    //texture.setShineDamper(10);
-    //texture.setReflectivity(5.0f);
-    Entity stall(texturedStallModel, glm::vec3(10, 0, 10), 0, 0, 0, 1);
+    //ModelTexture& stallTexture = texturedStallModel.getTexture();
+    //stallTexture.setShineDamper(10);
+    //stallTexture.setReflectivity(5.0f);
 
+    RawModel* treeModel = loadOBJ("res/models/tree.obj", loader);
+    ModelTexture treeTexture(loader->loadTexture("res/textures/tree.png"));
+    TexturedModel texturedTreeModel(*treeModel, treeTexture);
+    //ModelTexture& treeTexture = texturedTreeModel.getTexture();
+    //treeTexture.setShineDamper(10);
+    //treeTexture.setReflectivity(5.0f);
+
+    //=====NORMAL MAPPED OBJECTS=====//
     RawModel* barrelModel = normalMappedLoader->loadNormalMappedOBJ("res/models/barrel.obj", *loader);
     ModelTexture barrelTexture(loader->loadTexture("res/textures/barrel.png"));
     TexturedModel texturedBarrelModel(*barrelModel, barrelTexture);
@@ -75,49 +83,55 @@ int main(void) {
     texture2.setNormalMap(loader->loadTexture("res/textures/barrelNormal.png"));
     //texture2.setShineDamper(10);
     //texture2.setReflectivity(5.0f);
-    Entity barrel(texturedBarrelModel, glm::vec3(30, 6, 30), 0, 0, 0, 1);
     
-    //Light
-    Light* light1 = new Light(glm::vec3(0, 1000, -7000), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0, 0));
+    /* create light objects */
+    Light* sun = new Light(glm::vec3(10000, 15000, -10000), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0, 0));
     Light* light2 = new Light(glm::vec3(10, 0, 10), glm::vec3(1,0,0), glm::vec3(1, 0.01f, 0.002f));
     Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
     Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
+
     std::vector<Light*> lights;
-    lights.push_back(light1);
+    lights.push_back(sun);
     lights.push_back(light2);
     lights.push_back(light3);
     lights.push_back(light4);
 
-    //GUI
-    std::vector<GuiTexture>* guis = new std::vector<GuiTexture>;
-    GuiTexture gui(loader->loadTexture("res/textures/512px.jpg"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f));
-    guis->push_back(gui);
-
-    //Create renderer
-    MasterRenderer renderer(loader);
-
-    GuiRenderer guiRenderer(loader);
-
-    particleMaster = new ParticleMaster(loader, renderer.getProjectionMatrix());
-
-    //Create player
+    /* create player and camera */
+    //Player
     Player player(texturedStallModel, glm::vec3(100, 0, 50), 0, 0, 0, 1);
 
     //Camera
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
-    
-    //Mouse picking
-    MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix(), terrain1);
 
-    //**********Water renderer setup**********//
+    /* create renderers */
+    MasterRenderer renderer(loader, camera);
+
+    GuiRenderer guiRenderer(loader);
+
+    /* create GUI */
+    //GUIText* text = new GUIText("Sample text!", 3, &font, glm::vec2(0, 0), 1.0f, true);
+
+    std::vector<GuiTexture>* guis = new std::vector<GuiTexture>;
+    GuiTexture gui1(loader->loadTexture("res/textures/512px.jpg"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f));
+    GuiTexture shadowMap(renderer.getShadowMapTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
+    guis->push_back(gui1);
+    guis->push_back(shadowMap);
+
+    /* create particle master */
+    particleMaster = new ParticleMaster(loader, renderer.getProjectionMatrix());
+    
+    /* create mouse picker */
+    MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix(), terrain);
+
+    /* create water renderer setup */
     WaterShader* waterShader = new WaterShader();
     WaterFrameBuffers* fbos = new WaterFrameBuffers();
     WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
     std::vector<WaterTile*> waters;
-    WaterTile* water = new WaterTile(120, 140, -8);
+    WaterTile* water = new WaterTile(120, 140, 2);
     waters.push_back(water);
 
-    //Particle system
+    /* create particle systems */
     ParticleTexture* particleTexture = new ParticleTexture(loader->loadTexture("res/textures/fire.png"), 8);
     ParticleSystem* system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4.0f, 5.0f);
     system->randomizeRotation();
@@ -126,15 +140,27 @@ int main(void) {
     system->setSpeedError(0.5f);
     system->setScaleError(0.5f);
 
+    /* create entities */
+    std::vector<Entity*>* entities = new std::vector<Entity*>;
+    
+    entities->push_back(&player);
+    
+    for(int i = 0; i < 300; i++) {
+        int treeX = rand() % TERRAIN_SIZE;
+        int treeZ = rand() % TERRAIN_SIZE;
+        Entity* tree = new Entity(texturedTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, 0.0, 0.0, 5.0);
+        entities->push_back(tree);
+    }
+
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
-        player.move(*terrain1);
+        player.move(*terrain);
         camera->move();
 
         mousePicker->update();
 
-        system->generateParticles(glm::vec3(player.getPosition()));
+        //system->generateParticles(glm::vec3(player.getPosition()));
         particleMaster->update(camera);
 
         //Reset input values
@@ -143,17 +169,18 @@ int main(void) {
         /* Poll for and process events */
         glfwPollEvents();
 
+        // before any rendering takes place, render shadow map
+        renderer.renderShadowMap(entities, sun);
+
         //OpenGL calls
         glEnable(GL_CLIP_DISTANCE0);
 
         //Process terrains
-        renderer.processTerrain(terrain1);
+        renderer.processTerrain(terrain);
 
         //Process entities
-        renderer.processEntity(stall);
-        renderer.processEntity(player);
-        renderer.processNormalMapEntity(barrel);
-        
+        renderer.processEntities(entities);
+
         //Water
         fbos->bindReflectionFrameBuffer();
         float distance = 2 * (camera->getPosition().y - water->getHeight());
@@ -173,7 +200,7 @@ int main(void) {
         //Draw here
         renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
 
-        waterRenderer->render(waters, *camera, *light1);
+        waterRenderer->render(waters, *camera, *sun);
 
         //Clean up renderer
         renderer.cleanUp();
@@ -198,6 +225,8 @@ int main(void) {
     loader->cleanUp();
     textMaster.cleanUp();
 
+    delete entities;
+
     delete particleMaster;
     delete waterRenderer;
     delete waterShader;
@@ -205,7 +234,7 @@ int main(void) {
 
     delete mousePicker;
 
-    delete light1;
+    delete sun;
     delete light2;
     delete light3;
     delete light4;
@@ -219,7 +248,7 @@ int main(void) {
     delete normalMappedLoader;
     delete loader;
     delete camera;
-    delete terrain1;
+    delete terrain;
 
     display.closeDisplay();
 
