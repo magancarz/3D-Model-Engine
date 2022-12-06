@@ -82,6 +82,8 @@ void DisplayManager::createDisplay() {
 
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
+	glfwWindowHint(GLFW_SAMPLES, 4);
+
 	m_window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, NULL, NULL);
     if(!m_window) {
         glfwTerminate();
@@ -89,6 +91,8 @@ void DisplayManager::createDisplay() {
     }
 
     glfwMakeContextCurrent(m_window);
+
+	glEnable(GL_MULTISAMPLE);
 
 	glfwSetKeyCallback(m_window, keyCallback);
 	glfwSetMouseButtonCallback(m_window, mouseButtonCallback);
