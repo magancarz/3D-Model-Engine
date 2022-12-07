@@ -6,27 +6,33 @@
 #include "../skybox/SkyboxShader.h"
 #include "../skybox/SkyboxRenderer.h"
 #include "../normalMappingRenderer/NormalMappingRenderer.h"
+#include "../shadows/ShadowMapMasterRenderer.h"
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
 
 void enableCulling();
 void disableCulling();
 const float RED = 0.4f, GREEN = 0.4f, BLUE = 0.4f;
+const float FOV = 70.0f;
+const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
 
 class MasterRenderer {
 public:
-	MasterRenderer(Loader* loader);
+	MasterRenderer(Loader* loader, Camera* camera);
 	~MasterRenderer();
 
 	void render(std::vector<Light*>& lights, Camera& camera, glm::vec4 clipPlane);
+	void renderShadowMap(std::vector<Entity*>* entityList, Light* sun);
+	
 	void prepare();
 
-
 	void processEntity(Entity& entity);
+	void processEntities(std::vector<Entity*>* entityList);
 	void processNormalMapEntity(Entity& entity);
 	void processTerrain(Terrain* terrain);
 
 	inline glm::mat4 getProjectionMatrix() { return m_projectionMatrix; };
+	inline unsigned int getShadowMapTexture() { return m_shadowMapRenderer->getShadowMap(); }
 
 	void cleanUp();
 private:
@@ -41,9 +47,9 @@ private:
 
 	NormalMappingRenderer* m_normalMappingRenderer;
 
+	ShadowMapMasterRenderer* m_shadowMapRenderer;
+
 	glm::mat4 m_projectionMatrix;
-	const float FOV = 70.0f;
-	const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
 
 	std::map<TexturedModel*, std::vector<Entity*>*>* m_entities;
 	std::map<TexturedModel*, std::vector<Entity*>*>* m_normalMappingEntities;

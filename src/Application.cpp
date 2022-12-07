@@ -18,6 +18,8 @@
 #include "fontRendering/TextMaster.h"
 #include "particles/ParticleMaster.h"
 #include "particles/ParticleSystem.h"
+#include "renderEngine/FBO.h"
+#include "renderEngine/PostProcessing.h"
 
 //=====GLOBAL VARIABLES=====//
 //Main loop control
@@ -112,10 +114,10 @@ int main(void) {
     //GUIText* text = new GUIText("Sample text!", 3, &font, glm::vec2(0, 0), 1.0f, true);
 
     std::vector<GuiTexture>* guis = new std::vector<GuiTexture>;
-    GuiTexture gui1(loader->loadTexture("res/textures/512px.jpg"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f));
-    GuiTexture shadowMap(renderer.getShadowMapTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
-    guis->push_back(gui1);
-    guis->push_back(shadowMap);
+    //GuiTexture gui1(loader->loadTexture("res/textures/512px.jpg"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f));
+    //GuiTexture shadowMap(renderer.getShadowMapTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
+    //guis->push_back(gui1);
+    //guis->push_back(shadowMap);
 
     /* create particle master */
     particleMaster = new ParticleMaster(loader, renderer.getProjectionMatrix());
@@ -144,13 +146,17 @@ int main(void) {
     std::vector<Entity*>* entities = new std::vector<Entity*>;
     
     entities->push_back(&player);
-    
+
     for(int i = 0; i < 300; i++) {
         int treeX = rand() % TERRAIN_SIZE;
         int treeZ = rand() % TERRAIN_SIZE;
         Entity* tree = new Entity(texturedTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, 0.0, 0.0, 5.0);
         entities->push_back(tree);
     }
+    
+    /* post-processing effects */
+    FBO* fbo = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_RENDER_BUFFER);
+    POST_PROCESSING_INIT(loader);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
@@ -170,7 +176,7 @@ int main(void) {
         glfwPollEvents();
 
         // before any rendering takes place, render shadow map
-        renderer.renderShadowMap(entities, sun);
+        //renderer.renderShadowMap(entities, sun);
 
         //OpenGL calls
         glEnable(GL_CLIP_DISTANCE0);
@@ -193,20 +199,24 @@ int main(void) {
 
         fbos->bindRefractionFrameBuffer();
         renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight() + 1.0f));
-        fbos->unbindCurrentFrameBuffer();
-
-        glDisable(GL_CLIP_DISTANCE0);
 
         //Draw here
+        glDisable(GL_CLIP_DISTANCE0);
+        fbos->unbindCurrentFrameBuffer();
+
+        fbo->bindFrameBuffer();
         renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
 
         waterRenderer->render(waters, *camera, *sun);
 
-        //Clean up renderer
-        renderer.cleanUp();
-
         //Particles
         particleMaster->renderParticles(camera);
+        
+        fbo->unbindFrameBuffer();
+        POST_PROCESSING_DRAW(fbo->getColorTexture());
+
+        //Clean up renderer
+        renderer.cleanUp();
 
         //Render GUI
         guiRenderer.render(guis);
@@ -224,6 +234,10 @@ int main(void) {
     //Clean up resources
     loader->cleanUp();
     textMaster.cleanUp();
+    fbo->cleanUp();
+    POST_PROCESSING_CLEAN_UP();
+
+    delete fbo;
 
     delete entities;
 

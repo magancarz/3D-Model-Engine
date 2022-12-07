@@ -9,7 +9,7 @@ void disableCulling() {
 	glDisable(GL_CULL_FACE);
 }
 
-MasterRenderer::MasterRenderer(Loader* loader) {
+MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
 	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;
 	m_normalMappingEntities = new std::map<TexturedModel*, std::vector<Entity*>*>;
 	m_terrains = new std::vector<Terrain*>;
@@ -23,6 +23,7 @@ MasterRenderer::MasterRenderer(Loader* loader) {
 	m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
 	m_skyboxRenderer = new SkyboxRenderer(loader, m_projectionMatrix);
 	m_normalMappingRenderer = new NormalMappingRenderer(m_projectionMatrix);
+	m_shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 
 	m_shader->start();
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
@@ -35,6 +36,7 @@ MasterRenderer::~MasterRenderer() {
 	m_terrainShader->cleanUp();
 	m_shader->cleanUp();
 
+	delete m_shadowMapRenderer;
 	delete m_normalMappingRenderer;
 	delete m_skyboxRenderer;
 	delete m_terrainRenderer;
@@ -70,12 +72,24 @@ void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera, glm::ve
 	m_skyboxRenderer->render(camera, RED, GREEN, BLUE);
 }
 
+void MasterRenderer::renderShadowMap(std::vector<Entity*>* entityList, Light* sun) {
+	processEntities(entityList);
+	m_shadowMapRenderer->render(m_entities, sun);
+	m_entities->clear();
+}
+
 void MasterRenderer::prepare() {
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(RED, GREEN, BLUE, 1);
 }
 
+void MasterRenderer::processEntities(std::vector<Entity*>* entityList) {
+	for(std::vector<Entity*>::iterator it = entityList->begin(); it != entityList->end(); it++) {
+		Entity* entity = *it;
+		processEntity(*entity);
+	}
+}
 
 void MasterRenderer::processEntity(Entity& entity) {
 	TexturedModel& entityModel = entity.getTexturedModel();
@@ -118,5 +132,16 @@ void MasterRenderer::cleanUp() {
 }
 
 void MasterRenderer::createProjectionMatrix() {
-	m_projectionMatrix = glm::perspective(glm::radians(FOV), (float)(WINDOW_WIDTH / WINDOW_HEIGHT), NEAR_PLANE, FAR_PLANE);
+	m_projectionMatrix = glm::mat4(1.0f);
+	float aspectRatio = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
+	float yScale = (float) ((1.0f / glm::tan(glm::radians(FOV / 2.0f))));
+	float xScale = yScale / aspectRatio;
+	float frustumLength = FAR_PLANE - NEAR_PLANE;
+
+	m_projectionMatrix[0][0] = xScale;
+	m_projectionMatrix[1][1] = yScale;
+	m_projectionMatrix[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
+	m_projectionMatrix[2][3] = -1;
+	m_projectionMatrix[3][2] = -((2.0f * NEAR_PLANE * FAR_PLANE) / frustumLength);
+	m_projectionMatrix[3][3] = 0;
 }

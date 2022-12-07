@@ -69,7 +69,7 @@ void removeUnusedVertices(std::vector<Vertex*>& vertices) {
 	}
 }
 
-RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
+RawModel* loadOBJ(const std::string& fileName, Loader* loader) {
 	std::ifstream inFile(fileName, std::ios::in);
 
 	if(!inFile) {
@@ -176,6 +176,6 @@ RawModel* loadOBJ(const std::string& fileName, Loader& loader) {
 	for(int i = 0; i < (int)vertices.size(); i++)
 		delete vertices[i];
 
-	return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
+	return loader->loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 
 }
