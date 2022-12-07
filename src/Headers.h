@@ -12,5 +12,6 @@
 #include <map>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 #include "toolbox/Maths.h"
