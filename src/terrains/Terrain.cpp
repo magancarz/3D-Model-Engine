@@ -1,7 +1,7 @@
 #include "Terrain.h"
 
 Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack* texturePack, TerrainTexture* blendMap)
-	: m_x(gridX* SIZE), m_z(gridZ* SIZE), m_texturePack(texturePack), m_blendMap(blendMap) {
+	: m_x(gridX * TERRAIN_SIZE), m_z(gridZ * TERRAIN_SIZE), m_texturePack(texturePack), m_blendMap(blendMap) {
 	m_model = generateTerrain(loader, "res/textures/heightMap.png");
 }
 
@@ -13,8 +13,6 @@ Terrain::~Terrain() {
 }
 
 RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
-	HeightsGenerator* generator = new HeightsGenerator();
-	
 	int width, height, channels;
 	unsigned char* image = stbi_load(heightMap.c_str(), &width, &height, &channels, STBI_rgb_alpha);
 	if(image == NULL)
@@ -22,7 +20,8 @@ RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 
 	TextureData* textureData = new TextureData(image, width, height);
 
-	int VERTEX_COUNT = 128;
+
+	int VERTEX_COUNT = m_heightsSize = height;
 	int count = VERTEX_COUNT * VERTEX_COUNT;
 
 	m_heights = new float*[VERTEX_COUNT];
@@ -36,13 +35,13 @@ RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 
 	for(int i = 0; i < VERTEX_COUNT; i++) {
 		for(int j = 0; j < VERTEX_COUNT; j++) {
-			vertices.push_back((float)j / ((float)VERTEX_COUNT - 1) * SIZE);
-			float height = getHeight(j, i, generator);
+			vertices.push_back((float)j / ((float)VERTEX_COUNT - 1) * TERRAIN_SIZE);
+			float height = getHeight(j, i, textureData);
 			m_heights[j][i] = height;
 			vertices.push_back(height);
-			vertices.push_back((float)i/((float)VERTEX_COUNT - 1) * SIZE);
+			vertices.push_back((float)i/((float)VERTEX_COUNT - 1) * TERRAIN_SIZE);
 
-			glm::vec3 normal = calculateNormal(j, i, generator);
+			glm::vec3 normal = calculateNormal(j, i, textureData);
 			normals.push_back(normal.x);
 			normals.push_back(normal.y);
 			normals.push_back(normal.z);
@@ -72,15 +71,29 @@ RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
 	return loader->loadToVAO(vertices, textureCoords, normals, indices);
 }
 
-float Terrain::getHeight(int x, int z, HeightsGenerator* generator) {
-	return generator->generateHeight(x, z);
+float Terrain::getHeight(int x, int z, TextureData* textureData) {
+	if(x < 0 || x >= textureData->getWidth() || z < 0 || z >= textureData->getHeight())
+		return 0;
+
+	int index = 4 * (x + z * textureData->getWidth());
+	unsigned char* data = textureData->getData();
+	int r = *(data + index);
+	int g = *(data + index + 1);
+	int b = *(data + index + 2);
+
+	float height = r + g + b;
+	height -= MAX_PIXEL_COLOR / 2;
+	height /= MAX_PIXEL_COLOR / 2;
+	height *= TERRAIN_MAX_HEIGHT;
+
+	return height;
 }
 
-glm::vec3 Terrain::calculateNormal(int x, int z, HeightsGenerator* generator) {
-	float heightL = getHeight(x - 1, z, generator);
-	float heightR = getHeight(x + 1, z, generator);
-	float heightU = getHeight(x, z - 1, generator);
-	float heightD = getHeight(x, z + 1, generator);
+glm::vec3 Terrain::calculateNormal(int x, int z, TextureData* textureData) {
+	float heightL = getHeight(x - 1, z, textureData);
+	float heightR = getHeight(x + 1, z, textureData);
+	float heightU = getHeight(x, z - 1, textureData);
+	float heightD = getHeight(x, z + 1, textureData);
 
 	glm::vec3 normal(heightL - heightR, 2.0f, heightD - heightU);
 	normal = glm::normalize(normal);
@@ -91,7 +104,7 @@ glm::vec3 Terrain::calculateNormal(int x, int z, HeightsGenerator* generator) {
 float Terrain::getHeightOfTerrain(float worldX, float worldZ) {
 	float terrainX = worldX - m_x;
 	float terrainZ = worldZ - m_z;
-	float gridSquareSize = SIZE / ((float)m_heightsSize - 1);
+	float gridSquareSize = TERRAIN_SIZE / ((float)m_heightsSize - 1);
 	int gridX = (int) glm::floor(terrainX / gridSquareSize);
 	int gridZ = (int) glm::floor(terrainZ / gridSquareSize);
 	if(gridX >= m_heightsSize - 1 || gridZ >= m_heightsSize - 1 || gridX < 0 || gridZ < 0) 
