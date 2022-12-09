@@ -21,6 +21,8 @@
 #include "renderEngine/FBO.h"
 #include "renderEngine/PostProcessing.h"
 
+#define POST_PROCESSING_ENABLED false
+
 //=====GLOBAL VARIABLES=====//
 //Main loop control
 bool isCloseRequested = false;
@@ -159,7 +161,7 @@ int main(void) {
     
     /* post-processing effects */
     FBO* fbo = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_RENDER_BUFFER);
-    POST_PROCESSING_INIT(loader);
+    if(POST_PROCESSING_ENABLED) POST_PROCESSING_INIT(loader);
 
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
@@ -207,7 +209,7 @@ int main(void) {
         glDisable(GL_CLIP_DISTANCE0);
         fbos->unbindCurrentFrameBuffer();
 
-        fbo->bindFrameBuffer();
+        if(POST_PROCESSING_ENABLED) fbo->bindFrameBuffer();
         renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
 
         waterRenderer->render(waters, *camera, *sun);
@@ -215,8 +217,8 @@ int main(void) {
         //Particles
         particleMaster->renderParticles(camera);
         
-        fbo->unbindFrameBuffer();
-        POST_PROCESSING_DRAW(fbo->getColorTexture());
+        if(POST_PROCESSING_ENABLED) fbo->unbindFrameBuffer();
+        if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(fbo->getColorTexture());
 
         //Clean up renderer
         renderer.cleanUp();
@@ -238,7 +240,7 @@ int main(void) {
     loader->cleanUp();
     textMaster.cleanUp();
     fbo->cleanUp();
-    POST_PROCESSING_CLEAN_UP();
+    if(POST_PROCESSING_ENABLED) POST_PROCESSING_CLEAN_UP();
 
     delete fbo;
 
