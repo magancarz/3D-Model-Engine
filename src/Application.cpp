@@ -42,6 +42,9 @@ int main(void) {
     /* initialize display */
     display.createDisplay();
 
+    /* check OpenGL version */
+    std::cout << "OpenGL version supported by this platform: " << glGetString(GL_VERSION) << std::endl;
+
     /* initialize model loaders */
     Loader* loader = new Loader;
     NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
