@@ -1,7 +1,7 @@
 #include "FontShader.h"
 
-const std::string VERTEX_FILE = "res/shaders/fontVert.shader";
-const std::string FRAGMENT_FILE = "res/shaders/fontFrag.shader";
+const std::string VERTEX_FILE = "res/shaders/fontVert.glsl";
+const std::string FRAGMENT_FILE = "res/shaders/fontFrag.glsl";
 
 FontShader::FontShader() : ShaderProgram(VERTEX_FILE, FRAGMENT_FILE)
 {

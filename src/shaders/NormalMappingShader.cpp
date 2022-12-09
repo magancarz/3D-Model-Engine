@@ -1,7 +1,7 @@
 #include "NormalMappingShader.h"
 
 NormalMappingShader::NormalMappingShader()
-	: ShaderProgram("res/shaders/normalMapVert.shader", "res/shaders/normalMapFrag.shader") {
+	: ShaderProgram("res/shaders/normalMapVert.glsl", "res/shaders/normalMapFrag.glsl") {
 	bindAttributes();
 	getAllUniformLocations();
 }

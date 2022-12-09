@@ -1,7 +1,7 @@
 #include "GuiShader.h"
 
 GuiShader::GuiShader()
-	: ShaderProgram("res/shaders/guiVert.shader", "res/shaders/guiFrag.shader") {
+	: ShaderProgram("res/shaders/guiVert.glsl", "res/shaders/guiFrag.glsl") {
 	getAllUniformLocations();
 	bindAttributes();
 }

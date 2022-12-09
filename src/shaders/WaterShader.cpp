@@ -1,7 +1,7 @@
 #include "WaterShader.h"
 
 WaterShader::WaterShader()
-	: ShaderProgram("res/shaders/waterVert.shader", "res/shaders/waterFrag.shader") {
+	: ShaderProgram("res/shaders/waterVert.glsl", "res/shaders/waterFrag.glsl") {
 	bindAttributes();
 	getAllUniformLocations();
 }

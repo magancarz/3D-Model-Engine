@@ -1,7 +1,7 @@
 #include "StaticShader.h"
 
 StaticShader::StaticShader()
-	: ShaderProgram("res/shaders/vert.shader", "res/shaders/frag.shader" ), location_transformationMatrix(0) {
+	: ShaderProgram("res/shaders/vert.glsl", "res/shaders/frag.glsl" ), location_transformationMatrix(0) {
 	bindAttributes();
 	getAllUniformLocations();
 }

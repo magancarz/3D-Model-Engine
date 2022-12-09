@@ -1,7 +1,7 @@
 #include "TerrainShader.h"
 
 TerrainShader::TerrainShader()
-	: ShaderProgram("res/shaders/terrainVert.shader", "res/shaders/terrainFrag.shader"), location_transformationMatrix(0) {
+	: ShaderProgram("res/shaders/terrainVert.glsl", "res/shaders/terrainFrag.glsl"), location_transformationMatrix(0) {
 	bindAttributes();
 	getAllUniformLocations();
 }

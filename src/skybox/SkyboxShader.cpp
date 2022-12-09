@@ -1,6 +1,6 @@
 #include "SkyboxShader.h"
 
-SkyboxShader::SkyboxShader() : ShaderProgram("res/shaders/skyboxVertShader.shader", "res/shaders/skyboxFragShader.shader") {
+SkyboxShader::SkyboxShader() : ShaderProgram("res/shaders/skyboxVertShader.glsl", "res/shaders/skyboxFragShader.glsl") {
 	bindAttributes();
 	getAllUniformLocations();
 }

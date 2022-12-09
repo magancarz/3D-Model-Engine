@@ -1,7 +1,7 @@
 #include "FontShader.h"
 
 FontShader::FontShader()
-	: ShaderProgram("res/shaders/fontVert.shader", "res/shaders/fontFrag.shader") {
+	: ShaderProgram("res/shaders/fontVert.glsl", "res/shaders/fontFrag.glsl") {
 	bindAttributes();
 	getAllUniformLocations();
 }

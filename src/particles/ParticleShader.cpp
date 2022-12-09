@@ -1,7 +1,7 @@
 #include "ParticleShader.h"
 
 ParticleShader::ParticleShader()
-	: ShaderProgram("res/shaders/particleVert.shader", "res/shaders/particleFrag.shader") {
+	: ShaderProgram("res/shaders/particleVert.glsl", "res/shaders/particleFrag.glsl") {
 	getAllUniformLocations();
 	bindAttributes();
 }
