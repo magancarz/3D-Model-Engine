@@ -21,8 +21,6 @@
 #include "renderEngine/FBO.h"
 #include "renderEngine/PostProcessing.h"
 
-#define POST_PROCESSING_ENABLED false
-
 //=====GLOBAL VARIABLES=====//
 //Main loop control
 bool isCloseRequested = false;
@@ -35,6 +33,9 @@ DisplayManager display;
 
 //Particle master
 ParticleMaster* particleMaster;
+
+//enabled/disabled post-processing
+bool POST_PROCESSING_ENABLED = false;
 
 int main(void) {
     /* initialize the glfw library */
