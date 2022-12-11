@@ -13,5 +13,6 @@
 #include <fstream>
 #include <sstream>
 #include <cstdlib>
+#include <set>
 
 #include "toolbox/Maths.h"

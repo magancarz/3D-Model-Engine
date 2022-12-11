@@ -54,6 +54,15 @@ void StaticShader::loadOffset(glm::vec2 offset) {
 	loadVector2f(location_offset, offset);
 }
 
+void StaticShader::connectTextureUnits() {
+	loadInt(location_modelTexture, 0);
+	loadInt(location_specularMap, 1);
+}
+
+void StaticShader::loadUseSpecularMap(bool useMap) {
+	loadBoolean(location_usesSpecularMap, useMap);
+}
+
 void StaticShader::loadClipPlane(glm::vec4 plane) {
 	loadVector4f(location_plane, plane);
 }
@@ -89,4 +98,9 @@ void StaticShader::getAllUniformLocations() {
 
 	//Clip plane
 	location_plane = getUniformLocation("plane");
+
+	//Specular map uniforms
+	location_specularMap = getUniformLocation("specularSampler");
+	location_modelTexture = getUniformLocation("textureSampler");
+	location_usesSpecularMap = getUniformLocation("usesSpecularMap");
 }

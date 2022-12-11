@@ -4,6 +4,7 @@ EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix)
 	: m_shader(shader), m_projectionMatrix(projectionMatrix) {
 	m_shader->start();
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
+	m_shader->connectTextureUnits();
 	m_shader->stop();
 }
 
@@ -41,6 +42,11 @@ void EntityRenderer::prepareTexturedModel(TexturedModel& texturedModel) {
 	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture.getID());
+	m_shader->loadUseSpecularMap(texture.hasSpecularMap());
+	if(texture.hasSpecularMap()) {
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture.getSpecularMap());
+	}
 }
 
 void EntityRenderer::unbindTexturedModel() {

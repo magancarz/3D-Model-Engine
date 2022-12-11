@@ -20,6 +20,9 @@
 #include "particles/ParticleSystem.h"
 #include "renderEngine/FBO.h"
 #include "renderEngine/PostProcessing.h"
+#include "debugging/Debugging.h"
+
+#define DEBUG_ENABLED true
 
 //=====GLOBAL VARIABLES=====//
 //Main loop control
@@ -37,6 +40,20 @@ ParticleMaster* particleMaster;
 //enabled/disabled post-processing
 bool POST_PROCESSING_ENABLED = false;
 
+void GLAPIENTRY
+MessageCallback( GLenum source,
+                 GLenum type,
+                 GLuint id,
+                 GLenum severity,
+                 GLsizei length,
+                 const GLchar* message,
+                 const void* userParam )
+{
+  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, severity, message );
+}
+
 int main(void) {
     /* initialize the glfw library */
     if(!glfwInit())
@@ -44,6 +61,12 @@ int main(void) {
 
     /* initialize display */
     display.createDisplay();
+
+    /* enable debugging */
+    if(DEBUG_ENABLED) {
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(MessageCallback, 0);
+    }
 
     /* check OpenGL version */
     std::cout << "OpenGL version supported by this platform: " << glGetString(GL_VERSION) << std::endl;
@@ -80,6 +103,21 @@ int main(void) {
     ModelTexture treeTexture(loader->loadTexture("res/textures/tree.png"));
     TexturedModel texturedTreeModel(*treeModel, treeTexture);
     //ModelTexture& treeTexture = texturedTreeModel.getTexture();
+    //treeTexture.setShineDamper(10);
+    //treeTexture.setReflectivity(5.0f);
+
+    RawModel* cherryTreeModel = loadOBJ("res/models/cherry.obj", loader);
+    ModelTexture cherryTreeTexture(loader->loadTexture("res/textures/cherry.png"));
+    TexturedModel texturedCherryTreeModel(*cherryTreeModel, cherryTreeTexture);
+    texturedCherryTreeModel.getTexture().setShineDamper(10);
+    texturedCherryTreeModel.getTexture().setReflectivity(0.5f);
+    texturedCherryTreeModel.getTexture().setSpecularMap(loader->loadTexture("res/textures/cherryS.png"));
+
+    RawModel* lanternModel = loadOBJ("res/models/lantern.obj", loader);
+    ModelTexture lanternTexture(loader->loadTexture("res/textures/lantern.png"));
+    TexturedModel texturedLanternModel(*lanternModel, lanternTexture);
+    texturedLanternModel.getTexture().setSpecularMap(loader->loadTexture("res/textures/lanternS.png"));
+
     //treeTexture.setShineDamper(10);
     //treeTexture.setReflectivity(5.0f);
 
@@ -153,10 +191,13 @@ int main(void) {
     
     entities->push_back(&player);
 
+    Entity* lantern = new Entity(texturedLanternModel, glm::vec3(80, 0, 50), 0, 0, 0, 1);
+    entities->push_back(lantern);
+
     for(int i = 0; i < 300; i++) {
         int treeX = rand() % TERRAIN_SIZE;
         int treeZ = rand() % TERRAIN_SIZE;
-        Entity* tree = new Entity(texturedTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, 0.0, 0.0, 5.0);
+        Entity* tree = new Entity(texturedCherryTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, 0.0, 0.0, 5.0);
         entities->push_back(tree);
     }
     
@@ -235,6 +276,9 @@ int main(void) {
 
         //Check if window needs to close
         display.checkCloseRequests();
+
+        /* some error checking */
+	    //glCheckError();
     }
 
     //Clean up resources
