@@ -9,11 +9,11 @@ Camera::Camera(Player& player, glm::vec3 position)
 	m_right = glm::vec3(0.0f);
 	m_up = m_worldUp;
 
-	m_pitch = 0.0f;
-	m_yaw = -90.0f;
+	m_pitch = 10.0f;
+	m_yaw = 0.0f;
 	m_roll = 0.0f;
 
-	updateCameraVectors();
+	//updateCameraVectors();
 }
 
 void Camera::invertPitch() {
@@ -21,11 +21,17 @@ void Camera::invertPitch() {
 }
 
 glm::mat4 Camera::getView() {
-	return glm::lookAt(
-		m_position,
-		m_player.getPosition(),
-		m_up
-	);
+	glm::mat4 viewMatrix = glm::mat4(1.0f); // identity matrix
+
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(getPitch()), glm::vec3(1, 0, 0));
+	viewMatrix = glm::rotate(viewMatrix, glm::radians(getYaw()), glm::vec3(0, 1, 0));
+
+	glm::vec3 cameraPos = getPosition();
+	glm::vec3 negativeCameraPos = glm::vec3(-cameraPos[0], -cameraPos[1], -cameraPos[2]);
+
+	viewMatrix = glm::translate(viewMatrix, negativeCameraPos);
+
+	return viewMatrix;
 }
 
 void Camera::rotate() {
@@ -52,6 +58,9 @@ void Camera::move() {
 	float horizontalDistance = calculateHorizontalDistance();
 	float verticalDistance = calculateVerticalDistance();
 	calculateCameraPosition(horizontalDistance, verticalDistance);
+
+	m_yaw = 180.f - (m_player.getRotY() + m_angleAroundThePlayer);
+	m_yaw = (float) fmod(m_yaw, 360.f);
 
 	/*
 	if(inputManager.isKeyDown(GLFW_KEY_W))
