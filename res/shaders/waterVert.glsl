@@ -16,7 +16,12 @@ uniform vec3 lightPosition;
 const float tiling = 4.0;
 
 void main(void) {
+	//local space -> world space
 	vec4 worldPosition = model * vec4(position.x, 0.0, position.y, 1.0);
+
+	//world space -> eye space
+	vec4 positionRelativeToCam = view * worldPosition;
+
 	clipSpace = proj * view * worldPosition;
 	gl_Position = clipSpace;
 	textureCoords = vec2(position.x / 2.0 + 0.5, position.y / 2.0 + 0.5) * tiling;

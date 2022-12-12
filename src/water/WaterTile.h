@@ -1,6 +1,6 @@
 #pragma once
 
-static constexpr float WATER_TILE_SIZE = 60;
+static constexpr float WATER_TILE_SIZE = 400;
 
 class WaterTile {
 public:

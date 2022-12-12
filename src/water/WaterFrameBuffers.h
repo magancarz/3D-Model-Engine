@@ -26,11 +26,11 @@ private:
 	int createDepthTextureAttachment(int width, int height);
 	int createDepthBufferAttachment(int width, int height);
 
-	static constexpr int REFLECTION_WIDTH = 320;
-	static constexpr int REFLECTION_HEIGHT = 180;
+	static constexpr int REFLECTION_WIDTH = WINDOW_WIDTH / 2;
+	static constexpr int REFLECTION_HEIGHT = WINDOW_HEIGHT / 2;
 
-	static constexpr int REFRACTION_WIDTH = 1280;
-	static constexpr int REFRACTION_HEIGHT = 720;
+	static constexpr int REFRACTION_WIDTH = WINDOW_WIDTH;
+	static constexpr int REFRACTION_HEIGHT = WINDOW_HEIGHT;
 
 	unsigned int m_reflectionFrameBuffer,
 		m_reflectionTexture,

@@ -15,7 +15,7 @@ private:
 	void unbind();
 	void setUpVAO(Loader& loader);
 
-	static constexpr float WAVE_SPEED = 0.3f;
+	static constexpr float WAVE_SPEED = 0.05f;
 
 	RawModel* quad;
 	WaterShader* m_shader;

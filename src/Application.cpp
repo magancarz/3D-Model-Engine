@@ -22,7 +22,7 @@
 #include "renderEngine/PostProcessing.h"
 #include "debugging/Debugging.h"
 
-#define DEBUG_ENABLED true
+#define DEBUG_ENABLED false
 
 //=====GLOBAL VARIABLES=====//
 //Main loop control
@@ -88,7 +88,7 @@ int main(void) {
     TerrainTexturePack* texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
     TerrainTexture blendMap(loader->loadTexture("res/textures/blendMap.png"));
 
-    Terrain* terrain = new Terrain(0, 0, loader, texturePack, &blendMap);
+    Terrain* terrain = new Terrain(0, 0, loader, texturePack, nullptr);
 
     /* load 3d models */
     //=====OBJECTS=====///
@@ -144,7 +144,7 @@ int main(void) {
 
     /* create player and camera */
     //Player
-    Player player(texturedStallModel, glm::vec3(100, 0, 50), 0, 0, 0, 1);
+    Player player(texturedStallModel, glm::vec3(280, 0, 208), 0, 0, 0, 1);
 
     //Camera
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
@@ -174,8 +174,10 @@ int main(void) {
     WaterFrameBuffers* fbos = new WaterFrameBuffers();
     WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
     std::vector<WaterTile*> waters;
-    WaterTile* water = new WaterTile(120, 140, 2);
+    WaterTile* water = new WaterTile(400, 400, 0);
     waters.push_back(water);
+    //GuiTexture waterGui(fbos->getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
+    //guis->push_back(waterGui);
 
     /* create particle systems */
     ParticleTexture* particleTexture = new ParticleTexture(loader->loadTexture("res/textures/fire.png"), 8);
@@ -239,13 +241,13 @@ int main(void) {
         float distance = 2 * (camera->getPosition().y - water->getHeight());
         camera->getPosition().y -= distance;
         camera->invertPitch();
-        renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water->getHeight() + 1.0f));
+        renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water->getHeight()));
         camera->getPosition().y += distance;
         camera->invertPitch();
         fbos->unbindCurrentFrameBuffer();
 
         fbos->bindRefractionFrameBuffer();
-        renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight() + 1.0f));
+        renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight()));
 
         //Draw here
         glDisable(GL_CLIP_DISTANCE0);
