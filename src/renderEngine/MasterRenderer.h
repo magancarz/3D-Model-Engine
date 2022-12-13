@@ -12,7 +12,7 @@
 
 void enableCulling();
 void disableCulling();
-const float RED = 0.4f, GREEN = 0.4f, BLUE = 0.4f;
+const float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
 const float FOV = 70.0f;
 const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
 

@@ -109,9 +109,9 @@ int main(void) {
     RawModel* cherryTreeModel = loadOBJ("res/models/cherry.obj", loader);
     ModelTexture cherryTreeTexture(loader->loadTexture("res/textures/cherry.png"));
     TexturedModel texturedCherryTreeModel(*cherryTreeModel, cherryTreeTexture);
-    texturedCherryTreeModel.getTexture().setShineDamper(10);
-    texturedCherryTreeModel.getTexture().setReflectivity(0.5f);
-    texturedCherryTreeModel.getTexture().setSpecularMap(loader->loadTexture("res/textures/cherryS.png"));
+    //texturedCherryTreeModel.getTexture().setShineDamper(10);
+    //texturedCherryTreeModel.getTexture().setReflectivity(0.5f);
+    //texturedCherryTreeModel.getTexture().setSpecularMap(loader->loadTexture("res/textures/cherryS.png"));
 
     RawModel* lanternModel = loadOBJ("res/models/lantern.obj", loader);
     ModelTexture lanternTexture(loader->loadTexture("res/textures/lantern.png"));
@@ -132,7 +132,7 @@ int main(void) {
     
     /* create light objects */
     Light* sun = new Light(glm::vec3(10000, 15000, -10000), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0, 0));
-    Light* light2 = new Light(glm::vec3(10, 0, 10), glm::vec3(1,0,0), glm::vec3(1, 0.01f, 0.002f));
+    Light* light2 = new Light(glm::vec3(269, 12, 228), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
     Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
     Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
 
@@ -144,7 +144,7 @@ int main(void) {
 
     /* create player and camera */
     //Player
-    Player player(texturedStallModel, glm::vec3(280, 0, 208), 0, 0, 0, 1);
+    Player player(texturedStallModel, glm::vec3(280, 0, 208), 0, 0, 0, 0.000001f);
 
     //Camera
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
@@ -193,13 +193,18 @@ int main(void) {
     
     entities->push_back(&player);
 
-    Entity* lantern = new Entity(texturedLanternModel, glm::vec3(80, 0, 50), 0, 0, 0, 1);
+    Entity* lantern = new Entity(texturedLanternModel, glm::vec3(270, 0, 234), 0, 0, 0, 1);
     entities->push_back(lantern);
 
     for(int i = 0; i < 300; i++) {
-        int treeX = rand() % TERRAIN_SIZE;
-        int treeZ = rand() % TERRAIN_SIZE;
-        Entity* tree = new Entity(texturedCherryTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, 0.0, 0.0, 5.0);
+        int treeX,
+            treeZ;
+        do {
+            treeX = rand() % TERRAIN_SIZE;
+            treeZ = rand() % TERRAIN_SIZE;
+        } while(terrain->getHeightOfTerrain(treeX, treeZ) <= 0);
+        int treeRotY = rand() % 180;
+        Entity* tree = new Entity(texturedCherryTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, treeRotY, 0.0, 5.0);
         entities->push_back(tree);
     }
     
@@ -210,7 +215,7 @@ int main(void) {
     /* Loop until the user closes the window */
     while(!isCloseRequested) {
         //Events
-        player.move(*terrain);
+        player.move(*terrain, camera->getYaw(), camera->getPitch());
         camera->move();
 
         mousePicker->update();
@@ -225,7 +230,7 @@ int main(void) {
         glfwPollEvents();
 
         // before any rendering takes place, render shadow map
-        //renderer.renderShadowMap(entities, sun);
+        renderer.renderShadowMap(entities, sun);
 
         //OpenGL calls
         glEnable(GL_CLIP_DISTANCE0);
@@ -288,6 +293,8 @@ int main(void) {
     textMaster.cleanUp();
     fbo->cleanUp();
     if(POST_PROCESSING_ENABLED) POST_PROCESSING_CLEAN_UP();
+
+    std::cin;
 
     delete fbo;
 

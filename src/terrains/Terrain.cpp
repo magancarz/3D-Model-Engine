@@ -2,7 +2,7 @@
 
 Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack* texturePack, TerrainTexture* blendMap)
 	: m_x(gridX * TERRAIN_SIZE), m_z(gridZ * TERRAIN_SIZE), m_texturePack(texturePack), m_blendMap(blendMap) {
-	m_model = generateTerrain(loader, "res/textures/heightMap.png");
+	m_model = generateTerrain(loader, "res/textures/heightmap.png");
 }
 
 Terrain::~Terrain() {

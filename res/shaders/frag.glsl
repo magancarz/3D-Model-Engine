@@ -34,20 +34,20 @@ void main(void) {
 		vec3 unitLightVector = normalize(toLightVector[i]);
 		float nDot1 = dot(unitNormal, unitLightVector);
 		float brightness = max(nDot1, 0.0);
-		float level = floor(brightness * levels);
-		brightness = level / levels;
+		//float level = floor(brightness * levels);
+		//brightness = level / levels;
 		vec3 lightDirection = -unitLightVector;
 		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
 		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
 		specularFactor = max(specularFactor, 0.0);
 		float dampedFactor = pow(specularFactor, shineDamper);
-		level = floor(dampedFactor * levels);
-		dampedFactor = level / levels;
+		//level = floor(dampedFactor * levels);
+		//dampedFactor = level / levels;
 		totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attFactor;
 		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attFactor;
 	}
 
-	totalDiffuse = max(totalDiffuse, 0.2);
+	totalDiffuse = max(totalDiffuse, 0.1);
 
 	vec4 textureColor = texture(textureSampler, pass_textureCoords);
 	if(textureColor.a < 0.5) {
@@ -64,5 +64,4 @@ void main(void) {
 
 	out_Color = vec4(totalDiffuse, 1.0) * texture(textureSampler, pass_textureCoords) + vec4(totalSpecular, 1.0);
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);
-	//out_Color = vec4(diffuse, 1.0) * vec4(0.3, 0.3, 0.3, 1.0) + vec4(finalSpecular, 1.0);
 }
