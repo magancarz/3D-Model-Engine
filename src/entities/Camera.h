@@ -5,6 +5,8 @@
 #include "../toolbox/Input.h"
 #include "Player.h"
 
+#define CAMERA_HEIGHT 5
+
 extern Input inputManager;
 
 enum direction {FORWARD, BACKWARD, LEFT, RIGHT};
@@ -35,6 +37,8 @@ public:
 	inline float getYaw() const { return m_yaw; };
 	inline float getRoll() const { return m_roll; };
 	inline float getSensitivity() const { return m_sensitivity; };
+	inline glm::vec3 getCameraFront() const { return m_front; }
+	inline glm::vec3 getCameraRight() const { return m_right; }
 
 private:
 	void calculateCameraPosition(float horizontalDistance, float verticalDistance);

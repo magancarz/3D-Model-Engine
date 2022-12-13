@@ -50,17 +50,21 @@ void Camera::rotate() {
 }
 
 void Camera::move() {
-	//updateCameraVectors();
+	updateCameraVectors();
 
-	calculateZoom();
+	//calculateZoom();
 	calculatePitch();
 	calculateAngleAroundThePlayer();
 	float horizontalDistance = calculateHorizontalDistance();
 	float verticalDistance = calculateVerticalDistance();
-	calculateCameraPosition(horizontalDistance, verticalDistance);
+	//calculateCameraPosition(horizontalDistance, verticalDistance);
 
 	m_yaw = 180.f - (m_player.getRotY() + m_angleAroundThePlayer);
 	m_yaw = (float) fmod(m_yaw, 360.f);
+
+	m_position.x = m_player.getPosition().x;
+	m_position.y = m_player.getPosition().y + CAMERA_HEIGHT;
+	m_position.z = m_player.getPosition().z;
 
 	/*
 	if(inputManager.isKeyDown(GLFW_KEY_W))
@@ -80,17 +84,24 @@ void Camera::calculateZoom() {
 }
 
 void Camera::calculatePitch() {
-	if(inputManager.isRightMouseButtonDown()) {
+	//3rd person camera code
+	/*if(inputManager.isRightMouseButtonDown()) {
 		float pitchChange = display.getMouseYOffset() * 0.1f;
 		m_pitch -= pitchChange;
-	}
+	}*/
+
+	float pitchChange = display.getMouseYOffset() * 0.1f;
+	m_pitch += pitchChange;
 }
 
 void Camera::calculateAngleAroundThePlayer() {
-	if(inputManager.isLeftMouseButtonDown()) {
+	//3rd person camera code
+	/*if(inputManager.isLeftMouseButtonDown()) {
 		float angleChange = display.getMouseXOffset() * 0.1f;
 		m_angleAroundThePlayer -= angleChange;
-	}
+	}*/
+	float angleChange = display.getMouseXOffset() * 0.1f;
+	m_angleAroundThePlayer -= angleChange;
 }
 
 float Camera::calculateHorizontalDistance() {
@@ -119,4 +130,7 @@ void Camera::updateCameraVectors() {
 	m_front = glm::normalize(m_front);
 	m_right = glm::normalize(glm::cross(m_front, m_worldUp));
 	m_up = glm::normalize(glm::cross(m_right, m_front));
+
+	m_player.setFront(m_front);
+	m_player.setRight(m_right);
 }

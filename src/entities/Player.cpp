@@ -5,12 +5,17 @@ Player::Player(TexturedModel& model, glm::vec3 position, float rotX, float rotY,
 
 }
 
-void Player::move(Terrain& terrain) {
+void Player::move(Terrain& terrain, float cameraYaw, float cameraPitch) {
 	checkInputs();
 	increaseRotation(0, m_currentTurnSpeed * display.getFrameTimeSeconds(), 0);
+	m_currentTurnSpeed = 0;
+
+	//glm::vec3 dv;
 	float distance = m_currentSpeed * display.getFrameTimeSeconds();
-	float dx = distance * glm::sin(glm::radians(getRotY()));
-	float dz = distance * glm::cos(glm::radians(getRotY()));
+	//dv += m_front * distance;
+	//dv += m_right * distance;
+	float dx = distance * cos(glm::radians(cameraYaw - 90.f)) * cos(glm::radians(cameraPitch));
+	float dz = distance * sin(glm::radians(cameraYaw - 90.f)) * cos(glm::radians(cameraPitch));
 	increasePosition(dx, 0, dz);
 	m_upwardsSpeed += GRAVITY * display.getFrameTimeSeconds();
 	increasePosition(0, m_upwardsSpeed * display.getFrameTimeSeconds(), 0);
@@ -32,13 +37,16 @@ void Player::checkInputs() {
 		m_currentSpeed = 0;
 	}
 
-	if(inputManager.isKeyDown(GLFW_KEY_A)) {
+	float angleChange = display.getMouseXOffset() * 0.1f;
+	m_currentTurnSpeed -= angleChange;
+
+	/*if(inputManager.isKeyDown(GLFW_KEY_A)) {
 		m_currentTurnSpeed = TURN_SPEED;
 	} else if(inputManager.isKeyDown(GLFW_KEY_D)) {
 		m_currentTurnSpeed = -TURN_SPEED;
 	} else {
 		m_currentTurnSpeed = 0;
-	}
+	}*/
 
 	if(inputManager.isKeyDown(GLFW_KEY_SPACE))
 		jump();
