@@ -1,0 +1,55 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1118,5): warning MSB8027: Co najmniej dwa pliki o nazwie FontShader.cpp będą tworzyć dane wyjściowe w tej samej lokalizacji. Może to spowodować niepoprawny wynik kompilacji. Pliki, których dotyczy problem: src\fontRendering\FontShader.cpp, src\shaders\FontShader.cpp.
+  Application.cpp
+C:\dev\3D-Model-Viewer\src\renderEngine\Vertex.h(8,51): warning C4244: "inicjowanie": konwersja z "glm::vec<3,float,glm::packed_highp>::length_type" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\normalMappingRenderer\VertexNM.h(15,34): warning C4244: "return": konwersja z "float" do "int", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\Application.cpp(205,52): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\Application.cpp(205,45): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\Application.cpp(207,112): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\Application.cpp(207,105): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\Application.cpp(207,133): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+  Camera.cpp
+  Entity.cpp
+C:\dev\3D-Model-Viewer\src\entities\Entity.cpp(14,15): warning C4804: "%": niebezpieczne użycie typu "bool" w operacji
+C:\dev\3D-Model-Viewer\src\entities\Entity.cpp(19,12): warning C4804: "/": niebezpieczne użycie typu "bool" w operacji
+  Player.cpp
+  TexturedModel.cpp
+  NormalMappingRenderer.cpp
+  Particle.cpp
+C:\dev\3D-Model-Viewer\src\particles\Particle.cpp(25,13): warning C4244: "inicjowanie": konwersja z "float" do "int", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\particles\Particle.cpp(27,16): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+  ParticleMaster.cpp
+  ParticleRenderer.cpp
+C:\dev\3D-Model-Viewer\src\particles\ParticleRenderer.cpp(59,53): warning C4244: "argument": konwersja z "unsigned int" do "float", możliwa utrata danych
+  ParticleSystem.cpp
+C:\dev\3D-Model-Viewer\src\particles\ParticleSystem.cpp(13,12): warning C4244: "inicjowanie": konwersja z "float" do "int", możliwa utrata danych
+  EntityRenderer.cpp
+  MasterRenderer.cpp
+  TerrainRenderer.cpp
+  NormalMappingShader.cpp
+  StaticShader.cpp
+  TerrainShader.cpp
+  WaterShader.cpp
+  ShadowBox.cpp
+  ShadowMapEntityRenderer.cpp
+  ShadowMapMasterRenderer.cpp
+  Trwa kompilowanie...
+  SkyboxRenderer.cpp
+  SkyboxShader.cpp
+  Terrain.cpp
+C:\dev\3D-Model-Viewer\src\terrains\Terrain.cpp(4,7): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\terrains\Terrain.cpp(4,34): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+C:\dev\3D-Model-Viewer\src\terrains\Terrain.cpp(84,15): warning C4244: "inicjowanie": konwersja z "int" do "float", możliwa utrata danych
+  ModelTexture.cpp
+  MousePicker.cpp
+  WaterRenderer.cpp
+C:\dev\3D-Model-Viewer\src\water\WaterRenderer.cpp(30,19): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+Release\FontShader.obj : warning LNK4042: obiekt określono więcej niż raz; dodatkowe wystąpienia zostały zignorowane
+LINK : warning LNK4098: domyślna biblioteka „LIBCMT” powoduje konflikt z innymi bibliotekami; użyj opcji /NODEFAULTLIB:biblioteka
+  Trwa generowanie kodu
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+C:\dev\3D-Model-Viewer\src\toolbox\Maths.cpp(23): warning C4723: potencjalne dzielenie przez 0
+C:\dev\3D-Model-Viewer\src\toolbox\Maths.cpp(24): warning C4723: potencjalne dzielenie przez 0
+  All 2246 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Zakończono generowanie kodu
+glew32s.lib(glew.obj) : warning LNK4099: nie znaleziono pliku PDB „vc120.pdb” z elementem „glew32s.lib(glew.obj)” lub w pozycji „C:\dev\3D-Model-Viewer\Release\vc120.pdb”; obiekt zostanie skonsolidowany bez informacji debugowania
+  3DModelViewer.vcxproj -> C:\dev\3D-Model-Viewer\Release\3DModelViewer.exe
