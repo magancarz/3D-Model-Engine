@@ -5,6 +5,8 @@ void ShadowMapEntityRenderer::render(std::map<TexturedModel*, std::vector<Entity
 		TexturedModel* model = it->first;
 		RawModel* rawModel = &(model->getRawModel());
 		bindModel(rawModel);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());
 		std::vector<Entity*>* entities = it->second;
 		for(std::vector<Entity*>::iterator sit = entities->begin(); sit != entities->end(); sit++) {
 			Entity* entity = *sit;
@@ -13,12 +15,14 @@ void ShadowMapEntityRenderer::render(std::map<TexturedModel*, std::vector<Entity
 		}
 	}
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 	glBindVertexArray(0);
 }
 
 void ShadowMapEntityRenderer::bindModel(RawModel* rawModel) {
 	glBindVertexArray(rawModel->getVaoID());
 	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
 }
 
 void ShadowMapEntityRenderer::prepareInstance(Entity* entity) {

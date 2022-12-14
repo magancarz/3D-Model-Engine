@@ -8,6 +8,7 @@ ShadowShader::ShadowShader()
 
 void ShadowShader::bindAttributes() {
 	bindAttribute(0, "in_position");
+	bindAttribute(1, "in_textureCoords");
 }
 
 void ShadowShader::getAllUniformLocations() {

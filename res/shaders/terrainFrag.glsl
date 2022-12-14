@@ -22,13 +22,28 @@ uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColor;
 
+const int pcfCount = 4;
+const float totalTexels = (pcfCount * 2.0 + 1.0) * (pcfCount * 2.0 + 1.0);
+
 void main(void) {
-	float closestDepth = texture(shadowMap, shadowCoords.xy).r;
-	float currentDepth = shadowCoords.z;
-	float lightFactor = 1.0;
-	if(currentDepth > closestDepth) {
-		lightFactor = 1.0 - 0.5;
+	//make it uniform!!
+	float mapSize = 4096.0;
+	float texelSize = 1.0 / mapSize;
+	float total = 0.0;
+
+	for(int x = -pcfCount; x <= pcfCount; x++) {
+		for(int y = -pcfCount; y <= pcfCount; y++) {
+			float closestDepth = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
+			float currentDepth = shadowCoords.z;
+			if(currentDepth > closestDepth) {
+				total += 1.0;
+			}
+		}
 	}
+
+	total /= totalTexels;
+
+	float lightFactor = 1.0 - (total * shadowCoords.w);
 
 	vec4 blendMapColor = texture(blendMap, pass_textureCoords);
 
@@ -62,7 +77,7 @@ void main(void) {
 		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attFactor;
 	}
 
-	totalDiffuse = max(totalDiffuse, 0.1) * lightFactor;
+	totalDiffuse = max(totalDiffuse * lightFactor, 0.1);
 
 	out_Color = vec4(totalDiffuse, 1.0) * totalColor + vec4(totalSpecular, 1.0);
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);

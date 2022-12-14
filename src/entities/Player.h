@@ -24,7 +24,8 @@ private:
 	float m_currentSpeedX = 0,
 		  m_currentSpeedZ = 0,
 		  m_currentTurnSpeed = 0,
-		  m_upwardsSpeed = 0;
+		  m_upwardsSpeed = 0,
+		  m_canJump = true;
 
 	glm::vec3 m_front,
 			  m_right;

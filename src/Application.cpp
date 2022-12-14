@@ -144,7 +144,7 @@ int main(void) {
 
     /* create player and camera */
     //Player
-    Player player(texturedStallModel, glm::vec3(280, 0, 208), 0, 0, 0, 0.000001f);
+    Player player(texturedStallModel, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
 
     //Camera
     Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
@@ -222,7 +222,7 @@ int main(void) {
 
         //system->generateParticles(glm::vec3(player.getPosition()));
 
-        //std::cout << player.getPosition().x << "    " << player.getPosition().z << std::endl;
+        //std::cout << player.getPosition().x << "    " << player.getPosition().y << std::endl;
         //lights[1]->setPosition(glm::vec3(player.getPosition().x, 8.f, player.getPosition().z));
 
         //Reset input values

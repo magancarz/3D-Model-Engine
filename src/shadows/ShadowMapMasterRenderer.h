@@ -102,7 +102,7 @@ private:
 	 */
 	glm::mat4 createOffset();
 
-	const int SHADOW_MAP_SIZE = 2048;
+	const int SHADOW_MAP_SIZE = 4096;
 
 	ShadowFrameBuffer* m_shadowFBO;
 	ShadowShader* m_shader;

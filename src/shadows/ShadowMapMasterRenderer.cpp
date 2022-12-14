@@ -50,7 +50,7 @@ void ShadowMapMasterRenderer::updateOrthoProjectionMatrix(float width, float hei
 	m_projectionMatrix[1][1] = 2.0f / height;
 	m_projectionMatrix[2][2] = -2.0f / length;
 	m_projectionMatrix[3][3] = 1;*/
-	float orthoSize = 512;
+	float orthoSize = 128;
 	m_projectionMatrix = glm::ortho(-orthoSize, orthoSize, -orthoSize, orthoSize, 0.1f, 100000.f);
 }
 
