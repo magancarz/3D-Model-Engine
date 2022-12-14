@@ -12,6 +12,7 @@ C:\dev\3D-Model-Viewer\src\Application.cpp(207,133): warning C4244: "argument": 
 C:\dev\3D-Model-Viewer\src\entities\Entity.cpp(14,15): warning C4804: "%": niebezpieczne użycie typu "bool" w operacji
 C:\dev\3D-Model-Viewer\src\entities\Entity.cpp(19,12): warning C4804: "/": niebezpieczne użycie typu "bool" w operacji
   Player.cpp
+  GuiRenderer.cpp
   TexturedModel.cpp
   NormalMappingRenderer.cpp
   Particle.cpp
@@ -30,9 +31,11 @@ C:\dev\3D-Model-Viewer\src\particles\ParticleSystem.cpp(13,12): warning C4244: "
   TerrainShader.cpp
   WaterShader.cpp
   ShadowBox.cpp
+  ShadowFrameBuffer.cpp
+  Trwa kompilowanie...
   ShadowMapEntityRenderer.cpp
   ShadowMapMasterRenderer.cpp
-  Trwa kompilowanie...
+  ShadowShader.cpp
   SkyboxRenderer.cpp
   SkyboxShader.cpp
   Terrain.cpp
@@ -46,10 +49,9 @@ C:\dev\3D-Model-Viewer\src\water\WaterRenderer.cpp(30,19): warning C4244: "=": k
 Release\FontShader.obj : warning LNK4042: obiekt określono więcej niż raz; dodatkowe wystąpienia zostały zignorowane
 LINK : warning LNK4098: domyślna biblioteka „LIBCMT” powoduje konflikt z innymi bibliotekami; użyj opcji /NODEFAULTLIB:biblioteka
   Trwa generowanie kodu
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-C:\dev\3D-Model-Viewer\src\toolbox\Maths.cpp(23): warning C4723: potencjalne dzielenie przez 0
-C:\dev\3D-Model-Viewer\src\toolbox\Maths.cpp(24): warning C4723: potencjalne dzielenie przez 0
-  All 2246 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  243 of 2222 functions (10.9%) were compiled, the rest were copied from previous compilation.
+    75 functions were new in current compilation
+    166 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu
 glew32s.lib(glew.obj) : warning LNK4099: nie znaleziono pliku PDB „vc120.pdb” z elementem „glew32s.lib(glew.obj)” lub w pozycji „C:\dev\3D-Model-Viewer\Release\vc120.pdb”; obiekt zostanie skonsolidowany bez informacji debugowania
   3DModelViewer.vcxproj -> C:\dev\3D-Model-Viewer\Release\3DModelViewer.exe
