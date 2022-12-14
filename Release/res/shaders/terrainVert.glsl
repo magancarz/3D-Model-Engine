@@ -9,12 +9,15 @@ out vec3 surfaceNormal;
 out vec3 toLightVector[4];
 out vec3 toCameraVector;
 out float visibility;
+out vec4 shadowCoords;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 proj;
 
 uniform vec3 lightPosition[4];
+
+uniform mat4 toShadowMapSpace;
 
 uniform vec4 plane;
 
@@ -23,6 +26,7 @@ const float gradient = 1.5;
 
 void main(void) {
 	vec4 worldPosition = model * vec4(position, 1.0);
+	shadowCoords = toShadowMapSpace * worldPosition;
 
 	gl_ClipDistance[0] = dot(worldPosition, plane);
 
