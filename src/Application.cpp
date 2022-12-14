@@ -131,8 +131,8 @@ int main(void) {
     //texture2.setReflectivity(5.0f);
     
     /* create light objects */
-    Light* sun = new Light(glm::vec3(10000, 15000, -10000), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0, 0));
-    Light* light2 = new Light(glm::vec3(269, 12, 228), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
+    Light* sun = new Light(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
+    Light* light2 = new Light(glm::vec3(278, 12, 224), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
     Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
     Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
 
@@ -221,7 +221,9 @@ int main(void) {
         mousePicker->update();
 
         //system->generateParticles(glm::vec3(player.getPosition()));
-        particleMaster->update(camera);
+
+        //std::cout << player.getPosition().x << "    " << player.getPosition().z << std::endl;
+        //lights[1]->setPosition(glm::vec3(player.getPosition().x, 8.f, player.getPosition().z));
 
         //Reset input values
         display.resetInputValues();
@@ -273,7 +275,7 @@ int main(void) {
         renderer.cleanUp();
 
         //Render GUI
-        guiRenderer.render(guis);
+        //guiRenderer.render(guis);
 
         //Render texts
         textMaster.render();

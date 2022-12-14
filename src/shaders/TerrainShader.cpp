@@ -46,6 +46,10 @@ void TerrainShader::loadClipPlane(glm::vec4 plane) {
 	loadVector4f(location_plane, plane);
 }
 
+void TerrainShader::loadToShadowMapSpaceMatrix(glm::mat4 toShadowMapSpace) {
+	loadMatrix(location_toShadowMapSpace, toShadowMapSpace);
+}
+
 void TerrainShader::bindAttributes() {
 	bindAttribute(0, "position");
 	bindAttribute(1, "textureCoords");
@@ -79,6 +83,10 @@ void TerrainShader::getAllUniformLocations() {
 
 	//Clip plane
 	location_plane = getUniformLocation("plane");
+
+	//Shadows
+	location_toShadowMapSpace = getUniformLocation("toShadowMapSpace");
+	location_shadowMap = getUniformLocation("shadowMap");
 }
 
 void TerrainShader::connectTextureUnits() {
@@ -87,4 +95,5 @@ void TerrainShader::connectTextureUnits() {
 	loadInt(location_gTexture, 2);
 	loadInt(location_bTexture, 3);
 	loadInt(location_blendMap, 4);
+	loadInt(location_shadowMap, 5);
 }

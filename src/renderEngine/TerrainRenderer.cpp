@@ -8,7 +8,8 @@ TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatr
 	m_shader->stop();
 }
 
-void TerrainRenderer::render(std::vector<Terrain*>* terrains) {
+void TerrainRenderer::render(std::vector<Terrain*>* terrains, glm::mat4 toShadowMapSpace) {
+	m_shader->loadToShadowMapSpaceMatrix(toShadowMapSpace);
 	for(std::vector<Terrain*>::iterator it = terrains->begin(); it < terrains->end(); it++) {
 		prepareTerrain(*it);
 		loadModelMatrix(*it);

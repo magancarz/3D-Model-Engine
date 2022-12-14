@@ -17,6 +17,7 @@ MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
 	m_shader = new StaticShader();
 	m_terrainShader = new TerrainShader();
 
+	enableCulling();
 	createProjectionMatrix();
 
 	m_renderer = new EntityRenderer(m_shader, m_projectionMatrix);
@@ -29,7 +30,6 @@ MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
 	m_shader->loadProjectionMatrix(m_projectionMatrix);
 	m_shader->stop();
 
-	enableCulling();
 }
 
 MasterRenderer::~MasterRenderer() {
@@ -66,7 +66,7 @@ void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera, glm::ve
 	m_terrainShader->loadSkyColor(RED, GREEN, BLUE);
 	m_terrainShader->loadLights(lights);
 	m_terrainShader->loadViewMatrix(camera);
-	m_terrainRenderer->render(m_terrains);
+	m_terrainRenderer->render(m_terrains, m_shadowMapRenderer->getToShadowMapSpaceMatrix());
 	m_terrainShader->stop();
 
 	m_skyboxRenderer->render(camera, RED, GREEN, BLUE);
@@ -80,8 +80,10 @@ void MasterRenderer::renderShadowMap(std::vector<Entity*>* entityList, Light* su
 
 void MasterRenderer::prepare() {
 	glEnable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(RED, GREEN, BLUE, 1);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, m_shadowMapRenderer->getShadowMap());
 }
 
 void MasterRenderer::processEntities(std::vector<Entity*>* entityList) {
@@ -132,7 +134,7 @@ void MasterRenderer::cleanUp() {
 }
 
 void MasterRenderer::createProjectionMatrix() {
-	m_projectionMatrix = glm::mat4(1.0f);
+	m_projectionMatrix = glm::mat4();
 	float aspectRatio = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
 	float yScale = (float) ((1.0f / glm::tan(glm::radians(FOV / 2.0f))));
 	float xScale = yScale / aspectRatio;

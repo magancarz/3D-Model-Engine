@@ -15,6 +15,7 @@ public:
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadSkyColor(float r, float g, float b);
 	void loadClipPlane(glm::vec4 plane);
+	void loadToShadowMapSpaceMatrix(glm::mat4 toShadowMapSpace);
 
 	void connectTextureUnits();
 protected:
@@ -45,4 +46,7 @@ private:
 	unsigned int location_blendMap;
 
 	unsigned int location_plane;
+
+	unsigned int location_toShadowMapSpace;
+	unsigned int location_shadowMap;
 };

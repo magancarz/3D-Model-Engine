@@ -33,6 +33,7 @@ void SkyboxRenderer::render(Camera& camera, float r, float g, float b) {
 
 void SkyboxRenderer::bindTextures() {
 	//time += display.getFrameTimeSeconds() * 100; // original: * 1000
+	time = 1000;
 	while (time >= 24000) {
 		time -= 24000;
 	}

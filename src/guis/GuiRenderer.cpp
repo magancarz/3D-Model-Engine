@@ -35,8 +35,8 @@ void GuiRenderer::render(std::vector<GuiTexture>* guis) {
 	//render
 	for(std::vector<GuiTexture>::iterator it = guis->begin(); it != guis->end(); it++) {
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, (*it).getTexture());
-		glm::mat4 matrix = createTransformationMatrix((*it).getPosition(), (*it).getScale());
+		glBindTexture(GL_TEXTURE_2D, it->getTexture());
+		glm::mat4 matrix = createTransformationMatrix(it->getPosition(), it->getScale());
 		m_shader->loadTransformation(matrix);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->getVertexCount());
 	}

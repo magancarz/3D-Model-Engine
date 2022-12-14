@@ -35,7 +35,7 @@ private:
 				 m_normalMap,
 				 m_specularMap;
 
-	float m_shineDamper = 2.0f;
+	float m_shineDamper = 1.0f;
 	float m_reflectivity = 0.0f;
 
 	bool m_hasTransparency = false,
