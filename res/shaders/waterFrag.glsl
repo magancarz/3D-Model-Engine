@@ -16,8 +16,8 @@ uniform float moveFactor;
 uniform vec3 lightColor;
 
 const float waveStrength = 0.04;
-const float shineDamper = 35.0;
-const float reflectivity = 0.05;
+const float shineDamper = 70.0;
+const float reflectivity = 0.02;
 
 void main(void) {
 	vec2 ndc = (clipSpace.xy / clipSpace.w) / 2.0 + 0.5;
