@@ -38,7 +38,7 @@ DisplayManager display;
 ParticleMaster* particleMaster;
 
 //enabled/disabled post-processing
-bool POST_PROCESSING_ENABLED = false;
+bool POST_PROCESSING_ENABLED = true;
 
 void GLAPIENTRY
 MessageCallback( GLenum source,
@@ -86,9 +86,9 @@ int main(void) {
     TerrainTexture bTexture(loader->loadTexture("res/textures/path.png"));
 
     TerrainTexturePack* texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-    TerrainTexture blendMap(loader->loadTexture("res/textures/blendMap.png"));
+    TerrainTexture blendMap(loader->loadTexture("res/textures/black.png"));
 
-    Terrain* terrain = new Terrain(0, 0, loader, texturePack, nullptr);
+    Terrain* terrain = new Terrain(0, 0, loader, texturePack, &blendMap);
 
     /* load 3d models */
     //=====OBJECTS=====///

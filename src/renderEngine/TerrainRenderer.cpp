@@ -38,10 +38,8 @@ void TerrainRenderer::bindTextures(Terrain* terrain) {
 	glBindTexture(GL_TEXTURE_2D, texturePack->getgTexture().getTextureID());
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, texturePack->getbTexture().getTextureID());
-	if(terrain->getBlendMap() != nullptr) {
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, terrain->getBlendMap()->getTextureID());
-	}
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, terrain->getBlendMap()->getTextureID());
 }
 
 void TerrainRenderer::unbindTexturedModel() {

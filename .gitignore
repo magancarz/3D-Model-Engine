@@ -4,12 +4,3 @@
 3DModelViewer.sln
 Debug/
 x64/
-
-src/renderEngine/HorizontalBlur.cpp
-src/renderEngine/HorizontalBlur.h
-src/renderEngine/VerticalBlur.cpp
-src/renderEngine/VerticalBlur.h
-src/shaders/HorizontalBlurShader.cpp
-src/shaders/HorizontalBlurShader.h
-src/shaders/VerticalBlurShader.cpp
-src/shaders/VerticalBlurShader.h

@@ -1,9 +1,8 @@
 #include "Headers.h"
 #include "ImageRenderer.h"
 
-ImageRenderer::ImageRenderer(unsigned int width, unsigned int height) :
-m_fbo(new FBO(width, height, FBO_NONE)) {
-
+ImageRenderer::ImageRenderer(unsigned int width, unsigned int height) {
+	m_fbo = new FBO(width, height, FBO_NONE);
 }
 
 ImageRenderer::ImageRenderer() {}
