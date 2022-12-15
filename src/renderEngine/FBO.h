@@ -16,6 +16,8 @@ public:
 	/// attachment that this FBO should use</param>
 	FBO(unsigned int width, unsigned int height, unsigned int depthBufferType);
 
+	FBO(unsigned int width, unsigned int height);
+
 	/// <summary>
 	/// Deletes the frame buffer and its attachments when the program closes.
 	/// </summary>
@@ -38,6 +40,10 @@ public:
 	/// Binds the current FBO to be read from.
 	/// </summary>
 	void bindToRead();
+
+	void resolveToFBO(FBO* outputFBO);
+
+	void resolveToScreen();
 
 	inline unsigned int getColorTexture() { return m_colorTexture; }
 	inline unsigned int getDepthTexture() { return m_depthTexture; }
@@ -68,6 +74,8 @@ private:
 	/// </summary>
 	void createDepthTextureAttachment();
 
+	void createMultisampleColorAttachment();
+
 	/// <summary>
 	/// Adds a depth buffer to the FBO in the form of a render buffer. This can't
 	/// be used for sampling in the shaders.
@@ -79,4 +87,6 @@ private:
 	unsigned int m_frameBuffer, m_depthBuffer, m_colorBuffer;
 
 	unsigned int m_colorTexture, m_depthTexture;
+
+	bool m_multisample = false;
 };

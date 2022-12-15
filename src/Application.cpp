@@ -38,7 +38,7 @@ DisplayManager display;
 ParticleMaster* particleMaster;
 
 //enabled/disabled post-processing
-bool POST_PROCESSING_ENABLED = true;
+bool POST_PROCESSING_ENABLED = false;
 
 void GLAPIENTRY
 MessageCallback( GLenum source,
@@ -209,7 +209,8 @@ int main(void) {
     }
     
     /* post-processing effects */
-    FBO* fbo = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_RENDER_BUFFER);
+    FBO* multisampleFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT);
+    FBO* outputFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
     if(POST_PROCESSING_ENABLED) POST_PROCESSING_INIT(loader);
 
     /* Loop until the user closes the window */
@@ -260,7 +261,7 @@ int main(void) {
         glDisable(GL_CLIP_DISTANCE0);
         fbos->unbindCurrentFrameBuffer();
 
-        if(POST_PROCESSING_ENABLED) fbo->bindFrameBuffer();
+        multisampleFBO->bindFrameBuffer();
         renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
 
         waterRenderer->render(waters, *camera, *sun);
@@ -268,8 +269,9 @@ int main(void) {
         //Particles
         particleMaster->renderParticles(camera);
         
-        if(POST_PROCESSING_ENABLED) fbo->unbindFrameBuffer();
-        if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(fbo->getColorTexture());
+        multisampleFBO->unbindFrameBuffer();
+        multisampleFBO->resolveToScreen();
+        if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(outputFBO->getColorTexture());
 
         //Clean up renderer
         renderer.cleanUp();
@@ -293,12 +295,11 @@ int main(void) {
     //Clean up resources
     loader->cleanUp();
     textMaster.cleanUp();
-    fbo->cleanUp();
+    multisampleFBO->cleanUp();
     if(POST_PROCESSING_ENABLED) POST_PROCESSING_CLEAN_UP();
 
-    std::cin;
-
-    delete fbo;
+    delete outputFBO;
+    delete multisampleFBO;
 
     delete entities;
 
