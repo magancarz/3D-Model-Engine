@@ -7,7 +7,8 @@ in vec3 toCameraVector;
 in float visibility;
 in vec4 shadowCoords;
 
-out vec4 out_Color;
+layout (location = 0) out vec4 out_Color;
+layout (location = 1) out vec4 out_BrightColor;
 
 uniform sampler2D backgroundTexture;
 uniform sampler2D rTexture;
@@ -81,4 +82,6 @@ void main(void) {
 
 	out_Color = vec4(totalDiffuse, 1.0) * totalColor + vec4(totalSpecular, 1.0);
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);
+
+	out_BrightColor = vec4(0.0);
 }

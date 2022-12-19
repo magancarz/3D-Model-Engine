@@ -209,8 +209,10 @@ int main(void) {
     }
     
     /* post-processing effects */
-    FBO* multisampleFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_RENDER_BUFFER);
-    //FBO* outputFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
+    FBO* multisampleFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT);
+    //FBO* multisampleFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_RENDER_BUFFER);
+    FBO* outputFBO1 = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
+    FBO* outputFBO2 = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
     if(POST_PROCESSING_ENABLED) POST_PROCESSING_INIT(loader);
 
     /* Loop until the user closes the window */
@@ -270,9 +272,10 @@ int main(void) {
         particleMaster->renderParticles(camera);
         
         multisampleFBO->unbindFrameBuffer();
-        //multisampleFBO->resolveToScreen();
-        //if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(outputFBO->getColorTexture());
-        if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(multisampleFBO->getColorTexture());
+        multisampleFBO->resolveToFBO(GL_COLOR_ATTACHMENT0, outputFBO1);
+        multisampleFBO->resolveToFBO(GL_COLOR_ATTACHMENT1, outputFBO2);
+        if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(outputFBO1->getColorTexture(), outputFBO2->getColorTexture());
+        //if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(multisampleFBO->getColorTexture());
 
         //Clean up renderer
         renderer.cleanUp();
@@ -299,7 +302,8 @@ int main(void) {
     multisampleFBO->cleanUp();
     if(POST_PROCESSING_ENABLED) POST_PROCESSING_CLEAN_UP();
 
-    //delete outputFBO;
+    delete outputFBO1;
+    delete outputFBO2;
     delete multisampleFBO;
 
     delete entities;

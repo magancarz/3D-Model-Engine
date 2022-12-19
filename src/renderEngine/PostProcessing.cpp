@@ -10,11 +10,11 @@ void POST_PROCESSING_INIT(Loader* loader) {
 	POST_PROCESSING_COMBINE_FILTER = new CombineFilter();
 }
 
-void POST_PROCESSING_DRAW(unsigned int colorTexture) {
+void POST_PROCESSING_DRAW(unsigned int colorTexture, unsigned int brightTexture) {
 	POST_PROCESSING_START();
 
-	POST_PROCESSING_BRIGHT_FILTER->render(colorTexture);
-	POST_PROCESSING_HORIZONTAL_BLUR->render(POST_PROCESSING_BRIGHT_FILTER->getOutputTexture());
+	//POST_PROCESSING_BRIGHT_FILTER->render(colorTexture);
+	POST_PROCESSING_HORIZONTAL_BLUR->render(brightTexture);
 	POST_PROCESSING_VERTICAL_BLUR->render(POST_PROCESSING_HORIZONTAL_BLUR->getOutputTexture());
 	POST_PROCESSING_COMBINE_FILTER->render(colorTexture, POST_PROCESSING_VERTICAL_BLUR->getOutputTexture());
 

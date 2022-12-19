@@ -2,13 +2,15 @@
 
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
+
 // The shaders use 4 light sources. If this is changed, change also the
 // MAX_LIGHTS constant in StaticShader.h.
 in vec3 toLightVector[4];
 in vec3 toCameraVector;
 in float visibility;
 
-out vec4 out_Color;
+layout (location = 0) out vec4 out_Color;
+layout (location = 1) out vec4 out_BrightColor;
 
 uniform sampler2D modelTexture;
 uniform sampler2D normalMap;
@@ -19,7 +21,7 @@ uniform float reflectivity;
 uniform vec3 skyColor;
 
 // cel shading
-//const float levels = 4.0; // tutorial 30 cel shading
+//const float levels = 4.0;
 
 void main() {
 	vec4 normalMapValue = 2.0 * texture(normalMap, pass_textureCoordinates) - 1.0;
@@ -64,4 +66,6 @@ void main() {
 
 	out_Color = vec4(totalDiffuse,1.0) * textureColor + vec4(totalSpecular, 1.0);
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);
+
+	out_BrightColor = vec4(0.0);
 }

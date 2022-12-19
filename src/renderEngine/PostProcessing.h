@@ -19,7 +19,7 @@ static RawModel* POST_PROCESSING_QUAD = nullptr;
 
 void POST_PROCESSING_INIT(Loader* loader);
 
-void POST_PROCESSING_DRAW(unsigned int colorTexture);
+void POST_PROCESSING_DRAW(unsigned int colorTexture, unsigned int brightTexture);
 
 void POST_PROCESSING_CLEAN_UP();
 

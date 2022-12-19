@@ -41,7 +41,7 @@ public:
 	/// </summary>
 	void bindToRead();
 
-	void resolveToFBO(FBO* outputFBO);
+	void resolveToFBO(unsigned int readBuffer, FBO* outputFBO);
 
 	void resolveToScreen();
 
@@ -63,6 +63,8 @@ private:
 	/// </summary>
 	void createFrameBuffer();
 
+	void determineDrawBuffers();
+
 	/// <summary>
 	/// Creates a texture and sets it as the color buffer attachment for this FBO.
 	/// </summary>
@@ -74,7 +76,7 @@ private:
 	/// </summary>
 	void createDepthTextureAttachment();
 
-	void createMultisampleColorAttachment();
+	int createMultisampleColorAttachment(int attachment);
 
 	/// <summary>
 	/// Adds a depth buffer to the FBO in the form of a render buffer. This can't
@@ -84,9 +86,10 @@ private:
 
 	const unsigned int m_width = 0, m_height = 0;
 
-	unsigned int m_frameBuffer, m_depthBuffer, m_colorBuffer;
+	unsigned int m_frameBuffer, m_depthBuffer,
+				 m_colorBuffer1, m_colorBuffer2;
 
 	unsigned int m_colorTexture, m_depthTexture;
 
-	bool m_multisample = false;
+	bool m_multisampleAndMultiTarget = false;
 };
