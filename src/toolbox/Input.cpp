@@ -1,7 +1,9 @@
 #include "Input.h"
 
-Input::Input() {
-	for(int i = 0; i < NUM_KEYS; i++) {
+#include <ranges>
+
+void Input::initialize_input() {
+	for(const auto i : std::views::iota(0, NUM_KEYS)) {
 		keyDown[i] = false;
 	}
 }
@@ -14,8 +16,7 @@ bool Input::isKeyDown(unsigned int keyCode) {
 
 void Input::setKeyDown(unsigned int keyCode, bool value) {
 	if(keyCode >= NUM_KEYS) {
-		std::cerr << "Warning: tried to set key code bigger than NUM_KEYS value.\n";
-		exit(1);
+		throw std::runtime_error("Warning: tried to set key code bigger than NUM_KEYS value.\n");
 	}
 	keyDown[keyCode] = value;
 }

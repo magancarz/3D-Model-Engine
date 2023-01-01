@@ -1,38 +1,51 @@
 #pragma once
 
 #include "../Headers.h"
-#include "../toolbox/Input.h"
+#include "toolbox/Input.h"
+
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 800
 #define WINDOW_TITLE "3D Model Viewer"
 
 class DisplayManager {
 public:
-	void createDisplay();
-	void updateDisplay();
-	void closeDisplay();
+	static void createDisplay();
+	static void updateDisplay();
+	static void closeDisplay();
 
-	void checkCloseRequests();
+	static void checkCloseRequests();
 
-	void resetInputValues();
+	static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+	static void cursorPosCallback(GLFWwindow* window, double xpos, double ypos);
+	static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
-	float getMouseX();
-	float getMouseY();
-	float getMouseXOffset();
-	float getMouseYOffset();
-	float getDWheel();
+	static void resetInputValues();
 
-	long getCurrentTime();
-	float getFrameTimeSeconds();
+	static float getMouseX() { return lastMouseX; }
+	static float getMouseY() { return lastMouseY; }
 
-	inline GLFWwindow* getWindow() { return m_window; };
+	static float getMouseXOffset() { return mouseOffsetX; }
+	static float getMouseYOffset() { return mouseOffsetY; }
+
+	static float getDWheel() { return mouseWheel; }
+
+	static long getCurrentTime();
+	static float getFrameTimeSeconds();
+
+	static GLFWwindow* getWindow() { return m_window; }
+
+	inline static bool isCloseRequested = false;
 private:
-	GLFWwindow* m_window;
+	inline static GLFWwindow* m_window;
 
-	long m_lastFrameTime;
-	float m_delta;
+
+	inline static long m_lastFrameTime;
+	inline static float m_delta;
+
+	inline static float mouseOffsetX = 0.f, mouseOffsetY = 0.f;
+	inline static bool firstMouse = true;
+	inline static float lastMouseX = 0.f, lastMouseY = 0.f;
+
+	inline static float mouseWheel = 0.f;
 };
-
-extern DisplayManager display;
-extern bool isCloseRequested;
-extern Input inputManager;

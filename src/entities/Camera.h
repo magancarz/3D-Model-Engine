@@ -2,12 +2,9 @@
 
 #include "../Headers.h"
 
-#include "../toolbox/Input.h"
 #include "Player.h"
 
 #define CAMERA_HEIGHT 5
-
-extern Input inputManager;
 
 enum direction {FORWARD, BACKWARD, LEFT, RIGHT};
 
@@ -32,11 +29,11 @@ public:
 
 	glm::mat4 getView();
 
-	inline glm::vec3& getPosition() { return m_position; };
-	inline float getPitch() const { return m_pitch; };
-	inline float getYaw() const { return m_yaw; };
-	inline float getRoll() const { return m_roll; };
-	inline float getSensitivity() const { return m_sensitivity; };
+	inline glm::vec3& getPosition() { return m_position; }
+	inline float getPitch() const { return m_pitch; }
+	inline float getYaw() const { return m_yaw; }
+	inline float getRoll() const { return m_roll; }
+	inline float getSensitivity() const { return m_sensitivity; }
 	inline glm::vec3 getCameraFront() const { return m_front; }
 	inline glm::vec3 getCameraRight() const { return m_right; }
 

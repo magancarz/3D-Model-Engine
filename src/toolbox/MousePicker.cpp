@@ -28,8 +28,8 @@ void MousePicker::update()
 glm::vec3 MousePicker::calculateMouseRay()
 {
 	// viewport space
-	GLfloat mouseX = display.getMouseX();
-	GLfloat mouseY = display.getMouseY();
+	GLfloat mouseX = DisplayManager::getMouseX();
+	GLfloat mouseY = DisplayManager::getMouseY();
 	// normalized device space
 	glm::vec2 normalizedCoords = getNormalizedDeviceCoords(mouseX, mouseY);
 	// homogenous clip space

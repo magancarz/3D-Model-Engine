@@ -26,7 +26,7 @@ void WaterRenderer::render(std::vector<WaterTile*>& water, Camera& camera, Light
 void WaterRenderer::prepareRender(Camera& camera, Light& sun) {
 	m_shader->start();
 	m_shader->loadViewMatrix(camera);
-	moveFactor += WAVE_SPEED * display.getFrameTimeSeconds();
+	moveFactor += WAVE_SPEED * DisplayManager::getFrameTimeSeconds();
 	moveFactor = fmod(moveFactor, 1.0);
 	m_shader->loadMoveFactor(moveFactor);
 	m_shader->loadLight(sun);

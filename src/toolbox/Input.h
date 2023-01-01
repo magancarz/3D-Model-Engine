@@ -4,20 +4,20 @@
 
 class Input {
 public:
-	Input();
+	static void initialize_input();
 
-	void setKeyDown(unsigned int keyCode, bool value);
-	bool isKeyDown(unsigned int keyCode);
+	static void setKeyDown(unsigned int keyCode, bool value);
+	static bool isKeyDown(unsigned int keyCode);
 
-	inline void setLeftMouseButtonDown(bool value) { leftMouseButtonDown = value; };
-	inline void setRightMouseButtonDown(bool value) { rightMouseButtonDown = value; };
-	inline bool isLeftMouseButtonDown() { return leftMouseButtonDown; };
-	inline bool isRightMouseButtonDown() { return rightMouseButtonDown; };
+	static void setLeftMouseButtonDown(bool value) { leftMouseButtonDown = value; };
+	static void setRightMouseButtonDown(bool value) { rightMouseButtonDown = value; };
+	static bool isLeftMouseButtonDown() { return leftMouseButtonDown; };
+	static bool isRightMouseButtonDown() { return rightMouseButtonDown; };
 
 private:
-	static constexpr int NUM_KEYS = 512;
-	bool keyDown[NUM_KEYS];
+	inline static constexpr int NUM_KEYS = 512;
+	inline static bool keyDown[NUM_KEYS];
 
-	bool leftMouseButtonDown = false,
-		 rightMouseButtonDown = false;
+	inline static bool leftMouseButtonDown = false,
+				rightMouseButtonDown = false;
 };

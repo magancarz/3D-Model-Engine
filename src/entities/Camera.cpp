@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-Camera::Camera(Player& player, glm::vec3 position)
-	: m_player(player), m_position(position) {
+Camera::Camera(Player& player, glm::vec3 position) :
+m_player(player), m_position(position) {
 	m_movementSpeed = 0.3f;
 	m_sensitivity = 0.35f;
 
@@ -35,10 +35,10 @@ glm::mat4 Camera::getView() {
 }
 
 void Camera::rotate() {
-	float yaw = display.getMouseXOffset();
-	float pitch = display.getMouseYOffset();
-	m_pitch += static_cast<float>(yaw) * m_sensitivity;
-	m_yaw += static_cast<float>(pitch) * m_sensitivity;
+	float yaw = DisplayManager::getMouseXOffset();
+	float pitch = DisplayManager::getMouseYOffset();
+	m_pitch += yaw * m_sensitivity;
+	m_yaw += pitch * m_sensitivity;
 
 	if(this->m_pitch > 80.f)
 		this->m_pitch = 80.f;
@@ -79,7 +79,7 @@ void Camera::move() {
 }
 
 void Camera::calculateZoom() {
-	float zoomLevel = display.getDWheel() * 1.0f;
+	float zoomLevel = DisplayManager::getDWheel() * 1.0f;
 	m_distanceFromThePlayer -= zoomLevel;
 }
 
@@ -90,7 +90,7 @@ void Camera::calculatePitch() {
 		m_pitch -= pitchChange;
 	}*/
 
-	float pitchChange = display.getMouseYOffset() * 0.1f;
+	float pitchChange = DisplayManager::getMouseYOffset() * 0.1f;
 	m_pitch += pitchChange;
 }
 
@@ -100,7 +100,7 @@ void Camera::calculateAngleAroundThePlayer() {
 		float angleChange = display.getMouseXOffset() * 0.1f;
 		m_angleAroundThePlayer -= angleChange;
 	}*/
-	float angleChange = display.getMouseXOffset() * 0.1f;
+	float angleChange = DisplayManager::getMouseXOffset() * 0.1f;
 	m_angleAroundThePlayer -= angleChange;
 }
 
