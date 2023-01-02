@@ -3,8 +3,8 @@
 #include "MasterRenderer.h"
 #include "toolbox/Maths.h"
 
-TerrainRenderer::TerrainRenderer(std::unique_ptr<TerrainShader> shader, const glm::mat4& projection_matrix) :
-m_terrain_shader(std::move(shader)) {
+TerrainRenderer::TerrainRenderer(const glm::mat4& projection_matrix) {
+	m_terrain_shader = std::make_unique<TerrainShader>();
 	m_terrain_shader->start();
 	m_terrain_shader->load_projection_matrix(projection_matrix);
 	m_terrain_shader->connect_texture_units();

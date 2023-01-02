@@ -5,7 +5,7 @@ namespace glm
 	{
 		vec<3, T, Q> Tmp = v;
 
-		// Axis of rotation must be normalised
+		// Axis of m_rotation must be normalised
 		T len = glm::length(Tmp);
 		if(abs(len - static_cast<T>(1)) > static_cast<T>(0.001))
 		{

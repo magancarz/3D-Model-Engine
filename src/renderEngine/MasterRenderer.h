@@ -5,7 +5,6 @@
 #include "../shadows/ShadowMapMasterRenderer.h"
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
-#include "terrain/TerrainShader.h"
 
 class MasterRenderer {
 public:

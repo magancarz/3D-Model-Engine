@@ -9,7 +9,7 @@
 
 class EntityRenderer {
 public:
-	EntityRenderer(std::unique_ptr<StaticShader> static_shader, const glm::mat4& projection_matrix);
+	EntityRenderer(const glm::mat4& projection_matrix);
 
 	void render(
 		const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map,
@@ -24,6 +24,4 @@ private:
 	static void unbind_textured_model();
 
 	std::unique_ptr<StaticShader> m_static_shader;
-
-	glm::mat4 m_projection_matrix;
 };

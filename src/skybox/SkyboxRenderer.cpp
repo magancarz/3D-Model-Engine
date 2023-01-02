@@ -1,68 +1,66 @@
 #include "SkyboxRenderer.h"
 
-SkyboxRenderer::SkyboxRenderer(Loader* loader, glm::mat4 projectionMatrix) {
+SkyboxRenderer::SkyboxRenderer(const std::shared_ptr<Loader>& loader, const glm::mat4& projection_matrix) {
 	m_cube = loader->loadToVAO(VERTICES, 3);
 	m_texture = loader->loadCubeMap(TEXTURE_FILES);
-	m_nightTexture = loader->loadCubeMap(NIGHT_TEXTURE_FILES);
-	
-	m_shader = new SkyboxShader();
-	m_shader->start();
-	m_shader->connectTextureUnits();
-	m_shader->loadProjectionMatrix(projectionMatrix);
-	m_shader->stop();
+	m_night_texture = loader->loadCubeMap(NIGHT_TEXTURE_FILES);
+
+	m_skybox_shader = std::make_unique<SkyboxShader>();
+	m_skybox_shader->start();
+	m_skybox_shader->connect_texture_units();
+	m_skybox_shader->load_projection_matrix(projection_matrix);
+	m_skybox_shader->stop();
 }
 
-SkyboxRenderer::~SkyboxRenderer() {
-	//Clean up
-	delete m_cube;
-	delete m_shader;
-}
+void SkyboxRenderer::render(const std::shared_ptr<Camera>& camera, const float r, const float g, const float b) {
+	m_skybox_shader->start();
+	m_skybox_shader->load_view_matrix(camera);
+	m_skybox_shader->load_fog_color(r, g, b);
 
-void SkyboxRenderer::render(Camera& camera, float r, float g, float b) {
-	m_shader->start();
-	m_shader->loadViewMatrix(camera);
-	m_shader->loadFogColor(r, g, b);
 	glBindVertexArray(m_cube->getVaoID());
 	glEnableVertexAttribArray(0);
-	bindTextures();
+	bind_textures();
 	glDrawArrays(GL_TRIANGLES, 0, m_cube->getVertexCount());
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);
-	m_shader->stop();
+
+	m_skybox_shader->stop();
 }
 
-void SkyboxRenderer::bindTextures() {
-	//time += display.getFrameTimeSeconds() * 100; // original: * 1000
-	time = 1000;
-	while (time >= 24000) {
-		time -= 24000;
+void SkyboxRenderer::bind_textures() {
+	/* code for managing time of the day */
+	//m_time += display.getFrameTimeSeconds() * 100; // original: * 1000
+
+	m_time = 1000;
+	while (m_time >= 24000) {
+		m_time -= 24000;
 	}
 	int texture1, texture2;
-	GLfloat blendFactor;
-	if (time < 5000) {
-		texture1 = m_nightTexture;
-		texture2 = m_nightTexture;
-		blendFactor = (time - 0) / (5000 - 0);
+	float blend_factor;
+	if (m_time < 5000) {
+		texture1 = m_night_texture;
+		texture2 = m_night_texture;
+		blend_factor = (m_time - 0) / (5000 - 0);
 	}
-	else if (time >= 5000 && time < 8000) {
-		texture1 = m_nightTexture;
+	else if (m_time >= 5000 && m_time < 8000) {
+		texture1 = m_night_texture;
 		texture2 = m_texture;
-		blendFactor = (time - 5000) / (8000 - 5000);
+		blend_factor = (m_time - 5000) / (8000 - 5000);
 	}
-	else if (time >= 8000 && time < 21000) {
+	else if (m_time >= 8000 && m_time < 21000) {
 		texture1 = m_texture;
 		texture2 = m_texture;
-		blendFactor = (time - 8000) / (21000 - 8000);
+		blend_factor = (m_time - 8000) / (21000 - 8000);
 	}
 	else {
 		texture1 = m_texture;
-		texture2 = m_nightTexture;
-		blendFactor = (time - 21000) / (24000 - 21000);
+		texture2 = m_night_texture;
+		blend_factor = (m_time - 21000) / (24000 - 21000);
 	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture1);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture2);
-	m_shader->loadBlendFactor(blendFactor);
+	m_skybox_shader->load_blend_factor(blend_factor);
 }

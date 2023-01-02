@@ -5,29 +5,33 @@
 
 class SkyboxRenderer {
 public:
-	SkyboxRenderer(Loader* loader, glm::mat4 projectionMatrix);
-	~SkyboxRenderer();
+	SkyboxRenderer(const std::shared_ptr<Loader>& loader, const glm::mat4& projection_matrix);
 
-	void render(Camera& camera, float r, float g, float b);
+	void render(const std::shared_ptr<Camera>& camera, float r, float g, float b);
+
 private:
-	void bindTextures();
+	void bind_textures();
 
 	static constexpr float SIZE = 500.0f;
-	float time = 0;
+
+	float m_time = 0;
 
 	RawModel* m_cube;
-	int m_texture, m_nightTexture;
-	SkyboxShader* m_shader;
+	std::unique_ptr<SkyboxShader> m_skybox_shader;
+
+	int m_texture, m_night_texture;
 
 	std::vector<std::string> TEXTURE_FILES = {
 		"right", "left", "top",
 		"bottom", "back", "front"
 	};
+
 	std::vector<std::string> NIGHT_TEXTURE_FILES = {
 		"nightRight", "nightLeft", "nightTop",
 		"nightBottom", "nightBack", "nightFront"
 	};
-	std::vector<float> VERTICES = {
+
+	inline static const std::vector<float> VERTICES = {
 		-SIZE, SIZE,-SIZE,
 		-SIZE,-SIZE,-SIZE,
 		 SIZE,-SIZE,-SIZE,

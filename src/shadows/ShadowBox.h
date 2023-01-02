@@ -45,7 +45,7 @@ private:
 	glm::vec4 calculateLightSpaceFrustumCorner(glm::vec3& startPoint, glm::vec3& direction, float width);
 
 	/**
-	The rotation of the camera represented as a matrix.
+	The m_rotation of the camera represented as a matrix.
 	*/
 	glm::mat4 calculateCameraRotationMatrix();
 

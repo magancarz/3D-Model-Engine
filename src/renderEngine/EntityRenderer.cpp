@@ -5,11 +5,10 @@
 #include "MasterRenderer.h"
 #include "toolbox/Maths.h"
 
-EntityRenderer::EntityRenderer(std::unique_ptr<StaticShader> static_shader, const glm::mat4& projection_matrix) :
-m_static_shader(std::move(static_shader)), m_projection_matrix(projection_matrix) {
-
+EntityRenderer::EntityRenderer(const glm::mat4& projection_matrix) {
+	m_static_shader = std::make_unique<StaticShader>();
 	m_static_shader->start();
-	m_static_shader->load_projection_matrix(m_projection_matrix);
+	m_static_shader->load_projection_matrix(projection_matrix);
 	m_static_shader->connect_texture_units();
 	m_static_shader->stop();
 }

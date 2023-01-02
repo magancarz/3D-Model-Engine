@@ -2,9 +2,40 @@
 
 #include "toolbox/DisplayManager.h"
 
-SkyboxShader::SkyboxShader() : ShaderProgram("res/shaders/skyboxVertShader.glsl", "res/shaders/skyboxFragShader.glsl") {
+SkyboxShader::SkyboxShader() :
+ShaderProgram("res/shaders/skyboxVertShader.glsl", "res/shaders/skyboxFragShader.glsl") {
 	bind_attributes();
 	get_all_uniform_locations();
+}
+
+
+void SkyboxShader::load_projection_matrix(const glm::mat4& matrix) const {
+	load_matrix(location_projection_matrix, matrix);
+}
+
+void SkyboxShader::load_view_matrix(const std::shared_ptr<Camera>& camera) {
+	glm::mat4 view = camera->getView();
+	view[3][0] = 0;
+	view[3][1] = 0;
+	view[3][2] = 0;
+	m_rotation += ROTATE_SPEED * DisplayManager::getFrameTimeSeconds();
+	view = glm::rotate(view, glm::radians(m_rotation), glm::vec3(0, 1, 0));
+
+	load_matrix(location_view_matrix, view);
+}
+
+void SkyboxShader::load_fog_color(const float r, const float g, const float b) const {
+	const glm::vec3 vec(r, g, b);
+	load_vector3_f(location_fog_color, vec);
+}
+
+void SkyboxShader::load_blend_factor(const float blend) const {
+	load_float(location_blend_factor, blend);
+}
+
+void SkyboxShader::connect_texture_units() const {
+	load_int(location_cube_map1, 0);
+	load_int(location_cube_map2, 1);
 }
 
 void SkyboxShader::bind_attributes() {
@@ -12,38 +43,10 @@ void SkyboxShader::bind_attributes() {
 }
 
 void SkyboxShader::get_all_uniform_locations() {
-	location_projectionMatrix = get_uniform_location("projectionMatrix");
-	location_viewMatrix = get_uniform_location("viewMatrix");
-	location_fogColor = get_uniform_location("fogColor");
-	location_cubeMap = get_uniform_location("cubeMap");
-	location_cubeMap2 = get_uniform_location("cubeMap2");
-	location_blendFactor = get_uniform_location("blendFactor");
-}
-
-void SkyboxShader::loadProjectionMatrix(glm::mat4& matrix) {
-	load_matrix(location_projectionMatrix, matrix);
-}
-
-void SkyboxShader::loadViewMatrix(Camera& camera) {
-	glm::mat4 view = camera.getView();
-	view[3][0] = 0;
-	view[3][1] = 0;
-	view[3][2] = 0;
-	rotation += ROTATE_SPEED * DisplayManager::getFrameTimeSeconds();
-	view = glm::rotate(view, glm::radians(rotation), glm::vec3(0, 1, 0));
-	load_matrix(location_viewMatrix, view);
-}
-
-void SkyboxShader::loadFogColor(GLfloat r, GLfloat g, GLfloat b) {
-	glm::vec3 vec(r, g, b);
-	load_vector3_f(location_fogColor, vec);
-}
-
-void SkyboxShader::connectTextureUnits() {
-	load_int(location_cubeMap, 0);
-	load_int(location_cubeMap2, 1);
-}
-
-void SkyboxShader::loadBlendFactor(GLfloat blend) {
-	load_float(location_blendFactor, blend);
+	location_projection_matrix = get_uniform_location("projectionMatrix");
+	location_view_matrix = get_uniform_location("viewMatrix");
+	location_fog_color = get_uniform_location("fogColor");
+	location_cube_map1 = get_uniform_location("cubeMap");
+	location_cube_map2 = get_uniform_location("cubeMap2");
+	location_blend_factor = get_uniform_location("blendFactor");
 }

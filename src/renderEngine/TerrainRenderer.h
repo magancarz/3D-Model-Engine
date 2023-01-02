@@ -6,7 +6,7 @@
 
 class TerrainRenderer {
 public:
-	TerrainRenderer(std::unique_ptr<TerrainShader> shader, const glm::mat4& projection_matrix);
+	TerrainRenderer(const glm::mat4& projection_matrix);
 
 	void render(
 		const std::vector<std::shared_ptr<Terrain>>& terrains,
