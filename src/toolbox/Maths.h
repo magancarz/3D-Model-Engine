@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Headers.h"
+#include <glm/glm.hpp>
 
 glm::mat4 createTransformationMatrix(glm::vec2 translation, glm::vec2 scale);
 glm::mat4 createTransformationMatrix(glm::vec3 translation, float rx, float ry, float rz, float scale);

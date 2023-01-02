@@ -1,5 +1,7 @@
 #include "TerrainRenderer.h"
 
+#include "toolbox/Maths.h"
+
 TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatrix)
 	: m_shader(shader) {
 	m_shader->start();

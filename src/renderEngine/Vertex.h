@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Headers.h"
-
 class Vertex {
 public:
 	Vertex(int index, glm::vec3 position)

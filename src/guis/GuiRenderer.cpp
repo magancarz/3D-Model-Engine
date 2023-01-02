@@ -1,5 +1,10 @@
 #include "GuiRenderer.h"
 
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+
+#include "toolbox/Maths.h"
+
 GuiRenderer::GuiRenderer(Loader* loader) {
 	float values[8] = {
 		-1,  1,

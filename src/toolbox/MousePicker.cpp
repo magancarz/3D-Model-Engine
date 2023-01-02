@@ -1,5 +1,7 @@
 #include "MousePicker.h"
 
+#include "DisplayManager.h"
+
 MousePicker::MousePicker(
 	Camera& camera,
 	glm::mat4 projection,

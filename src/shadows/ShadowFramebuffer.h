@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Headers.h"
-
 class ShadowFrameBuffer {
 public:
 	/**

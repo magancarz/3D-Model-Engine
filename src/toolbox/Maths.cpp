@@ -1,5 +1,7 @@
 #include "Maths.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 glm::mat4 createTransformationMatrix(glm::vec2 translation, glm::vec2 scale) {
 	glm::mat4 matrix(1.0f);
 	matrix = glm::translate(matrix, glm::vec3(translation, 0.0f));

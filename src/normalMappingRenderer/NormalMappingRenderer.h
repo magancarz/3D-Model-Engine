@@ -1,9 +1,13 @@
 #pragma once
 
-#include "../shaders/NormalMappingShader.h"
+#include <vector>
+#include <map>
+
+#include "NormalMappingShader.h"
 #include "../models/TexturedModel.h"
 #include "../entities/Entity.h"
 #include "../entities/Camera.h"
+#include "entities/Light.h"
 
 class NormalMappingRenderer {
 public:

@@ -1,9 +1,15 @@
 #pragma once
 
-#include "../Headers.h"
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+
+#include <string>
+#include <vector>
+
 #include "../models/RawModel.h"
 #include "../renderEngine/Loader.h"
 #include "VertexNM.h"
+
 class NormalMappingOBJLoader {
 public:
 	static RawModel* loadNormalMappedOBJ(std::string objFileName, Loader& loader);

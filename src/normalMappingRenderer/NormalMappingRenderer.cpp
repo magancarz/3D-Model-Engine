@@ -1,6 +1,10 @@
 #include "NormalMappingRenderer.h"
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "../renderEngine/MasterRenderer.h"
+#include "toolbox/Maths.h"
 
 NormalMappingRenderer::NormalMappingRenderer(glm::mat4 proj) {
 	m_shader = new NormalMappingShader();

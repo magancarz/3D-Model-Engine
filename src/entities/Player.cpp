@@ -1,5 +1,10 @@
 #include "Player.h"
 
+#include <GL/glew.h>
+
+#include "toolbox/DisplayManager.h"
+#include "toolbox/Input.h"
+
 Player::Player(TexturedModel& model, glm::vec3 position, float rotX, float rotY, float rotZ, float scale)
 	: Entity(model, position, rotX, rotY, rotZ, scale) {
 

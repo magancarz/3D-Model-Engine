@@ -1,5 +1,12 @@
 #include "ShaderProgram.h"
 
+#include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 ShaderProgram::ShaderProgram(const std::string& vertexFile, const std::string& fragmentFile) {
 	m_vertexShaderID = loadShader(vertexFile, GL_VERTEX_SHADER);
 	m_fragmentShaderID = loadShader(fragmentFile, GL_FRAGMENT_SHADER);

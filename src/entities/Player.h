@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../Headers.h"
-#include "../terrains/Terrain.h"
-#include "../renderEngine/DisplayManager.h"
+#include "terrain/Terrain.h"
 #include "Entity.h"
 
 class Player : public Entity {

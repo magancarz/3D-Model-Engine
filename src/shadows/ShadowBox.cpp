@@ -1,4 +1,6 @@
 #include "ShadowBox.h"
+
+#include "toolbox/DisplayManager.h"
 #include "../renderEngine/MasterRenderer.h"
 
 ShadowBox::ShadowBox(glm::mat4* lightViewMatrix, Camera* camera):

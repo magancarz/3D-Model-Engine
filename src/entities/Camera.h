@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../Headers.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Player.h"
 

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../Headers.h"
-#include "../renderEngine/DisplayManager.h"
+#include "toolbox/DisplayManager.h"
 
 class WaterFrameBuffers {
 public:

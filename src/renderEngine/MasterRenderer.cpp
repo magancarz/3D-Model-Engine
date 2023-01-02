@@ -1,5 +1,6 @@
 #include "MasterRenderer.h"
 
+#include "toolbox/DisplayManager.h"
 
 MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
 	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;

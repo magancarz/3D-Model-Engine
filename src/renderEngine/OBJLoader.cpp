@@ -1,7 +1,15 @@
 #include "OBJLoader.h"
 
+#include <glm/glm.hpp>
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
+#include "Vertex.h"
+
 void dealWithAlreadyProcessedVertex(Vertex* previousVertex, int newTextureIndex, int newNormalIndex,
-	std::vector<unsigned int>& indices, std::vector<Vertex*>& vertices) {
+                                    std::vector<unsigned int>& indices, std::vector<Vertex*>& vertices) {
 	if(previousVertex->hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
 		indices.push_back(previousVertex->getIndex());
 	} else {

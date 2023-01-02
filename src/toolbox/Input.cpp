@@ -1,6 +1,7 @@
 #include "Input.h"
 
 #include <ranges>
+#include <stdexcept>
 
 void Input::initialize_input() {
 	for(const auto i : std::views::iota(0, NUM_KEYS)) {

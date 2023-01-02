@@ -1,5 +1,9 @@
 #include "NormalMappingObjLoader.h"
 
+#include <iostream>
+#include <sstream>
+#include <fstream>
+
 RawModel* NormalMappingOBJLoader::loadNormalMappedOBJ(std::string objFileName, Loader& loader)
 {
 	std::ifstream inFile(objFileName, std::ios::in);

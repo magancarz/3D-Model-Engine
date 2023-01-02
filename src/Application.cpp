@@ -1,8 +1,11 @@
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+
 #include <random>
+#include <iostream>
 
-#include "Headers.h"
-
-#include "renderEngine/DisplayManager.h"
+#include "toolbox/DisplayManager.h"
 #include "renderEngine/Loader.h"
 #include "renderEngine/MasterRenderer.h"
 #include "renderEngine/OBJLoader.h"
@@ -13,8 +16,13 @@
 #include "entities/Player.h"
 #include "water/WaterRenderer.h"
 #include "water/WaterFrameBuffers.h"
-#include "renderEngine/FBO.h"
-#include "renderEngine/PostProcessing.h"
+#include "renderEngine/postProcessing/FBO.h"
+#include "renderEngine/postProcessing/PostProcessing.h"
+#include "terrain/Terrain.h"
+#include "textures/TerrainTexture.h"
+#include "textures/TerrainTexturePack.h"
+#include "toolbox/Input.h"
+#include "water/WaterShader.h"
 
 int main(void) {
 	bool post_processing_enabled = true;

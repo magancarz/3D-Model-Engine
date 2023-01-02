@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../Headers.h"
+#include <string>
+#include <vector>
+#include <GL/glew.h>
 
 #include "../models/RawModel.h"
 #include "TextureData.h"

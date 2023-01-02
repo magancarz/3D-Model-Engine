@@ -1,5 +1,7 @@
 #include "WaterRenderer.h"
 
+#include "toolbox/Maths.h"
+
 WaterRenderer::WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 projection, WaterFrameBuffers* fbos)
 	: m_shader(shader), m_fbos(fbos) {
 	m_shader->start();

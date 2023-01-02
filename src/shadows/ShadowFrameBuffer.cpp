@@ -1,6 +1,8 @@
 #include "ShadowFramebuffer.h"
 
-#include "../renderEngine/DisplayManager.h"
+#include <GL/glew.h>
+
+#include "toolbox/DisplayManager.h"
 
 ShadowFrameBuffer::ShadowFrameBuffer(int width, int height)
 	: WIDTH(width), HEIGHT(height) {

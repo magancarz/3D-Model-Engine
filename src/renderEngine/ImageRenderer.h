@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FBO.h"
+#include "postProcessing/FBO.h"
 
 class ImageRenderer {
 public:

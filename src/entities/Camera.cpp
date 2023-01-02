@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include "toolbox/DisplayManager.h"
+
 Camera::Camera(Player& player, glm::vec3 position) :
 m_player(player), m_position(position) {
 	m_movementSpeed = 0.3f;

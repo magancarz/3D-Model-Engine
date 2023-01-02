@@ -1,5 +1,9 @@
 #include "EntityRenderer.h"
 
+#include <gl/glew.h>
+
+#include "toolbox/Maths.h"
+
 EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix)
 	: m_shader(shader), m_projectionMatrix(projectionMatrix) {
 	m_shader->start();

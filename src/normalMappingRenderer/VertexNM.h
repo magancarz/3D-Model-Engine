@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../Headers.h"
+#include <glm/glm.hpp>
+
+#include <vector>
 
 class VertexNM {
 public:

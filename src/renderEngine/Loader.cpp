@@ -1,9 +1,14 @@
 #include "Loader.h"
 
+#include <iostream>
+#include <set>
+
+#include "stb_image/stb_image.h"
+
 RawModel* Loader::loadToVAO(const std::vector<float>& positions,
-							const std::vector<float>& textureCoords,
-							const std::vector<float>& normals,
-							const std::vector<unsigned int>& indices) {
+                            const std::vector<float>& textureCoords,
+                            const std::vector<float>& normals,
+                            const std::vector<unsigned int>& indices) {
 	unsigned int vaoID = createVAO();
 	bindIndicesBuffer(indices.data(), indices.size());
 	storeDataInAttributeList(0, 3, positions.data(), positions.size());

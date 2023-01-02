@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../models/RawModel.h"
-#include "../shaders/WaterShader.h"
 #include "WaterTile.h"
 #include "WaterFrameBuffers.h"
+#include "WaterShader.h"
+#include "renderEngine/Loader.h"
 
 class WaterRenderer {
 public:

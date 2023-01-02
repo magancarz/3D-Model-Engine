@@ -1,13 +1,11 @@
 #pragma once
 
-#include "../Headers.h"
-#include "../shaders/StaticShader.h"
-#include "../shaders/TerrainShader.h"
 #include "../skybox/SkyboxRenderer.h"
 #include "../normalMappingRenderer/NormalMappingRenderer.h"
 #include "../shadows/ShadowMapMasterRenderer.h"
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
+#include "terrain/TerrainShader.h"
 
 const float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
 const float FOV = 70.0f;

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../Headers.h"
+#include <map>
+#include <vector>
+
 #include "../entities/Entity.h"
 #include "../models/TexturedModel.h"
 #include "ShadowShader.h"

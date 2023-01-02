@@ -1,11 +1,6 @@
 #pragma once
 
-#include "../Headers.h"
-
-#include "../models/TexturedModel.h"
-#include "../shaders/TerrainShader.h"
-#include "../terrains/Terrain.h"
-#include "../entities/Entity.h"
+#include "terrain/TerrainShader.h"
 
 class TerrainRenderer {
 public:

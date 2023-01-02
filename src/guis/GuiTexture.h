@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Headers.h"
+#include <glm/glm.hpp>
 
 class GuiTexture {
 public:

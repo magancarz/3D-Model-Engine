@@ -1,5 +1,9 @@
 #include "ShadowMapEntityRenderer.h"
 
+#include <GL/glew.h>
+
+#include "toolbox/Maths.h"
+
 void ShadowMapEntityRenderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* entitiesMap) {
 	for(std::map<TexturedModel*, std::vector<Entity*>*>::iterator it = entitiesMap->begin(); it != entitiesMap->end(); it++) {
 		TexturedModel* model = it->first;

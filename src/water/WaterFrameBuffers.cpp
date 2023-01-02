@@ -1,5 +1,7 @@
 #include "WaterFrameBuffers.h"
 
+#include <GL/glew.h>
+
 WaterFrameBuffers::WaterFrameBuffers() {
 	initialiseReflectionFrameBuffer();
 	initialiseRefractionFrameBuffer();

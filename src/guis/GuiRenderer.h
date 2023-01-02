@@ -1,7 +1,9 @@
 #pragma once
 
+#include <vector>
+
 #include "../renderEngine/Loader.h"
-#include "../shaders/GuiShader.h"
+#include "GuiShader.h"
 #include "GuiTexture.h"
 
 class GuiRenderer {

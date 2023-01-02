@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Headers.h"
 #include "../shaders/ShaderProgram.h"
 #include "../entities/Camera.h"
 
