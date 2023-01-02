@@ -57,7 +57,7 @@ void DisplayManager::scrollCallback(GLFWwindow* window, double xoffset, double y
 	mouseWheel += yoffset;
 }
 
-void DisplayManager::createDisplay() {
+void DisplayManager::create_display() {
 	//Create GLFW window and gl context
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);

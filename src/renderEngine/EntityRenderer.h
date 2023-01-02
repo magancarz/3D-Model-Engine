@@ -9,8 +9,8 @@
 #include "../toolbox/Maths.h"
 #include "../renderEngine/DisplayManager.h"
 
-extern void enableCulling();
-extern void disableCulling();
+extern void enable_culling();
+extern void disable_culling();
 
 class EntityRenderer {
 public:

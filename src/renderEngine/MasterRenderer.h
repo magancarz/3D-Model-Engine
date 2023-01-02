@@ -3,15 +3,12 @@
 #include "../Headers.h"
 #include "../shaders/StaticShader.h"
 #include "../shaders/TerrainShader.h"
-#include "../skybox/SkyboxShader.h"
 #include "../skybox/SkyboxRenderer.h"
 #include "../normalMappingRenderer/NormalMappingRenderer.h"
 #include "../shadows/ShadowMapMasterRenderer.h"
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
 
-void enableCulling();
-void disableCulling();
 const float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
 const float FOV = 70.0f;
 const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
@@ -25,6 +22,9 @@ public:
 	void renderShadowMap(std::vector<Entity*>* entityList, Light* sun);
 	
 	void prepare();
+
+	static void enable_culling();
+	static void disable_culling();
 
 	void processEntity(Entity& entity);
 	void processEntities(std::vector<Entity*>* entityList);

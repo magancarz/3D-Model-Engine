@@ -9,7 +9,7 @@
 
 class DisplayManager {
 public:
-	static void createDisplay();
+	static void create_display();
 	static void updateDisplay();
 	static void closeDisplay();
 

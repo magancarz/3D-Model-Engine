@@ -61,9 +61,6 @@ void NormalMappingRenderer::prepareTexturedModel(TexturedModel* model)
 	glEnableVertexAttribArray(3);
 	ModelTexture& texture = model->getTexture();
 	m_shader->loadNumberOfRows(texture.getNumberOfRows());
-	if (texture.getTransparency()) {
-		disableCulling();
-	}
 	//m_shader->loadFakeLightingVariable(texture.getUseFakeLighting());
 	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
@@ -72,9 +69,7 @@ void NormalMappingRenderer::prepareTexturedModel(TexturedModel* model)
 	glBindTexture(GL_TEXTURE_2D, model->getTexture().getNormalMap());
 }
 
-void NormalMappingRenderer::unbindTexturedModel()
-{
-	enableCulling();
+void NormalMappingRenderer::unbindTexturedModel() {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);

@@ -1,13 +1,5 @@
 #include "MasterRenderer.h"
 
-void enableCulling() {
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-}
-
-void disableCulling() {
-	glDisable(GL_CULL_FACE);
-}
 
 MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
 	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;
@@ -17,7 +9,6 @@ MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
 	m_shader = new StaticShader();
 	m_terrainShader = new TerrainShader();
 
-	enableCulling();
 	createProjectionMatrix();
 
 	m_renderer = new EntityRenderer(m_shader, m_projectionMatrix);
@@ -84,6 +75,15 @@ void MasterRenderer::prepare() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, m_shadowMapRenderer->getShadowMap());
+}
+
+void MasterRenderer::enable_culling() {
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+}
+
+void MasterRenderer::disable_culling() {
+	glDisable(GL_CULL_FACE);
 }
 
 void MasterRenderer::processEntities(std::vector<Entity*>* entityList) {
