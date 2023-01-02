@@ -44,8 +44,8 @@ void WaterShader::loadMoveFactor(float value) {
 }
 
 void WaterShader::loadLight(Light& sun) {
-	loadVector3f(location_lightPosition, sun.getPosition());
-	loadVector3f(location_lightColor, sun.getColor());
+	loadVector3f(location_lightPosition, sun.get_position());
+	loadVector3f(location_lightColor, sun.get_color());
 }
 
 void WaterShader::connectTextureUnits() {

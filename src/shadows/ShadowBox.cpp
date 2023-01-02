@@ -15,7 +15,7 @@ void ShadowBox::update() {
 	glm::vec3 toFar = glm::vec3(forwardVector);
 	toFar *= SHADOW_DISTANCE;
 	glm::vec3 toNear = glm::vec3(forwardVector);
-	toNear *= NEAR_PLANE;
+	toNear *= MasterRenderer::NEAR_PLANE;
 	glm::vec3 centerNear = toNear + m_cam->getPosition();
 	glm::vec3 centerFar = toFar + m_cam->getPosition();
 
@@ -102,8 +102,8 @@ glm::mat4 ShadowBox::calculateCameraRotationMatrix() {
 }
 
 void ShadowBox::calculateWidthsAndHeights() {
-	m_farWidth = (float) (SHADOW_DISTANCE * glm::tan(glm::radians(FOV)));
-	m_nearWidth = (float) (NEAR_PLANE * glm::tan(glm::radians(FOV)));
+	m_farWidth = (float) (SHADOW_DISTANCE * glm::tan(glm::radians(MasterRenderer::FOV)));
+	m_nearWidth = (float) (MasterRenderer::NEAR_PLANE * glm::tan(glm::radians(MasterRenderer::FOV)));
 	m_farHeight = m_farWidth / getAspectRatio();
 	m_nearHeight = m_nearWidth / getAspectRatio();
 }

@@ -22,11 +22,11 @@ public:
 
 	~Terrain();
 
-	float get_x() const { return m_x; }
-	float get_z() const { return m_z; }
-	RawModel* get_model() const { return m_model; }
-	std::shared_ptr<TerrainTexturePack> get_terrain_texture_pack() const { return m_texture_pack; }
-	std::shared_ptr<TerrainTexture> get_blend_map() const { return m_blend_map; }
+	float get_x() const;
+	float get_z() const;
+	RawModel* get_model() const;
+	std::shared_ptr<TerrainTexturePack> get_terrain_texture_pack() const;
+	std::shared_ptr<TerrainTexture> get_blend_map() const;
 
 	float get_height_of_terrain(float world_x, float world_z) const;
 

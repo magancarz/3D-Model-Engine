@@ -65,7 +65,7 @@ void NormalMappingRenderer::prepareTexturedModel(TexturedModel* model)
 	glEnableVertexAttribArray(3);
 	ModelTexture& texture = model->getTexture();
 	m_shader->loadNumberOfRows(texture.getNumberOfRows());
-	//m_shader->loadFakeLightingVariable(texture.getUseFakeLighting());
+	//m_static_shader->loadFakeLightingVariable(texture.getUseFakeLighting());
 	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());
@@ -84,18 +84,18 @@ void NormalMappingRenderer::unbindTexturedModel() {
 void NormalMappingRenderer::prepareInstance(Entity* entity)
 {
 	glm::mat4 transformationMatrix = createTransformationMatrix(
-		entity->getPosition(),
-		entity->getRotX(), entity->getRotY(), entity->getRotZ(),
-		entity->getScale());
+		entity->get_position(),
+		entity->get_rot_x(), entity->get_rot_y(), entity->get_rot_z(),
+		entity->get_scale());
 
-	//glm::vec3 pos = entity.getPosition();
+	//glm::vec3 pos = entity.get_position();
 	//cout << "pos = " << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
 	//glm::mat4 t = glm::translate(glm::mat4(1.0f), pos);
 	//Maths::printMatrix(t, "t");
 	//Maths::printMatrix(transformationMatrix, "T");
 
 	m_shader->loadTransformationMatrix(transformationMatrix);
-	m_shader->loadOffset(entity->getTextureXOffset(), entity->getTextureYOffset());
+	m_shader->loadOffset(entity->get_texture_x_offset(), entity->get_texture_y_offset());
 }
 
 void NormalMappingRenderer::prepare(
@@ -104,8 +104,8 @@ void NormalMappingRenderer::prepare(
 	Camera& camera)
 {
 	m_shader->loadClipPlane(clipPlane);
-	m_shader->loadSkyColor(RED, GREEN, BLUE);
-	//m_shader->loadFogVariables(FOG_DENSITY, masterRenderer.FOG_GRADIENT);
+	m_shader->loadSkyColor(MasterRenderer::RED, MasterRenderer::GREEN, MasterRenderer::BLUE);
+	//m_static_shader->loadFogVariables(FOG_DENSITY, masterRenderer.FOG_GRADIENT);
 	m_shader->loadLights(lights, camera.getView());
 	m_shader->loadViewMatrix(camera);
 }

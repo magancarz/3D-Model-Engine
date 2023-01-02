@@ -31,7 +31,7 @@ public:
 	 * very far from the scene. It then prepares to render, renders the entities
 	 * to the shadow map, and finishes rendering.
 	 */
-	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entitiesMap, Light* sun);
+	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entitiesMap, const std::shared_ptr<Light>& sun);
 
 	/**
 	 * This biased projection-view matrix is used to convert fragments into

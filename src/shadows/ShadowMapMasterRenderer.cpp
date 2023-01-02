@@ -16,9 +16,9 @@ ShadowMapMasterRenderer::~ShadowMapMasterRenderer() {
 	delete m_shader;
 }
 
-void ShadowMapMasterRenderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* entitiesMap, Light* sun) {
+void ShadowMapMasterRenderer::render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entitiesMap, const std::shared_ptr<Light>& sun) {
 	m_shadowBox->update();
-	glm::vec3 sunPosition = sun->getPosition();
+	glm::vec3 sunPosition = sun->get_position();
 	glm::vec3 lightDirection = glm::vec3(sunPosition.x, sunPosition.y, sunPosition.z);
 	prepare(lightDirection, m_shadowBox);
 	m_entityRenderer->render(entitiesMap);

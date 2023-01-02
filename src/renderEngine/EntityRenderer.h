@@ -15,7 +15,7 @@ public:
 	EntityRenderer();
 	EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix);
 
-	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entities);
+	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map);
 
 	inline void setShader(StaticShader& shader) { m_shader = &shader; };
 private:

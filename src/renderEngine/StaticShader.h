@@ -11,7 +11,7 @@ public:
 	void loadTransformationMatrix(glm::mat4 matrix);
 	void loadProjectionMatrix(glm::mat4 matrix);
 	void loadViewMatrix(Camera& camera);
-	void loadLights(std::vector<Light*>& lights);
+	void loadLights(const std::vector<std::shared_ptr<Light>>& lights);
 	void loadShineVariables(float shineDamper, float reflectivity);
 	void loadFakeLightingVariable(bool value);
 	void loadSkyColor(float r, float g, float b);

@@ -6,7 +6,7 @@ class TerrainRenderer {
 public:
 	TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatrix);
 
-	void render(std::vector<Terrain*>* terrains, glm::mat4 toShadowMapSpace);
+	void render(const std::vector<std::shared_ptr<Terrain>>& terrains, const glm::mat4& toShadowMapSpace);
 
 	inline void setShader(TerrainShader* shader) { m_shader = shader; };
 private:

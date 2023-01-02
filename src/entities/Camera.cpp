@@ -61,12 +61,12 @@ void Camera::move() {
 	float verticalDistance = calculateVerticalDistance();
 	//calculateCameraPosition(horizontalDistance, verticalDistance);
 
-	m_yaw = 180.f - (m_player.getRotY() + m_angleAroundThePlayer);
+	m_yaw = 180.f - (m_player.get_rot_y() + m_angleAroundThePlayer);
 	m_yaw = (float) fmod(m_yaw, 360.f);
 
-	m_position.x = m_player.getPosition().x;
-	m_position.y = m_player.getPosition().y + CAMERA_HEIGHT;
-	m_position.z = m_player.getPosition().z;
+	m_position.x = m_player.get_position().x;
+	m_position.y = m_player.get_position().y + CAMERA_HEIGHT;
+	m_position.z = m_player.get_position().z;
 
 	/*
 	if(inputManager.isKeyDown(GLFW_KEY_W))
@@ -115,10 +115,10 @@ float Camera::calculateVerticalDistance() {
 }
 
 void Camera::calculateCameraPosition(float horizontalDistance, float verticalDistance) {
-	float theta = m_player.getRotY() + m_angleAroundThePlayer;
+	float theta = m_player.get_rot_y() + m_angleAroundThePlayer;
 	float offsetX = (float)(horizontalDistance * glm::sin(glm::radians(theta)));
 	float offsetZ = (float)(horizontalDistance * glm::cos(glm::radians(theta)));
-	glm::vec3 playerPosition = m_player.getPosition();
+	glm::vec3 playerPosition = m_player.get_position();
 	m_position.x = playerPosition.x - offsetX;
 	m_position.y = playerPosition.y + verticalDistance;
 	m_position.z = playerPosition.z - offsetZ;

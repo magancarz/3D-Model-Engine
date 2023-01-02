@@ -59,9 +59,9 @@ void NormalMappingShader::loadLights(std::vector<Light*>& lights, glm::mat4 view
 	for (int i = 0; i < MAX_LIGHTS; i++) {
 		if (i < (int)lights.size()) {
 			Light* light = lights[i];
-			loadVector3f(location_lightPosition[i], light->getPosition());
-			loadVector3f(location_lightColor[i], light->getColor());
-			loadVector3f(location_attenuation[i], light->getAttenuation());
+			loadVector3f(location_lightPosition[i], light->get_position());
+			loadVector3f(location_lightColor[i], light->get_color());
+			loadVector3f(location_attenuation[i], light->get_attenuation());
 		} else {
 			// If less than MAX_LIGHTS lights are in the lights vector,
 			// load up empty information to the shaders.

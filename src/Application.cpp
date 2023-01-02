@@ -45,7 +45,7 @@ int main(void) {
 
     /* initialize model loaders */
     auto loader = std::make_shared<Loader>();
-    auto normal_mapped_obj_loader = std::make_unique<NormalMappingOBJLoader>();
+    auto normal_mapped_obj_loader = std::make_shared<NormalMappingOBJLoader>();
 
     /* create terrain */
     auto background_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/grass.png"));
@@ -60,52 +60,52 @@ int main(void) {
 
     /* load 3d models */
     auto stall_model = std::unique_ptr<RawModel>(loadOBJ("res/models/stall.obj", loader.get()));
-    ModelTexture stall_texture(loader->loadTexture("res/textures/stallTexture.png"));
-    TexturedModel textured_stall_model(*stall_model, stall_texture);
+    auto stall_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/stallTexture.png"));
+    auto textured_stall_model = std::make_shared<TexturedModel>(*stall_model, *stall_texture);
 
     auto cherry_tree_model = loadOBJ("res/models/cherry.obj", loader.get());
-    ModelTexture cherry_tree_texture(loader->loadTexture("res/textures/cherry.png"));
-    TexturedModel textured_cherry_tree_model(*cherry_tree_model, cherry_tree_texture);
+    auto cherry_tree_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/cherry.png"));
+    auto textured_cherry_tree_model = std::make_shared<TexturedModel>(*cherry_tree_model, *cherry_tree_texture);
 
     auto lantern_model = loadOBJ("res/models/lantern.obj", loader.get());
-    ModelTexture lantern_texture(loader->loadTexture("res/textures/lantern.png"));
-    TexturedModel textured_lantern_model(*lantern_model, lantern_texture);
-    textured_lantern_model.getTexture().setSpecularMap(loader->loadTexture("res/textures/lanternS.png"));
+    auto lantern_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/lantern.png"));
+    auto textured_lantern_model = std::make_shared<TexturedModel>(*lantern_model, *lantern_texture);
+    textured_lantern_model->getTexture().setSpecularMap(loader->loadTexture("res/textures/lanternS.png"));
     
     /* create light objects */
-    auto sun = std::make_unique<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
-    auto light1 = std::make_unique<Light>(glm::vec3(278, 12, 224), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
-    auto light2 = std::make_unique<Light>(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
-    auto light3 = std::make_unique<Light>(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
+    auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
+    auto light1 = std::make_shared<Light>(glm::vec3(278, 12, 224), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
+    auto light2 = std::make_shared<Light>(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
+    auto light3 = std::make_shared<Light>(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
 
-    std::vector<Light*> lights;
-    lights.push_back(sun.get());
-    lights.push_back(light1.get());
-    lights.push_back(light2.get());
-    lights.push_back(light3.get());
+    std::vector<std::shared_ptr<Light>> lights;
+    lights.push_back(sun);
+    lights.push_back(light1);
+    lights.push_back(light2);
+    lights.push_back(light3);
 
     /* create player and camera */
-    auto player = std::make_unique<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
+    auto player = std::make_shared<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
 
-    auto camera = std::make_unique<Camera>(*player, glm::vec3(-5.0f, 6.0f, -5.0f));
+    auto camera = std::make_shared<Camera>(*player, glm::vec3(-5.0f, 6.0f, -5.0f));
 
     /* create master renderer */
-    MasterRenderer master_renderer(loader.get(), camera.get());
+    auto master_renderer = std::make_unique<MasterRenderer>(loader, camera);
 
     /* create water renderer */
     auto water_shader = std::make_unique<WaterShader>();
     auto water_frame_buffers = std::make_unique<WaterFrameBuffers>();
-    auto water_renderer = std::make_unique<WaterRenderer>(loader.get(), water_shader.get(), master_renderer.getProjectionMatrix(), water_frame_buffers.get());
+    auto water_renderer = std::make_unique<WaterRenderer>(loader.get(), water_shader.get(), master_renderer->get_projection_matrix(), water_frame_buffers.get());
     std::vector<WaterTile*> water_tiles;
     auto water_tile = std::make_unique<WaterTile>(400, 400, 0);
     water_tiles.push_back(water_tile.get());
 
     /* create entities */
-    auto entities = std::make_unique<std::vector<Entity*>>();
-	entities->push_back(player.get());
+    std::vector<std::shared_ptr<Entity>> entities;
+	entities.push_back(player);
     
-    auto lantern = std::make_unique<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
-    entities->push_back(lantern.get());
+    auto lantern = std::make_shared<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
+    entities.push_back(lantern);
 
     /* create tree objects */
     std::uniform_int_distribution<unsigned int> map_distribution(0, TERRAIN_SIZE);
@@ -124,8 +124,7 @@ int main(void) {
         } while(terrain->get_height_of_terrain(tree_x, tree_z) <= 0);
 
         int tree_rot_y = tree_rotation_generator();
-        auto new_tree = new Entity(textured_cherry_tree_model, glm::vec3(tree_x, terrain->get_height_of_terrain(tree_x, tree_z), tree_z), 0.0, tree_rot_y, 0.0, 5.0);
-        entities->push_back(new_tree);
+        entities.push_back(std::make_shared<Entity>(textured_cherry_tree_model, glm::vec3(tree_x, terrain->get_height_of_terrain(tree_x, tree_z), tree_z), 0.0, tree_rot_y, 0.0, 5.0));
     }
     
     /* post-processing effects */
@@ -147,36 +146,36 @@ int main(void) {
         glfwPollEvents();
 
         // before any rendering takes place, render shadow map
-        master_renderer.renderShadowMap(entities.get(), sun.get());
+        master_renderer->render_shadow_map(entities, sun);
 
         //OpenGL calls
         glEnable(GL_CLIP_DISTANCE0);
 
         //Process terrains
-        master_renderer.processTerrain(terrain.get());
+        master_renderer->process_terrain(terrain);
 
         //Process entities
-        master_renderer.processEntities(entities.get());
+        master_renderer->process_entities(entities);
 
         //Water
         water_frame_buffers->bindReflectionFrameBuffer();
         float distance = 2 * (camera->getPosition().y - water_tile->getHeight());
         camera->getPosition().y -= distance;
         camera->invertPitch();
-        master_renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water_tile->getHeight()));
+        master_renderer->render(lights, camera, glm::vec4(0, 1, 0, -water_tile->getHeight()));
         camera->getPosition().y += distance;
         camera->invertPitch();
         water_frame_buffers->unbindCurrentFrameBuffer();
 
         water_frame_buffers->bindRefractionFrameBuffer();
-        master_renderer.render(lights, *camera, glm::vec4(0, -1, 0, water_tile->getHeight()));
+        master_renderer->render(lights, camera, glm::vec4(0, -1, 0, water_tile->getHeight()));
 
         //Draw here
         glDisable(GL_CLIP_DISTANCE0);
         water_frame_buffers->unbindCurrentFrameBuffer();
 
         multi_sample_fbo->bindFrameBuffer();
-        master_renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
+        master_renderer->render(lights, camera, glm::vec4(0, -1, 0, 10000));
 
         water_renderer->render(water_tiles, *camera, *sun);
         
@@ -186,7 +185,7 @@ int main(void) {
         if(post_processing_enabled) POST_PROCESSING_DRAW(output_fbo1->getColorTexture(), output_fbo2->getColorTexture());
 
         //Clean up renderer
-        master_renderer.cleanUp();
+        master_renderer->clean_up_objects_maps();
 
         /* Swap front and back buffers */
         DisplayManager::updateDisplay();

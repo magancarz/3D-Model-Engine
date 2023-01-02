@@ -6,25 +6,25 @@
 #include "stb_image/stb_image.h"
 
 RawModel* Loader::loadToVAO(const std::vector<float>& positions,
-                            const std::vector<float>& textureCoords,
+                            const std::vector<float>& texture_coords,
                             const std::vector<float>& normals,
                             const std::vector<unsigned int>& indices) {
 	unsigned int vaoID = createVAO();
 	bindIndicesBuffer(indices.data(), indices.size());
 	storeDataInAttributeList(0, 3, positions.data(), positions.size());
-	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
+	storeDataInAttributeList(1, 2, texture_coords.data(), texture_coords.size());
 	storeDataInAttributeList(2, 3, normals.data(), normals.size());
 	unbindVAO();
 
 	return new RawModel(vaoID, indices.size());
 }
 
-RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vector<float>& textureCoords,
+RawModel* Loader::loadToVAO(const std::vector<float>& positions, const std::vector<float>& texture_coords,
 	const std::vector<float>& normals, const std::vector<float>& tangents, const std::vector<unsigned int>& indices) {
 	unsigned int vaoID = createVAO();
 	bindIndicesBuffer(indices.data(), indices.size());
 	storeDataInAttributeList(0, 3, positions.data(), positions.size());
-	storeDataInAttributeList(1, 2, textureCoords.data(), textureCoords.size());
+	storeDataInAttributeList(1, 2, texture_coords.data(), texture_coords.size());
 	storeDataInAttributeList(2, 3, normals.data(), normals.size());
 	storeDataInAttributeList(3, 3, tangents.data(), tangents.size());
 	unbindVAO();

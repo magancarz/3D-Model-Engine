@@ -16,7 +16,7 @@ public:
 	* Renders entities to the shadow map. Each model is first bound and then all
 	* of the entities using that model are rendered to the shadow map.
 	*/
-	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entitiesMap);
+	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entitiesMap);
 
 private:
 	/**

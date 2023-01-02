@@ -28,6 +28,15 @@ Terrain::~Terrain() {
 	delete m_heights;
 }
 
+float Terrain::get_x() const { return m_x; }
+float Terrain::get_z() const { return m_z; }
+
+RawModel* Terrain::get_model() const { return m_model; }
+
+std::shared_ptr<TerrainTexturePack> Terrain::get_terrain_texture_pack() const { return m_texture_pack; }
+
+std::shared_ptr<TerrainTexture> Terrain::get_blend_map() const { return m_blend_map; }
+
 RawModel* Terrain::generate_terrain(
 		const std::shared_ptr<Loader>& loader,
 		const std::string& height_map_location) {

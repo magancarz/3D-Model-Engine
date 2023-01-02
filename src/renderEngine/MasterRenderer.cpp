@@ -2,80 +2,68 @@
 
 #include "toolbox/DisplayManager.h"
 
-MasterRenderer::MasterRenderer(Loader* loader, Camera* camera) {
-	m_entities = new std::map<TexturedModel*, std::vector<Entity*>*>;
-	m_normalMappingEntities = new std::map<TexturedModel*, std::vector<Entity*>*>;
-	m_terrains = new std::vector<Terrain*>;
+MasterRenderer::MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera) {
+	m_static_shader = std::make_unique<StaticShader>();
+	m_terrain_shader = std::make_unique<TerrainShader>();
+	
+	create_projection_matrix();
 
-	m_shader = new StaticShader();
-	m_terrainShader = new TerrainShader();
+	m_entity_renderer = std::make_unique<EntityRenderer>(m_static_shader.get(), m_projection_matrix);
+	m_terrain_renderer = std::make_unique<TerrainRenderer>(m_terrain_shader.get(), m_projection_matrix);
+	m_skybox_renderer = std::make_unique<SkyboxRenderer>(loader.get(), m_projection_matrix);
+	m_normal_mapping_renderer = std::make_unique<NormalMappingRenderer>(m_projection_matrix);
+	m_shadow_map_renderer = std::make_unique<ShadowMapMasterRenderer>(camera.get());
 
-	createProjectionMatrix();
-
-	m_renderer = new EntityRenderer(m_shader, m_projectionMatrix);
-	m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
-	m_skyboxRenderer = new SkyboxRenderer(loader, m_projectionMatrix);
-	m_normalMappingRenderer = new NormalMappingRenderer(m_projectionMatrix);
-	m_shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-
-	m_shader->start();
-	m_shader->loadProjectionMatrix(m_projectionMatrix);
-	m_shader->stop();
-
+	m_static_shader->start();
+	m_static_shader->loadProjectionMatrix(m_projection_matrix);
+	m_static_shader->stop();
 }
 
 MasterRenderer::~MasterRenderer() {
-	m_terrainShader->cleanUp();
-	m_shader->cleanUp();
-
-	delete m_shadowMapRenderer;
-	delete m_normalMappingRenderer;
-	delete m_skyboxRenderer;
-	delete m_terrainRenderer;
-	delete m_terrainShader;
-	
-	delete m_renderer;
-	delete m_shader;
-
-	delete m_terrains;
-	delete m_entities;
+	m_terrain_shader->cleanUp();
+	m_static_shader->cleanUp();
 }
 
-void MasterRenderer::render(std::vector<Light*>& lights, Camera& camera, glm::vec4 clipPlane) {
+void MasterRenderer::render(
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const {
 	prepare();
-	m_shader->start();
-	m_shader->loadClipPlane(clipPlane);
-	m_shader->loadSkyColor(RED, GREEN, BLUE);
-	m_shader->loadLights(lights);
-	m_shader->loadViewMatrix(camera);
-	m_renderer->render(m_entities);
-	m_shader->stop();
+	m_static_shader->start();
+	m_static_shader->loadClipPlane(clip_plane);
+	m_static_shader->loadSkyColor(RED, GREEN, BLUE);
+	m_static_shader->loadLights(lights);
+	m_static_shader->loadViewMatrix(*camera);
+	m_entity_renderer->render(m_entities);
+	m_static_shader->stop();
 
-	m_normalMappingRenderer->render(m_normalMappingEntities, clipPlane, lights, camera);
+	//m_normal_mapping_renderer->render(m_normal_mapped_entities, clip_plane, lights, camera);
 
-	m_terrainShader->start();
-	m_terrainShader->loadClipPlane(clipPlane);
-	m_terrainShader->loadSkyColor(RED, GREEN, BLUE);
-	m_terrainShader->loadLights(lights);
-	m_terrainShader->loadViewMatrix(camera);
-	m_terrainRenderer->render(m_terrains, m_shadowMapRenderer->getToShadowMapSpaceMatrix());
-	m_terrainShader->stop();
+	m_terrain_shader->start();
+	m_terrain_shader->loadClipPlane(clip_plane);
+	m_terrain_shader->loadSkyColor(RED, GREEN, BLUE);
+	m_terrain_shader->loadLights(lights);
+	m_terrain_shader->loadViewMatrix(*camera);
+	m_terrain_renderer->render(m_terrains, m_shadow_map_renderer->getToShadowMapSpaceMatrix());
+	m_terrain_shader->stop();
 
-	m_skyboxRenderer->render(camera, RED, GREEN, BLUE);
+	m_skybox_renderer->render(*camera, RED, GREEN, BLUE);
 }
 
-void MasterRenderer::renderShadowMap(std::vector<Entity*>* entityList, Light* sun) {
-	processEntities(entityList);
-	m_shadowMapRenderer->render(m_entities, sun);
-	m_entities->clear();
+void MasterRenderer::render_shadow_map(
+		const std::vector<std::shared_ptr<Entity>>& entity_list,
+		const std::shared_ptr<Light>& sun) {
+	process_entities(entity_list);
+	m_shadow_map_renderer->render(m_entities, sun);
+	m_entities.clear();
 }
 
-void MasterRenderer::prepare() {
+void MasterRenderer::prepare() const {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(RED, GREEN, BLUE, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, m_shadowMapRenderer->getShadowMap());
+	glBindTexture(GL_TEXTURE_2D, m_shadow_map_renderer->getShadowMap());
 }
 
 void MasterRenderer::enable_culling() {
@@ -87,64 +75,65 @@ void MasterRenderer::disable_culling() {
 	glDisable(GL_CULL_FACE);
 }
 
-void MasterRenderer::processEntities(std::vector<Entity*>* entityList) {
-	for(std::vector<Entity*>::iterator it = entityList->begin(); it != entityList->end(); it++) {
-		Entity* entity = *it;
-		processEntity(*entity);
+void MasterRenderer::process_entities(const std::vector<std::shared_ptr<Entity>>& entities) {
+	for(const auto& entity : entities) {
+		process_entity(entity);
 	}
 }
 
-void MasterRenderer::processEntity(Entity& entity) {
-	TexturedModel& entityModel = entity.getTexturedModel();
-	std::map<TexturedModel*, std::vector<Entity*>*>::iterator it;
+void MasterRenderer::process_entity(const std::shared_ptr<Entity>& entity) {
+	auto entity_model = entity->get_textured_model();
 
-	it = m_entities->find(&entityModel);
-	if(it != m_entities->end()) {
-		std::vector<Entity*>* batch = it->second;
-		batch->push_back(&entity);
+	const auto it = m_entities.find(entity_model);
+	if(it != m_entities.end()) {
+		auto& batch = it->second;
+		batch.push_back(entity);
 	} else {
-		std::vector<Entity*>* newBatch = new std::vector<Entity*>();
-		newBatch->push_back(&entity);
-		m_entities->insert(std::make_pair(&entityModel, newBatch));
+		std::vector<std::shared_ptr<Entity>> new_batch;
+		new_batch.push_back(entity);
+		m_entities.insert(std::make_pair(entity_model, new_batch));
 	}
 }
 
-void MasterRenderer::processNormalMapEntity(Entity& entity) {
-	TexturedModel& entityModel = entity.getTexturedModel();
-	std::map<TexturedModel*, std::vector<Entity*>*>::iterator it;
+void MasterRenderer::process_normal_map_entity(const std::shared_ptr<Entity>& entity) {
+	auto entity_model = entity->get_textured_model();
 
-	it = m_normalMappingEntities->find(&entityModel);
-	if(it != m_normalMappingEntities->end()) {
-		std::vector<Entity*>* batch = it->second;
-		batch->push_back(&entity);
+	const auto it = m_normal_mapped_entities.find(entity_model);
+	if(it != m_normal_mapped_entities.end()) {
+		auto& batch = it->second;
+		batch.push_back(entity);
 	} else {
-		std::vector<Entity*>* newBatch = new std::vector<Entity*>();
-		newBatch->push_back(&entity);
-		m_normalMappingEntities->insert(std::make_pair(&entityModel, newBatch));
+		std::vector<std::shared_ptr<Entity>> new_batch;
+		new_batch.push_back(entity);
+		m_normal_mapped_entities.insert(std::make_pair(entity_model, new_batch));
 	}
 }
 
-void MasterRenderer::processTerrain(Terrain* terrain) {
-	m_terrains->push_back(terrain);
+void MasterRenderer::process_terrain(const std::shared_ptr<Terrain>& terrain) {
+	m_terrains.push_back(terrain);
 }
 
-void MasterRenderer::cleanUp() {
-	m_entities->clear();
-	m_normalMappingEntities->clear();
-	m_terrains->clear();
+glm::mat4 MasterRenderer::get_projection_matrix() const { return m_projection_matrix; }
+
+unsigned int MasterRenderer::get_shadow_map_texture() const { return m_shadow_map_renderer->getShadowMap(); }
+
+void MasterRenderer::clean_up_objects_maps() {
+	m_entities.clear();
+	m_normal_mapped_entities.clear();
+	m_terrains.clear();
 }
 
-void MasterRenderer::createProjectionMatrix() {
-	m_projectionMatrix = glm::mat4();
-	float aspectRatio = (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
-	float yScale = (float) ((1.0f / glm::tan(glm::radians(FOV / 2.0f))));
-	float xScale = yScale / aspectRatio;
-	float frustumLength = FAR_PLANE - NEAR_PLANE;
+void MasterRenderer::create_projection_matrix() {
+	m_projection_matrix = glm::mat4();
+	constexpr float aspect_ratio = static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT);
+	const float y_scale = 1.0f / glm::tan(glm::radians(FOV / 2.0f));
+	const float x_scale = y_scale / aspect_ratio;
+	constexpr float frustum_length = FAR_PLANE - NEAR_PLANE;
 
-	m_projectionMatrix[0][0] = xScale;
-	m_projectionMatrix[1][1] = yScale;
-	m_projectionMatrix[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
-	m_projectionMatrix[2][3] = -1;
-	m_projectionMatrix[3][2] = -((2.0f * NEAR_PLANE * FAR_PLANE) / frustumLength);
-	m_projectionMatrix[3][3] = 0;
+	m_projection_matrix[0][0] = x_scale;
+	m_projection_matrix[1][1] = y_scale;
+	m_projection_matrix[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+	m_projection_matrix[2][3] = -1;
+	m_projection_matrix[3][2] = -((2.0f * NEAR_PLANE * FAR_PLANE) / frustum_length);
+	m_projection_matrix[3][3] = 0;
 }

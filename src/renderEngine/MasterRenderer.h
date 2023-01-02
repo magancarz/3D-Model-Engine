@@ -7,51 +7,55 @@
 #include "TerrainRenderer.h"
 #include "terrain/TerrainShader.h"
 
-const float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
-const float FOV = 70.0f;
-const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
-
 class MasterRenderer {
 public:
-	MasterRenderer(Loader* loader, Camera* camera);
+	MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera);
 	~MasterRenderer();
 
-	void render(std::vector<Light*>& lights, Camera& camera, glm::vec4 clipPlane);
-	void renderShadowMap(std::vector<Entity*>* entityList, Light* sun);
+	void render(
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const;
+
+	void render_shadow_map(
+		const std::vector<std::shared_ptr<Entity>>& entity_list,
+		const std::shared_ptr<Light>& sun);
 	
-	void prepare();
+	void prepare() const;
 
 	static void enable_culling();
 	static void disable_culling();
 
-	void processEntity(Entity& entity);
-	void processEntities(std::vector<Entity*>* entityList);
-	void processNormalMapEntity(Entity& entity);
-	void processTerrain(Terrain* terrain);
+	void process_entity(const std::shared_ptr<Entity>& entity);
+	void process_entities(const std::vector<std::shared_ptr<Entity>>& entities);
+	void process_normal_map_entity(const std::shared_ptr<Entity>& entity);
+	void process_terrain(const std::shared_ptr<Terrain>& terrain);
 
-	inline glm::mat4 getProjectionMatrix() { return m_projectionMatrix; };
-	inline unsigned int getShadowMapTexture() { return m_shadowMapRenderer->getShadowMap(); }
+	glm::mat4 get_projection_matrix() const;
+	unsigned int get_shadow_map_texture() const;
 
-	void cleanUp();
+	void clean_up_objects_maps();
+
+	inline static constexpr float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
+	inline static constexpr float FOV = 70.0f;
+	inline static constexpr float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
+
 private:
-	StaticShader* m_shader;
-	NormalMappingShader* m_normalMappingShader;
-	EntityRenderer* m_renderer;
+	glm::mat4 m_projection_matrix;
 
-	TerrainShader* m_terrainShader;
-	TerrainRenderer* m_terrainRenderer;
+	std::unique_ptr<StaticShader> m_static_shader;
+	std::unique_ptr<NormalMappingShader> m_normal_mapped_objects_shader;
+	std::unique_ptr<TerrainShader> m_terrain_shader;
 
-	SkyboxRenderer* m_skyboxRenderer;
+	std::unique_ptr<EntityRenderer> m_entity_renderer;
+	std::unique_ptr<TerrainRenderer> m_terrain_renderer;
+	std::unique_ptr<SkyboxRenderer> m_skybox_renderer;
+	std::unique_ptr<NormalMappingRenderer> m_normal_mapping_renderer;
+	std::unique_ptr<ShadowMapMasterRenderer> m_shadow_map_renderer;
 
-	NormalMappingRenderer* m_normalMappingRenderer;
+	std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>> m_entities;
+	std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>> m_normal_mapped_entities;
+	std::vector<std::shared_ptr<Terrain>> m_terrains;
 
-	ShadowMapMasterRenderer* m_shadowMapRenderer;
-
-	glm::mat4 m_projectionMatrix;
-
-	std::map<TexturedModel*, std::vector<Entity*>*>* m_entities;
-	std::map<TexturedModel*, std::vector<Entity*>*>* m_normalMappingEntities;
-	std::vector<Terrain*>* m_terrains;
-
-	void createProjectionMatrix();
+	void create_projection_matrix();
 };

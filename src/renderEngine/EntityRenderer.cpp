@@ -12,22 +12,16 @@ EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix)
 	m_shader->stop();
 }
 
-void EntityRenderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* entities) {
-	for(std::map<TexturedModel*, std::vector<Entity*>*>::iterator it = entities->begin(); it != entities->end(); it++) {
-		TexturedModel* texturedModel = (*it).first;
-		prepareTexturedModel(*texturedModel);
-		it = entities->find(texturedModel);
-		if(it != entities->end()) {
-			std::vector<Entity*>* batch = it->second;
+void EntityRenderer::render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map) {
+	for(const auto& [textured_model, entities] : entity_map) {
+		prepareTexturedModel(*textured_model);
 
-			for(std::vector<Entity*>::iterator sit = batch->begin(); sit != batch->end(); sit++) {
-				Entity* entity = *sit;
-				prepareInstance(*entity);
-				glDrawElements(GL_TRIANGLES, texturedModel->getRawModel().getVertexCount(), GL_UNSIGNED_INT, 0);
-			}
-
-			unbindTexturedModel();
+		for(const auto& entity : entities) {
+			prepareInstance(*entity);
+			glDrawElements(GL_TRIANGLES, textured_model->getRawModel().getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
+
+		unbindTexturedModel();
 	}
 	m_shader->stop();
 }
@@ -59,9 +53,9 @@ void EntityRenderer::unbindTexturedModel() {
 }
 
 void EntityRenderer::prepareInstance(Entity& entity) {
-	glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+	glm::mat4 transformationMatrix = createTransformationMatrix(entity.get_position(), entity.get_rot_x(), entity.get_rot_y(), entity.get_rot_z(), entity.get_scale());
 	m_shader->loadTransformationMatrix(transformationMatrix);
-	m_shader->loadOffset(glm::vec2(entity.getTextureXOffset(), entity.getTextureYOffset()));
-	ModelTexture texture = entity.getTexturedModel().getTexture();
+	m_shader->loadOffset(glm::vec2(entity.get_texture_x_offset(), entity.get_texture_y_offset()));
+	ModelTexture texture = entity.get_textured_model()->getTexture();
 	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 }

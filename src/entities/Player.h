@@ -5,7 +5,7 @@
 
 class Player : public Entity {
 public:
-	Player(TexturedModel& model, glm::vec3 position, float rotX, float rotY, float rotZ, float scale);
+	Player(std::shared_ptr<TexturedModel> model, const glm::vec3& position, float rot_x, float rot_y, float rot_z, float scale);
 
 	void move(Terrain& terrain, float cameraYaw, float cameraPitch);
 

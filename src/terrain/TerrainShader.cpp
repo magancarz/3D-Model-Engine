@@ -19,12 +19,12 @@ void TerrainShader::loadViewMatrix(Camera& camera) {
 	loadMatrix(location_viewMatrix, view);
 }
 
-void TerrainShader::loadLights(std::vector<Light*>& lights) {
+void TerrainShader::loadLights(const std::vector<std::shared_ptr<Light>>& lights) {
 	for(size_t i = 0; i < MAX_LIGHTS; i++) {
 		if(i < lights.size()) {
-			loadVector3f(location_lightPosition[i], lights[i]->getPosition());
-			loadVector3f(location_lightColor[i], lights[i]->getColor());
-			loadVector3f(location_attenuation[i], lights[i]->getAttenuation());
+			loadVector3f(location_lightPosition[i], lights[i]->get_position());
+			loadVector3f(location_lightColor[i], lights[i]->get_color());
+			loadVector3f(location_attenuation[i], lights[i]->get_attenuation());
 		} else {
 			loadVector3f(location_lightPosition[i], glm::vec3(0));
 			loadVector3f(location_lightColor[i], glm::vec3(0));

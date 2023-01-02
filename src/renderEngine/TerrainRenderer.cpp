@@ -10,12 +10,12 @@ TerrainRenderer::TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatr
 	m_shader->stop();
 }
 
-void TerrainRenderer::render(std::vector<Terrain*>* terrains, glm::mat4 toShadowMapSpace) {
+void TerrainRenderer::render(const std::vector<std::shared_ptr<Terrain>>& terrains, const glm::mat4& toShadowMapSpace) {
 	m_shader->loadToShadowMapSpaceMatrix(toShadowMapSpace);
-	for(std::vector<Terrain*>::iterator it = terrains->begin(); it < terrains->end(); it++) {
-		prepareTerrain(*it);
-		loadModelMatrix(*it);
-		glDrawElements(GL_TRIANGLES, (*it)->get_model()->getVertexCount(), GL_UNSIGNED_INT, 0);
+	for(const auto& terrain : terrains) {
+		prepareTerrain(terrain.get());
+		loadModelMatrix(terrain.get());
+		glDrawElements(GL_TRIANGLES, terrain->get_model()->getVertexCount(), GL_UNSIGNED_INT, 0);
 		unbindTexturedModel();
 	}
 }

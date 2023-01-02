@@ -4,17 +4,14 @@
 
 #include "toolbox/Maths.h"
 
-void ShadowMapEntityRenderer::render(std::map<TexturedModel*, std::vector<Entity*>*>* entitiesMap) {
-	for(std::map<TexturedModel*, std::vector<Entity*>*>::iterator it = entitiesMap->begin(); it != entitiesMap->end(); it++) {
-		TexturedModel* model = it->first;
-		RawModel* rawModel = &(model->getRawModel());
+void ShadowMapEntityRenderer::render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entitiesMap) {
+	for(const auto& [textured_model, entities] : entitiesMap) {
+		RawModel* rawModel = &(textured_model->getRawModel());
 		bindModel(rawModel);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());
-		std::vector<Entity*>* entities = it->second;
-		for(std::vector<Entity*>::iterator sit = entities->begin(); sit != entities->end(); sit++) {
-			Entity* entity = *sit;
-			prepareInstance(entity);
+		glBindTexture(GL_TEXTURE_2D, textured_model->getTexture().getID());
+		for(const auto& entity : entities) {
+			prepareInstance(entity.get());
 			glDrawElements(GL_TRIANGLES, rawModel->getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
 	}
@@ -30,7 +27,7 @@ void ShadowMapEntityRenderer::bindModel(RawModel* rawModel) {
 }
 
 void ShadowMapEntityRenderer::prepareInstance(Entity* entity) {
-	glm::mat4 transformationMatrix = createTransformationMatrix(entity->getPosition(), entity->getRotX(), entity->getRotY(), entity->getRotZ(), entity->getScale());
+	glm::mat4 transformationMatrix = createTransformationMatrix(entity->get_position(), entity->get_rot_x(), entity->get_rot_y(), entity->get_rot_z(), entity->get_scale());
 	glm::mat4 mvpMatrix = (*m_projectionViewMatrix) * transformationMatrix;
 	m_shader->loadMVPMatrix(mvpMatrix);
 }
