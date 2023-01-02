@@ -42,8 +42,7 @@ public:
 
 private:
 	glm::mat4 m_projection_matrix;
-
-	std::unique_ptr<StaticShader> m_static_shader;
+	
 	std::unique_ptr<NormalMappingShader> m_normal_mapped_objects_shader;
 	std::unique_ptr<TerrainShader> m_terrain_shader;
 

@@ -15,7 +15,7 @@ NormalMappingRenderer::NormalMappingRenderer(glm::mat4 proj) {
 }
 
 NormalMappingRenderer::~NormalMappingRenderer() {
-	m_shader->cleanUp();
+	m_shader->clean_up();
 	delete m_shader;
 }
 
@@ -65,7 +65,7 @@ void NormalMappingRenderer::prepareTexturedModel(TexturedModel* model)
 	glEnableVertexAttribArray(3);
 	ModelTexture& texture = model->getTexture();
 	m_shader->loadNumberOfRows(texture.getNumberOfRows());
-	//m_static_shader->loadFakeLightingVariable(texture.getUseFakeLighting());
+	//m_static_shader->load_fake_lighting_variable(texture.getUseFakeLighting());
 	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());

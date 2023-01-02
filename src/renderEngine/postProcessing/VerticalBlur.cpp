@@ -20,6 +20,6 @@ void VerticalBlur::render(unsigned int texture) {
 void VerticalBlur::cleanUp() {
 	m_renderer->cleanUp();
 	delete m_renderer;
-	m_shader->cleanUp();
+	m_shader->clean_up();
 	delete m_shader;
 }

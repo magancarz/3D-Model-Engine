@@ -15,7 +15,7 @@ public:
 	void loadViewMatrix(Camera& camera);
 	void loadLights(std::vector<Light*>& lights, glm::mat4 viewMatrix);
 	void loadShineVariables(float shineDamper, float reflectivity);
-	//void loadFakeLightingVariable(bool value);
+	//void load_fake_lighting_variable(bool value);
 	void loadSkyColor(float r, float g, float b);
 	void loadNumberOfRows(int value);
 	void loadOffset(float x, float y);
@@ -23,8 +23,8 @@ public:
 	void connectTextureUnits();
 
 private:
-	void bindAttributes();
-	void getAllUniformLocations();
+	void bind_attributes();
+	void get_all_uniform_locations();
 
 	glm::vec3 getEyeSpacePosition(Light* light, glm::mat4 viewMatrix);
 

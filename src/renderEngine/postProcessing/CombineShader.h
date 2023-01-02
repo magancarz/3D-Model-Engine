@@ -6,12 +6,12 @@ class CombineShader : public ShaderProgram {
 public:
 	CombineShader();
 
-	void bindAttributes() override;
+	void bind_attributes() override;
 
 	void connectTextureUnits();
 
 private:
-	void getAllUniformLocations() override;
+	void get_all_uniform_locations() override;
 
 	unsigned int location_colorTexture,
 				 location_highlightTexture;

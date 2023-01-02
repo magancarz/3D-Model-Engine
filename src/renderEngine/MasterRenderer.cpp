@@ -3,25 +3,19 @@
 #include "toolbox/DisplayManager.h"
 
 MasterRenderer::MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera) {
-	m_static_shader = std::make_unique<StaticShader>();
 	m_terrain_shader = std::make_unique<TerrainShader>();
 	
 	create_projection_matrix();
 
-	m_entity_renderer = std::make_unique<EntityRenderer>(m_static_shader.get(), m_projection_matrix);
+	m_entity_renderer = std::make_unique<EntityRenderer>(std::make_unique<StaticShader>(), m_projection_matrix);
 	m_terrain_renderer = std::make_unique<TerrainRenderer>(m_terrain_shader.get(), m_projection_matrix);
 	m_skybox_renderer = std::make_unique<SkyboxRenderer>(loader.get(), m_projection_matrix);
 	m_normal_mapping_renderer = std::make_unique<NormalMappingRenderer>(m_projection_matrix);
 	m_shadow_map_renderer = std::make_unique<ShadowMapMasterRenderer>(camera.get());
-
-	m_static_shader->start();
-	m_static_shader->loadProjectionMatrix(m_projection_matrix);
-	m_static_shader->stop();
 }
 
 MasterRenderer::~MasterRenderer() {
-	m_terrain_shader->cleanUp();
-	m_static_shader->cleanUp();
+	m_terrain_shader->clean_up();
 }
 
 void MasterRenderer::render(
@@ -29,13 +23,7 @@ void MasterRenderer::render(
 		const std::shared_ptr<Camera>& camera,
 		const glm::vec4& clip_plane) const {
 	prepare();
-	m_static_shader->start();
-	m_static_shader->loadClipPlane(clip_plane);
-	m_static_shader->loadSkyColor(RED, GREEN, BLUE);
-	m_static_shader->loadLights(lights);
-	m_static_shader->loadViewMatrix(*camera);
-	m_entity_renderer->render(m_entities);
-	m_static_shader->stop();
+	m_entity_renderer->render(m_entities, lights, camera, clip_plane);
 
 	//m_normal_mapping_renderer->render(m_normal_mapped_entities, clip_plane, lights, camera);
 

@@ -2,18 +2,18 @@
 
 GuiShader::GuiShader()
 	: ShaderProgram("res/shaders/guiVert.glsl", "res/shaders/guiFrag.glsl") {
-	getAllUniformLocations();
-	bindAttributes();
+	get_all_uniform_locations();
+	bind_attributes();
 }
 
 void GuiShader::loadTransformation(glm::mat4 matrix) {
-	loadMatrix(location_transformationMatrix, matrix);
+	load_matrix(location_transformationMatrix, matrix);
 }
 
-void GuiShader::getAllUniformLocations() {
-	location_transformationMatrix = getUniformLocation("model");
+void GuiShader::get_all_uniform_locations() {
+	location_transformationMatrix = get_uniform_location("model");
 }
 
-void GuiShader::bindAttributes() {
-	bindAttribute(0, "position");
+void GuiShader::bind_attributes() {
+	bind_attribute(0, "position");
 }

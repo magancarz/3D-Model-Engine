@@ -24,10 +24,12 @@
 #include "toolbox/Input.h"
 #include "water/WaterShader.h"
 
-namespace LOCATIONS {
-	std::string RES_FOLDER_LOCATION = "res/";
-    std::string TEXTURES_FOLDER_LOCATION = "res/textures/";
-    std::string IMAGE_EXTENSION = ".png";
+namespace locations {
+	std::string res_folder_location = "res/";
+    std::string textures_folder_location = "res/textures/";
+    std::string image_extension = ".png";
+    std::string shader_folder_location = "res/shaders/";
+    std::string shader_extension = ".glsl";
 }
 
 int main(void) {

@@ -9,9 +9,9 @@ public:
 	void loadTargetHeight(float width);
 
 private:
-	void getAllUniformLocations() override;
+	void get_all_uniform_locations() override;
 
-	void bindAttributes() override;
+	void bind_attributes() override;
 
 	unsigned int location_targetHeight;
 };

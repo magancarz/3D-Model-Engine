@@ -2,19 +2,19 @@
 
 CombineShader::CombineShader() :
 ShaderProgram("res/shaders/simpleVert.glsl", "res/shaders/combineFrag.glsl") {
-	getAllUniformLocations();
+	get_all_uniform_locations();
 }
 
-void CombineShader::bindAttributes() {
-	bindAttribute(0, "position");
+void CombineShader::bind_attributes() {
+	bind_attribute(0, "position");
 }
 
 void CombineShader::connectTextureUnits() {
-	loadInt(location_colorTexture, 0);
-	loadInt(location_highlightTexture, 1);
+	load_int(location_colorTexture, 0);
+	load_int(location_highlightTexture, 1);
 }
 
-void CombineShader::getAllUniformLocations() {
-	location_colorTexture = getUniformLocation("colorTexture");
-	location_highlightTexture = getUniformLocation("highlightTexture");
+void CombineShader::get_all_uniform_locations() {
+	location_colorTexture = get_uniform_location("colorTexture");
+	location_highlightTexture = get_uniform_location("highlightTexture");
 }

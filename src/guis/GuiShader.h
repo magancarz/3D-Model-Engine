@@ -11,8 +11,8 @@ public:
 	void loadTransformation(glm::mat4 matrix);
 
 protected:
-	void getAllUniformLocations();
-	void bindAttributes();
+	void get_all_uniform_locations();
+	void bind_attributes();
 
 private:
 	int location_transformationMatrix;

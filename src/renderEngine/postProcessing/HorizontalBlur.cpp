@@ -21,6 +21,6 @@ void HorizontalBlur::render(unsigned int texture) {
 void HorizontalBlur::cleanUp() {
 	m_renderer->cleanUp();
 	delete m_renderer;
-	m_shader->cleanUp();
+	m_shader->clean_up();
 	delete m_shader;
 }

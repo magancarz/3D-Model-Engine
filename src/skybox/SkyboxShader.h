@@ -6,8 +6,8 @@
 class SkyboxShader : public ShaderProgram {
 public:
 	SkyboxShader();
-	void bindAttributes();
-	void getAllUniformLocations();
+	void bind_attributes();
+	void get_all_uniform_locations();
 	void loadProjectionMatrix(glm::mat4& matrix);
 	void loadViewMatrix(Camera& camera);
 	void loadFogColor(GLfloat r, GLfloat g, GLfloat b);

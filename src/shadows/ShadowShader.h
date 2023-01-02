@@ -7,8 +7,8 @@ public:
 	ShadowShader();
 
 	void connectTextureUnits();
-	void bindAttributes();
-	void getAllUniformLocations();
+	void bind_attributes();
+	void get_all_uniform_locations();
 	
 	void loadMVPMatrix(glm::mat4 mvpMatrix);
 

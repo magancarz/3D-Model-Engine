@@ -19,8 +19,8 @@ public:
 
 	void connectTextureUnits();
 protected:
-	void virtual bindAttributes() override;
-	void virtual getAllUniformLocations() override;
+	void virtual bind_attributes() override;
+	void virtual get_all_uniform_locations() override;
 private:
 	const std::string VERTEX_FILE = "res/shaders/vert.shader";
 	const std::string FRAGMENT_FILE = "res/shaders/frag.shader";

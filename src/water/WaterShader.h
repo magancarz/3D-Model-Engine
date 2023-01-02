@@ -15,8 +15,8 @@ public:
 	void loadLight(Light& sun);
 	void connectTextureUnits();
 private:
-	void bindAttributes();
-	void getAllUniformLocations();
+	void bind_attributes();
+	void get_all_uniform_locations();
 
 	unsigned int location_modelMatrix;
 	unsigned int location_viewMatrix;

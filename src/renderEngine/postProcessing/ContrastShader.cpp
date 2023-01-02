@@ -5,10 +5,10 @@ ShaderProgram("res/shaders/contrastVert.glsl", "res/shaders/contrastFrag.glsl") 
 	
 }
 
-void ContrastShader::getAllUniformLocations() {
+void ContrastShader::get_all_uniform_locations() {
 	
 }
 
-void ContrastShader::bindAttributes() {
-	bindAttribute(0, "position");
+void ContrastShader::bind_attributes() {
+	bind_attribute(0, "position");
 }

@@ -7,26 +7,24 @@
 #include "../entities/Entity.h"
 #include "../models/TexturedModel.h"
 
-extern void enable_culling();
-extern void disable_culling();
-
 class EntityRenderer {
 public:
-	EntityRenderer();
-	EntityRenderer(StaticShader* shader, glm::mat4 projectionMatrix);
+	EntityRenderer(std::unique_ptr<StaticShader> static_shader, const glm::mat4& projection_matrix);
+	~EntityRenderer();
 
-	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map);
-
-	inline void setShader(StaticShader& shader) { m_shader = &shader; };
+	void render(
+		const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map,
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const;
+		
 private:
-	void prepareTexturedModel(TexturedModel& texturedModel);
-	void unbindTexturedModel();
-	void prepareInstance(Entity& entity);
+	void prepare_textured_model(const std::shared_ptr<TexturedModel>& textured_model) const;
+	void prepare_instance(const std::shared_ptr<Entity>& entity) const;
 
-	StaticShader* m_shader;
+	static void unbind_textured_model();
 
-	glm::mat4 m_projectionMatrix;
-	const float FOV = 70.0f;
-	const float NEAR_PLANE = 0.1f;
-	const float FAR_PLANE = 1000.0f;
+	std::unique_ptr<StaticShader> m_static_shader;
+
+	glm::mat4 m_projection_matrix;
 };

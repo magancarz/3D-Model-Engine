@@ -1,106 +1,109 @@
 #include "StaticShader.h"
 
-StaticShader::StaticShader()
-	: ShaderProgram("res/shaders/vert.glsl", "res/shaders/frag.glsl" ), location_transformationMatrix(0) {
-	bindAttributes();
-	getAllUniformLocations();
+#include <ranges>
+
+StaticShader::StaticShader() :
+ShaderProgram("res/shaders/vert.glsl", "res/shaders/frag.glsl" ),
+location_transformation_matrix(0) {
+	bind_attributes();
+	get_all_uniform_locations();
 }
 
-void StaticShader::loadTransformationMatrix(glm::mat4 matrix) {
-	loadMatrix(location_transformationMatrix, matrix);
+void StaticShader::load_transformation_matrix(const glm::mat4& matrix) const {
+	load_matrix(location_transformation_matrix, matrix);
 }
 
-void StaticShader::loadProjectionMatrix(glm::mat4 matrix) {
-	loadMatrix(location_projectionMatrix, matrix);
+void StaticShader::load_projection_matrix(const glm::mat4& matrix) const {
+	load_matrix(location_projection_matrix, matrix);
 }
 
-void StaticShader::loadViewMatrix(Camera& camera) {
-	glm::mat4 view = camera.getView();
-	loadMatrix(location_viewMatrix, view);
+void StaticShader::load_view_matrix(const std::shared_ptr<Camera>& camera) const {
+	const auto view = camera->getView();
+	load_matrix(location_view_matrix, view);
 }
 
-void StaticShader::loadLights(const std::vector<std::shared_ptr<Light>>& lights) {
-	for(size_t i = 0; i < MAX_LIGHTS; i++) {
+void StaticShader::load_lights(const std::vector<std::shared_ptr<Light>>& lights) const {
+	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
 		if(i < lights.size()) {
-			loadVector3f(location_lightPosition[i], lights[i]->get_position());
-			loadVector3f(location_lightColor[i], lights[i]->get_color());
-			loadVector3f(location_attenuation[i], lights[i]->get_attenuation());
+			load_vector3_f(location_light_position[i], lights[i]->get_position());
+			load_vector3_f(location_light_color[i], lights[i]->get_color());
+			load_vector3_f(location_attenuation[i], lights[i]->get_attenuation());
 		} else {
-			loadVector3f(location_lightPosition[i], glm::vec3(0));
-			loadVector3f(location_lightColor[i], glm::vec3(0));
-			loadVector3f(location_attenuation[i], glm::vec3(1, 0, 0));
+			load_vector3_f(location_light_position[i], glm::vec3(0));
+			load_vector3_f(location_light_color[i], glm::vec3(0));
+			load_vector3_f(location_attenuation[i], glm::vec3(1, 0, 0));
 		}
 	}
 }
 
-void StaticShader::loadShineVariables(float shineDamper, float reflectivity) {
-	loadFloat(location_shineDamper, shineDamper);
-	loadFloat(location_reflectivity, reflectivity);
+void StaticShader::load_shine_variables(const float shine_damper, const float reflectivity) const {
+	load_float(location_shine_damper, shine_damper);
+	load_float(location_reflectivity, reflectivity);
 }
 
-void StaticShader::loadFakeLightingVariable(bool value) {
-	loadBoolean(location_useFakeLighting, value);
+void StaticShader::load_fake_lighting_variable(const bool value) const {
+	load_boolean(location_use_fake_lighting, value);
 }
 
-void StaticShader::loadSkyColor(float r, float g, float b) {
-	loadVector3f(location_skyColor, glm::vec3(r, g, b));
+void StaticShader::load_sky_color(const float r, const float g, const float b) const {
+	load_vector3_f(location_sky_color, glm::vec3(r, g, b));
 }
 
-void StaticShader::loadNumberOfRows(float value) {
-	loadFloat(location_numberOfRows, value);
+void StaticShader::load_number_of_rows(const float value) const {
+	load_float(location_number_of_rows, value);
 }
 
-void StaticShader::loadOffset(glm::vec2 offset) {
-	loadVector2f(location_offset, offset);
+void StaticShader::load_offset(const glm::vec2& offset) const {
+	load_vector2_f(location_offset, offset);
 }
 
-void StaticShader::connectTextureUnits() {
-	loadInt(location_modelTexture, 0);
-	loadInt(location_specularMap, 1);
+void StaticShader::connect_texture_units() const {
+	load_int(location_model_texture, 0);
+	load_int(location_specular_map, 1);
 }
 
-void StaticShader::loadUseSpecularMap(bool useMap) {
-	loadBoolean(location_usesSpecularMap, useMap);
+void StaticShader::load_use_specular_map(const bool use_map) const {
+	load_boolean(location_uses_specular_map, use_map);
 }
 
-void StaticShader::loadClipPlane(glm::vec4 plane) {
-	loadVector4f(location_plane, plane);
+void StaticShader::load_clip_plane(const glm::vec4& plane) const {
+	load_vector4_f(location_plane, plane);
 }
 
-void StaticShader::bindAttributes() {
-	bindAttribute(0, "position");
-	bindAttribute(1, "textureCoords");
-	bindAttribute(2, "normal");
+void StaticShader::bind_attributes() {
+	bind_attribute(0, "position");
+	bind_attribute(1, "textureCoords");
+	bind_attribute(2, "normal");
 }
 
-void StaticShader::getAllUniformLocations() {
+void StaticShader::get_all_uniform_locations() {
 	//MVP calculation uniforms
-	location_transformationMatrix = getUniformLocation("model");
-	location_projectionMatrix = getUniformLocation("proj");
-	location_viewMatrix = getUniformLocation("view");
+	location_transformation_matrix = get_uniform_location("model");
+	location_projection_matrix = get_uniform_location("proj");
+	location_view_matrix = get_uniform_location("view");
 
 	//Light calculation uniforms
-	for(int i = 0; i < MAX_LIGHTS; i++) {
-		location_lightPosition[i] = getUniformLocation("lightPosition[" + std::to_string(i) + "]");
-		location_lightColor[i] = getUniformLocation("lightColor[" + std::to_string(i) + "]");
-		location_attenuation[i] = getUniformLocation("attenuation[" + std::to_string(i) + "]");
+	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
+		location_light_position[i] = get_uniform_location("lightPosition[" + std::to_string(i) + "]");
+		location_light_color[i] = get_uniform_location("lightColor[" + std::to_string(i) + "]");
+		location_attenuation[i] = get_uniform_location("attenuation[" + std::to_string(i) + "]");
 	}
-	location_shineDamper = getUniformLocation("shineDamper");
-	location_reflectivity = getUniformLocation("reflectivity");
-	location_useFakeLighting = getUniformLocation("useFakeLighting");
+	location_shine_damper = get_uniform_location("shineDamper");
+	location_reflectivity = get_uniform_location("reflectivity");
+	location_use_fake_lighting = get_uniform_location("useFakeLighting");
 
 	//Fog calculation uniform
-	location_skyColor = getUniformLocation("skyColor");
+	location_sky_color = get_uniform_location("skyColor");
 
 	//Texture atlases uniforms
-	location_numberOfRows = getUniformLocation("numberOfRows");
-	location_offset = getUniformLocation("offset");
+	location_number_of_rows = get_uniform_location("numberOfRows");
+	location_offset = get_uniform_location("offset");
 
 	//Clip plane
-	location_plane = getUniformLocation("plane");
+	location_plane = get_uniform_location("plane");
 
 	//Specular map uniforms
-	location_specularMap = getUniformLocation("specularSampler");
-	location_modelTexture = getUniformLocation("textureSampler");
-	location_usesSpecularMap = getUniformLocation("usesSpecularMap");
+	location_specular_map = get_uniform_location("specularSampler");
+	location_model_texture = get_uniform_location("textureSampler");
+	location_uses_specular_map = get_uniform_location("usesSpecularMap");
 }

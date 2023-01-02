@@ -6,8 +6,8 @@ class BrightFilterShader : public ShaderProgram {
 public:
 	BrightFilterShader();
 
-	void bindAttributes() override;
+	void bind_attributes() override;
 
 private:
-	void getAllUniformLocations() override;
+	void get_all_uniform_locations() override;
 };
