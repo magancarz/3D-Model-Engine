@@ -102,12 +102,11 @@ int main(void) {
     auto master_renderer = std::make_unique<MasterRenderer>(loader, camera);
 
     /* create water renderer */
-    auto water_shader = std::make_unique<WaterShader>();
-    auto water_frame_buffers = std::make_unique<WaterFrameBuffers>();
-    auto water_renderer = std::make_unique<WaterRenderer>(loader.get(), water_shader.get(), master_renderer->get_projection_matrix(), water_frame_buffers.get());
-    std::vector<WaterTile*> water_tiles;
-    auto water_tile = std::make_unique<WaterTile>(400, 400, 0);
-    water_tiles.push_back(water_tile.get());
+    auto water_frame_buffers = std::make_shared<WaterFrameBuffers>();
+    auto water_renderer = std::make_unique<WaterRenderer>(loader, water_frame_buffers, master_renderer->get_projection_matrix());
+    std::vector<std::shared_ptr<WaterTile>> water_tiles;
+    auto water_tile = std::make_shared<WaterTile>(400, 400, 0);
+    water_tiles.push_back(water_tile);
 
     /* create entities */
     std::vector<std::shared_ptr<Entity>> entities;
@@ -170,26 +169,26 @@ int main(void) {
         master_renderer->process_normal_map_entity(barrel);
 
         //Water
-        water_frame_buffers->bindReflectionFrameBuffer();
-        float distance = 2 * (camera->getPosition().y - water_tile->getHeight());
+        water_frame_buffers->bind_reflection_frame_buffer();
+        float distance = 2 * (camera->getPosition().y - water_tile->get_height());
         camera->getPosition().y -= distance;
         camera->invertPitch();
-        master_renderer->render(lights, camera, glm::vec4(0, 1, 0, -water_tile->getHeight()));
+        master_renderer->render(lights, camera, glm::vec4(0, 1, 0, -water_tile->get_height()));
         camera->getPosition().y += distance;
         camera->invertPitch();
-        water_frame_buffers->unbindCurrentFrameBuffer();
+        water_frame_buffers->unbind_current_frame_buffer();
 
-        water_frame_buffers->bindRefractionFrameBuffer();
-        master_renderer->render(lights, camera, glm::vec4(0, -1, 0, water_tile->getHeight()));
+        water_frame_buffers->bind_refraction_frame_buffer();
+        master_renderer->render(lights, camera, glm::vec4(0, -1, 0, water_tile->get_height()));
 
         //Draw here
         glDisable(GL_CLIP_DISTANCE0);
-        water_frame_buffers->unbindCurrentFrameBuffer();
+        water_frame_buffers->unbind_current_frame_buffer();
 
         multi_sample_fbo->bindFrameBuffer();
         master_renderer->render(lights, camera, glm::vec4(0, -1, 0, 10000));
 
-        water_renderer->render(water_tiles, *camera, *sun);
+        water_renderer->render(water_tiles, camera, sun);
         
         multi_sample_fbo->unbindFrameBuffer();
         multi_sample_fbo->resolveToFBO(GL_COLOR_ATTACHMENT0, output_fbo1.get());

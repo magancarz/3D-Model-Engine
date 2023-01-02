@@ -8,21 +8,32 @@
 
 class WaterRenderer {
 public:
-	WaterRenderer(Loader* loader, WaterShader* shader, glm::mat4 projection, WaterFrameBuffers* fbos);
+	WaterRenderer(
+		const std::shared_ptr<Loader>& loader,
+		std::shared_ptr<WaterFrameBuffers> water_frame_buffers,
+		const glm::mat4& projection);
 
-	void render(std::vector<WaterTile*>& water, Camera& camera, Light& sun);
+	void render(
+		const std::vector<std::shared_ptr<WaterTile>>& water_tiles,
+		const std::shared_ptr<Camera>& camera,
+		const std::shared_ptr<Light>& sun);
+
 private:
-	void prepareRender(Camera& camera, Light& sun);
-	void unbind();
-	void setUpVAO(Loader& loader);
+	void prepare_render(
+		const std::shared_ptr<Camera>& camera,
+		const std::shared_ptr<Light>& sun);
+
+	void set_up_vao(const std::shared_ptr<Loader>& loader);
+
+	void unbind() const;
 
 	static constexpr float WAVE_SPEED = 0.05f;
 
-	RawModel* quad;
-	WaterShader* m_shader;
-	WaterFrameBuffers* m_fbos;
+	RawModel* m_quad;
+	std::unique_ptr<WaterShader> m_water_shader;
+	std::shared_ptr<WaterFrameBuffers> m_water_frame_buffers;
 
-	unsigned int m_dudvTexture;
-	unsigned int m_normalMap;
-	float moveFactor = 0;
+	unsigned int m_dudv_texture, m_normal_map;
+
+	float m_move_factor = 0;
 };

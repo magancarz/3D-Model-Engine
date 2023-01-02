@@ -16,7 +16,7 @@ void ShadowMapEntityRenderer::render(const std::map<std::shared_ptr<TexturedMode
 		glBindTexture(GL_TEXTURE_2D, textured_model->getTexture().getID());
 		for(const auto& entity : entities) {
 			prepare_instance(entity);
-			glDrawElements(GL_TRIANGLES, raw_model.getVertexCount(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, raw_model.getVertexCount(), GL_UNSIGNED_INT, nullptr);
 		}
 	}
 	glDisableVertexAttribArray(0);

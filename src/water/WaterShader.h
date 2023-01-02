@@ -8,27 +8,30 @@ class WaterShader : public ShaderProgram {
 public:
 	WaterShader();
 
-	void loadProjectionMatrix(glm::mat4 projection);
-	void loadViewMatrix(Camera& camera);
-	void loadModelMatrix(glm::mat4 modelMatrix);
-	void loadMoveFactor(float value);
-	void loadLight(Light& sun);
-	void connectTextureUnits();
-private:
-	void bind_attributes();
-	void get_all_uniform_locations();
+	void load_projection_matrix(const glm::mat4& projection) const;
+	void load_view_matrix(const std::shared_ptr<Camera>& camera) const;
+	void load_model_matrix(const glm::mat4& model_matrix) const;
+	void load_move_factor(float value) const;
+	void load_light(const std::shared_ptr<Light>& sun) const;
 
-	unsigned int location_modelMatrix;
-	unsigned int location_viewMatrix;
-	unsigned int location_projectionMatrix;
-	unsigned int location_reflectionTexture;
-	unsigned int location_refractionTexture;
-	unsigned int location_dudvMap;
-	unsigned int location_normalMap;
-	unsigned int location_depthMap;
-	unsigned int location_moveFactor;
-	unsigned int location_lightPosition;
-	unsigned int location_lightColor;
-	unsigned int location_cameraPosition;
+	void connect_texture_units() const;
+
+	void bind_attributes() override;
+	void get_all_uniform_locations() override;
+
+private:
+	// uniform variables
+	int location_model_matrix,
+		location_view_matrix,
+		location_projection_matrix,
+		location_reflection_texture,
+		location_refraction_texture,
+		location_dudv_map,
+		location_normal_map,
+		location_depth_map,
+		location_move_factor,
+		location_light_position,
+		location_light_color,
+		location_camera_position;
 
 };
