@@ -6,73 +6,57 @@
 #include "../renderEngine/MasterRenderer.h"
 #include "toolbox/Maths.h"
 
-NormalMappingRenderer::NormalMappingRenderer(glm::mat4 proj) {
-	m_shader = new NormalMappingShader();
-	m_shader->start();
-	m_shader->loadProjectionMatrix(proj);
-	m_shader->connectTextureUnits();
-	m_shader->stop();
-}
-
-NormalMappingRenderer::~NormalMappingRenderer() {
-	delete m_shader;
+NormalMappingRenderer::NormalMappingRenderer(const glm::mat4& projection_matrix) {
+	m_normal_mapping_shader = std::make_unique<NormalMappingShader>();
+	m_normal_mapping_shader->start();
+	m_normal_mapping_shader->load_projection_matrix(projection_matrix);
+	m_normal_mapping_shader->connect_texture_units();
+	m_normal_mapping_shader->stop();
 }
 
 void NormalMappingRenderer::render(
-	std::map<TexturedModel*, std::vector<Entity*>*>* entities,
-	glm::vec4 clipPlane,
-	std::vector<Light*>& lights,
-	Camera& camera)
-{
-	m_shader->start();
-	prepare(clipPlane, lights, camera);
+		const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map,
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const {
 
-	for (std::map<TexturedModel*, std::vector<Entity*>*>::iterator it = entities->begin();
-	     it != entities->end();
-	     it++) {
-		TexturedModel* model = (*it).first;
+	m_normal_mapping_shader->start();
+	prepare(lights, camera, clip_plane);
 
-		prepareTexturedModel(model);
+	for(const auto& [textured_model, entities] : entity_map) {
+		prepare_textured_model(textured_model);
 
-		it = entities->find(model);
-  		if (it != entities->end()) {
-  			std::vector<Entity*>* batch = it->second;
-
-  			for (std::vector<Entity*>::iterator vit = batch->begin();
-			     vit != batch->end();
-			     vit++) {
-  				Entity *entity = *vit;
-  				prepareInstance(entity);
-  				glDrawElements(GL_TRIANGLES, model->getRawModel().getVertexCount(), GL_UNSIGNED_INT, 0);
-  			}
+		const auto textured_model_vertex_count = textured_model->getRawModel().getVertexCount();
+  		for(const auto& entity : entities) {
+  			prepare_instance(entity);
+  			glDrawElements(GL_TRIANGLES, textured_model_vertex_count, GL_UNSIGNED_INT, nullptr);
   		}
 
-  		unbindTexturedModel();
+  		unbind_textured_model();
 	}
 
-	m_shader->stop();
+	m_normal_mapping_shader->stop();
 }
 
 
-void NormalMappingRenderer::prepareTexturedModel(TexturedModel* model)
-{
-	RawModel& rawModel = model->getRawModel();
-	glBindVertexArray(rawModel.getVaoID());
+void NormalMappingRenderer::prepare_textured_model(const std::shared_ptr<TexturedModel>& textured_model) const {
+	const auto raw_model = textured_model->getRawModel();
+	glBindVertexArray(raw_model.getVaoID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
-	ModelTexture& texture = model->getTexture();
-	m_shader->loadNumberOfRows(texture.getNumberOfRows());
-	//m_static_shader->load_fake_lighting_variable(texture.getUseFakeLighting());
-	m_shader->loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
+	auto texture = textured_model->getTexture();
+	m_normal_mapping_shader->load_number_of_rows(texture.getNumberOfRows());
+	m_normal_mapping_shader->load_fake_lighting_variable(texture.isUsingFakeLighting());
+	m_normal_mapping_shader->load_shine_variables(texture.getShineDamper(), texture.getReflectivity());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, model->getTexture().getID());
+	glBindTexture(GL_TEXTURE_2D, texture.getID());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, model->getTexture().getNormalMap());
+	glBindTexture(GL_TEXTURE_2D, texture.getNormalMap());
 }
 
-void NormalMappingRenderer::unbindTexturedModel() {
+void NormalMappingRenderer::unbind_textured_model() {
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(2);
@@ -80,31 +64,24 @@ void NormalMappingRenderer::unbindTexturedModel() {
 	glBindVertexArray(0);
 }
 
-void NormalMappingRenderer::prepareInstance(Entity* entity)
-{
-	glm::mat4 transformationMatrix = createTransformationMatrix(
+void NormalMappingRenderer::prepare_instance(const std::shared_ptr<Entity>& entity) const {
+	const auto transformation_matrix = createTransformationMatrix(
 		entity->get_position(),
 		entity->get_rot_x(), entity->get_rot_y(), entity->get_rot_z(),
 		entity->get_scale());
 
-	//glm::vec3 pos = entity.get_position();
-	//cout << "pos = " << pos[0] << ", " << pos[1] << ", " << pos[2] << endl;
-	//glm::mat4 t = glm::translate(glm::mat4(1.0f), pos);
-	//Maths::printMatrix(t, "t");
-	//Maths::printMatrix(transformationMatrix, "T");
-
-	m_shader->loadTransformationMatrix(transformationMatrix);
-	m_shader->loadOffset(entity->get_texture_x_offset(), entity->get_texture_y_offset());
+	m_normal_mapping_shader->load_transformation_matrix(transformation_matrix);
+	m_normal_mapping_shader->load_offset(entity->get_texture_x_offset(), entity->get_texture_y_offset());
 }
 
 void NormalMappingRenderer::prepare(
-	glm::vec4 clipPlane,
-	std::vector<Light*>&lights,
-	Camera& camera)
-{
-	m_shader->loadClipPlane(clipPlane);
-	m_shader->loadSkyColor(MasterRenderer::RED, MasterRenderer::GREEN, MasterRenderer::BLUE);
-	//m_static_shader->loadFogVariables(FOG_DENSITY, masterRenderer.FOG_GRADIENT);
-	m_shader->loadLights(lights, camera.getView());
-	m_shader->loadViewMatrix(camera);
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const {
+
+	m_normal_mapping_shader->load_clip_plane(clip_plane);
+	m_normal_mapping_shader->load_sky_color(MasterRenderer::RED, MasterRenderer::GREEN, MasterRenderer::BLUE);
+	//m_static_shader->load_fog_variables(FOG_DENSITY, masterRenderer.FOG_GRADIENT);
+	m_normal_mapping_shader->load_lights(lights);
+	m_normal_mapping_shader->load_view_matrix(camera);
 }

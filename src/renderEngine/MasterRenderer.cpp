@@ -16,10 +16,12 @@ void MasterRenderer::render(
 		const std::vector<std::shared_ptr<Light>>& lights,
 		const std::shared_ptr<Camera>& camera,
 		const glm::vec4& clip_plane) const {
+
 	prepare();
+
 	m_entity_renderer->render(m_entities, lights, camera, clip_plane);
 
-	//m_normal_mapping_renderer->render(m_normal_mapped_entities, clip_plane, lights, camera);
+	m_normal_mapping_renderer->render(m_normal_mapped_entities, lights, camera, clip_plane);
 
 	m_terrain_renderer->render(m_terrains, m_shadow_map_renderer->getToShadowMapSpaceMatrix(), lights, camera, clip_plane);
 

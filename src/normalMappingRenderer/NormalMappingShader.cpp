@@ -3,127 +3,110 @@
 #include <GL/glew.h>
 
 #include <string>
+#include <ranges>
 
-NormalMappingShader::NormalMappingShader()
-	: ShaderProgram("res/shaders/normalMapVert.glsl", "res/shaders/normalMapFrag.glsl") {
+NormalMappingShader::NormalMappingShader() :
+ShaderProgram("res/shaders/normalMapVert.glsl", "res/shaders/normalMapFrag.glsl") {
 	bind_attributes();
 	get_all_uniform_locations();
 }
 
-void NormalMappingShader::bind_attributes()
-{
+void NormalMappingShader::connect_texture_units() const {
+	load_int(location_model_texture, 0);
+	load_int(location_normal_map, 1);
+}
+
+void NormalMappingShader::load_transformation_matrix(const glm::mat4& matrix) const {
+	load_matrix(location_transformation_matrix, matrix);
+}
+
+void NormalMappingShader::load_lights(const std::vector<std::shared_ptr<Light>>& lights) const {
+	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
+		if(i < lights.size()) {
+			const auto& light = lights[i];
+			load_vector3_f(location_light_position[i], light->get_position());
+			load_vector3_f(location_light_color[i], light->get_color());
+			load_vector3_f(location_attenuation[i], light->get_attenuation());
+		} else {
+			// If less than MAX_LIGHTS lights are in the lights vector,
+			// load up empty information to the shader.
+			glm::vec3 zero(0.0f, 0.0f, 0.0f);
+			glm::vec3 unit(1.0f, 0.0f, 0.0f);
+			load_vector3_f(location_light_position[i], zero);
+			load_vector3_f(location_light_color[i], zero);
+			load_vector3_f(location_attenuation[i], unit);
+		}
+	}
+}
+
+void NormalMappingShader::load_projection_matrix(const glm::mat4& matrix) const {
+	load_matrix(location_projection_matrix, matrix);
+}
+
+void NormalMappingShader::load_view_matrix(const std::shared_ptr<Camera>& camera) const {
+	const auto view_matrix = camera->getView();
+	load_matrix(location_view_matrix, view_matrix);
+}
+
+void NormalMappingShader::load_fake_lighting_variable(const bool value) const {
+	load_boolean(location_use_fake_lighting, value);
+}
+
+void NormalMappingShader::load_shine_variables(const float shine_damper, const float reflectivity) const {
+	load_float(location_shine_damper, shine_damper);
+	load_float(location_reflectivity, reflectivity);
+}
+
+void NormalMappingShader::load_sky_color(const float r, const float g, const float b) const {
+	const glm::vec3 vec(r, g, b);
+	load_vector3_f(location_sky_color, vec);
+}
+
+void NormalMappingShader::load_fog_variables(const float density, const float gradient) const {
+	load_float(location_fog_density, density);
+	load_float(location_fog_gradient, gradient);
+} 
+
+void NormalMappingShader::load_number_of_rows(const int value) const {
+	load_float(location_number_of_rows, value);
+}
+
+void NormalMappingShader::load_offset(const float x, const float y) const {
+	const glm::vec2 vec(x, y);
+	load_vector2_f(location_texture_offset, vec);
+}
+
+void NormalMappingShader::load_clip_plane(const glm::vec4& plane) const {
+	load_vector4_f(location_clip_plane, plane);
+}
+
+void NormalMappingShader::bind_attributes() {
 	bind_attribute(0, "position");
 	bind_attribute(1, "textureCoords");
 	bind_attribute(2, "normal");
 	bind_attribute(3, "tangent");
 }
 
-void NormalMappingShader::get_all_uniform_locations()
-{
-	location_transformationMatrix = get_uniform_location("transformationMatrix");
-	location_projectionMatrix = get_uniform_location("projectionMatrix");
-	location_viewMatrix = get_uniform_location("viewMatrix");
-	location_shineDamper = get_uniform_location("shineDamper");
+void NormalMappingShader::get_all_uniform_locations() {
+	location_transformation_matrix = get_uniform_location("transformationMatrix");
+	location_projection_matrix = get_uniform_location("projectionMatrix");
+	location_view_matrix = get_uniform_location("viewMatrix");
+	location_shine_damper = get_uniform_location("shineDamper");
 	location_reflectivity = get_uniform_location("reflectivity");
-	location_useFakeLighting = get_uniform_location("useFakeLighting");
-	location_skyColor = get_uniform_location("skyColor");
-	location_fogDensity = get_uniform_location("fogDensity");
-	location_fogGradient = get_uniform_location("fogGradient");
-	location_numberOfRows = get_uniform_location("numberOfRows");
-	location_textureOffset = get_uniform_location("textureOffset");
-	location_clipPlane = get_uniform_location("clipPlane");
-	location_modelTexture = get_uniform_location("modelTexture");
-	location_normalMap = get_uniform_location("normalMap");
+	location_use_fake_lighting = get_uniform_location("useFakeLighting");
+	location_sky_color = get_uniform_location("skyColor");
+	location_fog_density = get_uniform_location("fogDensity");
+	location_fog_gradient = get_uniform_location("fogGradient");
+	location_number_of_rows = get_uniform_location("numberOfRows");
+	location_texture_offset = get_uniform_location("textureOffset");
+	location_clip_plane = get_uniform_location("clipPlane");
+	location_model_texture = get_uniform_location("modelTexture");
+	location_normal_map = get_uniform_location("normalMap");
 
-	for (int i = 0; i < MAX_LIGHTS; i++) {
-		std::string iStr = std::to_string(i);
-		location_lightPosition[i] = get_uniform_location("lightPosition[" + iStr + "]");
-		location_lightColor[i] = get_uniform_location("lightColor[" + iStr + "]");
-		location_attenuation[i] = get_uniform_location("attenuation[" + iStr + "]");
+	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
+		std::string str = std::to_string(i);
+		location_light_position[i] = get_uniform_location("lightPosition[" + str + "]");
+		location_light_color[i] = get_uniform_location("lightColor[" + str + "]");
+		location_attenuation[i] = get_uniform_location("attenuation[" + str + "]");
 	}
-}
-
-void NormalMappingShader::connectTextureUnits()
-{
-	load_int(location_modelTexture, 0);
-	load_int(location_normalMap, 1);
-}
-
-void NormalMappingShader::loadTransformationMatrix(glm::mat4 matrix)
-{
-	load_matrix(location_transformationMatrix, matrix);
-}
-
-void NormalMappingShader::loadLights(std::vector<Light*>& lights, glm::mat4 viewMatrix)
-{
-	for (int i = 0; i < MAX_LIGHTS; i++) {
-		if (i < (int)lights.size()) {
-			Light* light = lights[i];
-			load_vector3_f(location_lightPosition[i], light->get_position());
-			load_vector3_f(location_lightColor[i], light->get_color());
-			load_vector3_f(location_attenuation[i], light->get_attenuation());
-		} else {
-			// If less than MAX_LIGHTS lights are in the lights vector,
-			// load up empty information to the shaders.
-			glm::vec3 zero(0.0f, 0.0f, 0.0f);
-			glm::vec3 unit(1.0f, 0.0f, 0.0f);
-			load_vector3_f(location_lightPosition[i], zero);
-			load_vector3_f(location_lightColor[i], zero);
-			load_vector3_f(location_attenuation[i], unit);
-		}
-	}
-}
-
-void NormalMappingShader::loadProjectionMatrix(glm::mat4 matrix)
-{
-	load_matrix(location_projectionMatrix, matrix);
-}
-
-void NormalMappingShader::loadViewMatrix(Camera& camera)
-{
-	glm::mat4 viewMatrix = camera.getView();
-	load_matrix(location_viewMatrix, viewMatrix);
-}
-
-/*
-void NormalMappingShader::loadFakeLightingVariable(bool useFakeLighting)
-{
-	load_boolean(location_useFakeLighting, useFakeLighting);
-}
-*/
-
-void NormalMappingShader::loadShineVariables(GLfloat damper, GLfloat reflectivity)
-{
-	load_float(location_shineDamper, damper);
-	load_float(location_reflectivity, reflectivity);
-}
-
-void NormalMappingShader::loadSkyColor(GLfloat r, GLfloat g, GLfloat b)
-{
-	glm::vec3 vec(r, g, b);
-	load_vector3_f(location_skyColor, vec);
-}
-
-/*
-void NormalMappingShader::loadFogVariables(GLfloat density, GLfloat gradient)
-{
-	load_float(location_fogDensity, density);
-	load_float(location_fogGradient, gradient);
-}
-*/
-
-void NormalMappingShader::loadNumberOfRows(int numberOfRows)
-{
-	load_float(location_numberOfRows, (GLfloat)numberOfRows);
-}
-
-void NormalMappingShader::loadOffset(GLfloat x, GLfloat y)
-{
-	glm::vec2 vec(x, y);
-	load_vector2_f(location_textureOffset, vec);
-}
-
-void NormalMappingShader::loadClipPlane(glm::vec4 vec)
-{
-	load_vector4_f(location_clipPlane, vec);
 }

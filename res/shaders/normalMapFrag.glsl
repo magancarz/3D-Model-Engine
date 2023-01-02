@@ -2,9 +2,6 @@
 
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
-
-// The shaders use 4 light sources. If this is changed, change also the
-// MAX_LIGHTS constant in StaticShader.h.
 in vec3 toLightVector[4];
 in vec3 toCameraVector;
 in float visibility;
@@ -56,14 +53,14 @@ void main() {
 		totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attFactor;
 		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attFactor;
 	}
-	// 0.2 = ambient light
-	totalDiffuse = max(totalDiffuse, 0.2);
+
+	totalDiffuse = max(totalDiffuse, 0.1);
 
 	vec4 textureColor = texture(modelTexture, pass_textureCoordinates);
 	if (textureColor.a < 0.5) {
 		discard;
 	}
-
+	
 	out_Color = vec4(totalDiffuse,1.0) * textureColor + vec4(totalSpecular, 1.0);
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);
 

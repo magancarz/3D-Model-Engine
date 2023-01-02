@@ -65,20 +65,26 @@ int main(void) {
     auto stall_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/stallTexture.png"));
     auto textured_stall_model = std::make_shared<TexturedModel>(*stall_model, *stall_texture);
 
-    auto cherry_tree_model = loadOBJ("res/models/cherry.obj", loader.get());
+    auto cherry_tree_model = std::unique_ptr<RawModel>(loadOBJ("res/models/cherry.obj", loader.get()));
     auto cherry_tree_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/cherry.png"));
     auto textured_cherry_tree_model = std::make_shared<TexturedModel>(*cherry_tree_model, *cherry_tree_texture);
 
-    auto lantern_model = loadOBJ("res/models/lantern.obj", loader.get());
+    auto lantern_model = std::unique_ptr<RawModel>(loadOBJ("res/models/lantern.obj", loader.get()));
     auto lantern_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/lantern.png"));
     auto textured_lantern_model = std::make_shared<TexturedModel>(*lantern_model, *lantern_texture);
     textured_lantern_model->getTexture().setSpecularMap(loader->loadTexture("res/textures/lanternS.png"));
-    
+
+    auto barrel_model = std::unique_ptr<RawModel>(normal_mapped_obj_loader->loadNormalMappedOBJ("res/models/barrel.obj", *loader));
+    auto barrel_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/barrel.png"));
+    auto textured_barrel_model = std::make_shared<TexturedModel>(*barrel_model, *barrel_texture);
+    auto& texture2 = textured_barrel_model->getTexture();
+    texture2.setNormalMap(loader->loadTexture("res/textures/barrelNormal.png"));
+
     /* create light objects */
     auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
     auto light1 = std::make_shared<Light>(glm::vec3(278, 12, 224), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
-    auto light2 = std::make_shared<Light>(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
-    auto light3 = std::make_shared<Light>(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
+    auto light2 = std::make_shared<Light>(glm::vec3(0, 0, 0), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
+    auto light3 = std::make_shared<Light>(glm::vec3(0, 0, 0), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
 
     std::vector<std::shared_ptr<Light>> lights;
     lights.push_back(sun);
@@ -108,6 +114,8 @@ int main(void) {
     
     auto lantern = std::make_shared<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
     entities.push_back(lantern);
+
+    auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(270, 0, 229), 0, 0, 0, 1);
 
     /* create tree objects */
     std::uniform_int_distribution<unsigned int> map_distribution(0, TERRAIN_SIZE);
@@ -158,6 +166,7 @@ int main(void) {
 
         //Process entities
         master_renderer->process_entities(entities);
+        master_renderer->process_normal_map_entity(barrel);
 
         //Water
         water_frame_buffers->bindReflectionFrameBuffer();

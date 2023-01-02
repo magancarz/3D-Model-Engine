@@ -11,17 +11,24 @@
 
 class NormalMappingRenderer {
 public:
-	NormalMappingRenderer(glm::mat4 proj);
-	~NormalMappingRenderer();
+	NormalMappingRenderer(const glm::mat4& projection_matrix);
 
-	void render(std::map<TexturedModel*, std::vector<Entity*>*>* entities, glm::vec4 clipPlane, std::vector<Light*>& lights, Camera& camera);
+	void render(
+		const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map,
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const;
 
 private:
-	void prepareTexturedModel(TexturedModel* model);
-	void unbindTexturedModel();
-	void prepareInstance(Entity* entity);
-	void prepare(glm::vec4 clipPlane, std::vector<Light*>& lights, Camera& camera);
+	void prepare_textured_model(const std::shared_ptr<TexturedModel>& textured_model) const;
+	void prepare_instance(const std::shared_ptr<Entity>& entity) const;
+	void prepare(
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const;
 
-	NormalMappingShader* m_shader;
+	static void unbind_textured_model();
+
+	std::unique_ptr<NormalMappingShader> m_normal_mapping_shader;
 
 };
