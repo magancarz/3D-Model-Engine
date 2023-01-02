@@ -84,10 +84,10 @@ unsigned int Loader::loadTexture(const std::string& fileName, float lodValue) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	TextureData* data = loadImage(fileName);
-	int width = data->getWidth(),
-		height = data->getHeight();
+	int width = data->get_width(),
+		height = data->get_height();
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->getData());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data->get_data());
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	
@@ -115,7 +115,7 @@ unsigned int Loader::loadTexture(const std::string& fileName, float lodValue) {
 	}
 
 	//Clean up
-	stbi_image_free(data->getData());
+	stbi_image_free(data->get_data());
 	delete data;
 
 	return texture;
@@ -149,10 +149,10 @@ int Loader::loadCubeMap(std::vector<std::string> textureFiles) {
 	for(int i = 0; i < textureFiles.size(); i++) {
 		int width, height, format;
 		TextureData* data = loadImage("res/textures/" + textureFiles[i] + ".png");
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data->getWidth(), data->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->getData());
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data->get_width(), data->get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->get_data());
 
 		//Clean up
-		stbi_image_free(data->getData());
+		stbi_image_free(data->get_data());
 		delete data;
 	}
 

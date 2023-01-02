@@ -24,6 +24,12 @@
 #include "toolbox/Input.h"
 #include "water/WaterShader.h"
 
+namespace LOCATIONS {
+	std::string RES_FOLDER_LOCATION = "res/";
+    std::string TEXTURES_FOLDER_LOCATION = "res/textures/";
+    std::string IMAGE_EXTENSION = ".png";
+}
+
 int main(void) {
 	bool post_processing_enabled = true;
 
@@ -38,7 +44,7 @@ int main(void) {
     std::cout << "OpenGL version supported by this platform: " << glGetString(GL_VERSION) << std::endl;
 
     /* initialize model loaders */
-    auto loader = std::make_unique<Loader>();
+    auto loader = std::make_shared<Loader>();
     auto normal_mapped_obj_loader = std::make_unique<NormalMappingOBJLoader>();
 
     /* create terrain */
@@ -46,11 +52,11 @@ int main(void) {
     auto r_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/mud.png"));
     auto g_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/grassFlowers.png"));
     auto b_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/path.png"));
+    auto blend_map = std::make_shared<TerrainTexture>(loader->loadTexture("res/textures/black.png"));
 
-    auto terrain_texture_pack = std::make_unique<TerrainTexturePack>(*background_texture, *r_texture, *g_texture, *b_texture);
-    auto blend_map = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/black.png"));
+    auto terrain_texture_pack = std::make_shared<TerrainTexturePack>(std::move(background_texture), std::move(r_texture), std::move(g_texture), std::move(b_texture));
 
-    auto terrain = std::make_unique<Terrain>(0, 0, loader.get(), terrain_texture_pack.get(), blend_map.get());
+    auto terrain = std::make_shared<Terrain>(0, 0, loader, std::move(terrain_texture_pack), std::move(blend_map));
 
     /* load 3d models */
     auto stall_model = std::unique_ptr<RawModel>(loadOBJ("res/models/stall.obj", loader.get()));
@@ -115,10 +121,10 @@ int main(void) {
         do {
         	tree_x = map_distribution_generator(),
         	tree_z = map_distribution_generator();
-        } while(terrain->getHeightOfTerrain(tree_x, tree_z) <= 0);
+        } while(terrain->get_height_of_terrain(tree_x, tree_z) <= 0);
 
         int tree_rot_y = tree_rotation_generator();
-        auto new_tree = new Entity(textured_cherry_tree_model, glm::vec3(tree_x, terrain->getHeightOfTerrain(tree_x, tree_z), tree_z), 0.0, tree_rot_y, 0.0, 5.0);
+        auto new_tree = new Entity(textured_cherry_tree_model, glm::vec3(tree_x, terrain->get_height_of_terrain(tree_x, tree_z), tree_z), 0.0, tree_rot_y, 0.0, 5.0);
         entities->push_back(new_tree);
     }
     

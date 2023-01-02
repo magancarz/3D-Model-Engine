@@ -113,7 +113,7 @@ bool MousePicker::isUnderGround(glm::vec3& testPoint)
 	Terrain* terrain = getTerrain(testPoint.x, testPoint.z);
 	GLfloat height = 0;
 	if (terrain != nullptr) {
-		height = terrain->getHeightOfTerrain(testPoint.x, testPoint.z);
+		height = terrain->get_height_of_terrain(testPoint.x, testPoint.z);
 	}
 	if (testPoint.y < height) {
 		return true;

@@ -15,13 +15,13 @@ void TerrainRenderer::render(std::vector<Terrain*>* terrains, glm::mat4 toShadow
 	for(std::vector<Terrain*>::iterator it = terrains->begin(); it < terrains->end(); it++) {
 		prepareTerrain(*it);
 		loadModelMatrix(*it);
-		glDrawElements(GL_TRIANGLES, (*it)->getModel()->getVertexCount(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (*it)->get_model()->getVertexCount(), GL_UNSIGNED_INT, 0);
 		unbindTexturedModel();
 	}
 }
 
 void TerrainRenderer::prepareTerrain(Terrain* terrain) {
-	RawModel* model = terrain->getModel();
+	RawModel* model = terrain->get_model();
 	glBindVertexArray(model->getVaoID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -31,17 +31,17 @@ void TerrainRenderer::prepareTerrain(Terrain* terrain) {
 }
 
 void TerrainRenderer::bindTextures(Terrain* terrain) {
-	TerrainTexturePack* texturePack = terrain->getTerrainTexturePack();
+	const auto terrain_texture_pack = terrain->get_terrain_texture_pack();
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texturePack->getBackgroundTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, terrain_texture_pack->get_background_texture()->get_texture_id());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texturePack->getrTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, terrain_texture_pack->get_r_texture()->get_texture_id());
 	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, texturePack->getgTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, terrain_texture_pack->get_g_texture()->get_texture_id());
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, texturePack->getbTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, terrain_texture_pack->get_b_texture()->get_texture_id());
 	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, terrain->getBlendMap()->getTextureID());
+	glBindTexture(GL_TEXTURE_2D, terrain->get_blend_map()->get_texture_id());
 }
 
 void TerrainRenderer::unbindTexturedModel() {
@@ -52,7 +52,7 @@ void TerrainRenderer::unbindTexturedModel() {
 }
 
 void TerrainRenderer::loadModelMatrix(Terrain* terrain) {
-	glm::mat4 transformationMatrix = createTransformationMatrix(glm::vec3(terrain->getX(), 0, terrain->getZ()), 0, 0, 0, 1);
+	glm::mat4 transformationMatrix = createTransformationMatrix(glm::vec3(terrain->get_x(), 0, terrain->get_z()), 0, 0, 0, 1);
 	//m_shader->loadTransformationMatrix(transformationMatrix);
 	//ModelTexture* texture = terrain->getTexture();
 	//m_shader->loadShineVariables(texture->getShineDamper(), texture->getReflectivity());

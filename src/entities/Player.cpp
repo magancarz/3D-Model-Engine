@@ -28,7 +28,7 @@ void Player::move(Terrain& terrain, float cameraYaw, float cameraPitch) {
 	m_upwardsSpeed += GRAVITY * DisplayManager::getFrameTimeSeconds();
 	increasePosition(0, m_upwardsSpeed * DisplayManager::getFrameTimeSeconds(), 0);
 	glm::vec3 pos = getPosition();
-	float terrainHeight = terrain.getHeightOfTerrain(pos.x, pos.z);
+	float terrainHeight = terrain.get_height_of_terrain(pos.x, pos.z);
 	if(pos.y < terrainHeight) {
 		m_upwardsSpeed = 0;
 		setPosition(glm::vec3(pos.x, terrainHeight, pos.z));

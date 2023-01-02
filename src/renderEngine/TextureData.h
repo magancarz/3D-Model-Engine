@@ -2,13 +2,14 @@
 
 class TextureData {
 public:
-	TextureData(GLubyte* data, int height, int width)
-		: m_data(data), m_height(height), m_width(width) {}
+	TextureData(unsigned char* data, const int height, const int width) :
+	m_data(data), m_width(height), m_height(width) {}
 
-	inline GLubyte* getData() { return m_data; };
+	unsigned char* get_data() const { return m_data; }
 
-	inline int getWidth() { return m_width; };
-	inline int getHeight() { return m_height; };
+	int get_width() const { return m_width; }
+	int get_height() const { return m_height; }
+
 private:
 	unsigned char* m_data;
 

@@ -13,30 +13,38 @@
 
 class Terrain {
 public:
-	Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack* texturePack, TerrainTexture* blendMap);
+	Terrain(
+		float grid_x,
+		float grid_z,
+		const std::shared_ptr<Loader>& loader,
+		std::shared_ptr<TerrainTexturePack> texture_pack,
+		std::shared_ptr<TerrainTexture> blend_map);
+
 	~Terrain();
 
-	inline float getX() const { return m_x; };
-	inline float getZ() const { return m_z; };
-	inline RawModel* getModel() { return m_model; };
-	inline TerrainTexturePack* getTerrainTexturePack() { return m_texturePack; };
-	inline TerrainTexture* getBlendMap() { return m_blendMap; };
+	float get_x() const { return m_x; }
+	float get_z() const { return m_z; }
+	RawModel* get_model() const { return m_model; }
+	std::shared_ptr<TerrainTexturePack> get_terrain_texture_pack() const { return m_texture_pack; }
+	std::shared_ptr<TerrainTexture> get_blend_map() const { return m_blend_map; }
 
-	float getHeightOfTerrain(float worldX, float worldZ);
+	float get_height_of_terrain(float world_x, float world_z) const;
 
 private:
-	RawModel* generateTerrain(Loader* loader, std::string);
+	RawModel* generate_terrain(
+		const std::shared_ptr<Loader>& loader,
+		const std::string& height_map_location);
 
-	float getHeight(int x, int z, TextureData* textureData);
-	glm::vec3 calculateNormal(int x, int z, TextureData* textureData);
+	float get_height(int x, int z, const std::unique_ptr<TextureData>& texture_data) const;
+	glm::vec3 calculate_normal(int x, int z, const std::unique_ptr<TextureData>& texture_data) const;
 
 	const float MAX_PIXEL_COLOR = 256 + 256 + 256;
 
 	float** m_heights;
-	int m_heightsSize;
+	int m_heights_size;
 
 	float m_x, m_z;
 	RawModel* m_model;
-	TerrainTexturePack* m_texturePack;
-	TerrainTexture* m_blendMap;
+	std::shared_ptr<TerrainTexturePack> m_texture_pack;
+	std::shared_ptr<TerrainTexture> m_blend_map;
 };

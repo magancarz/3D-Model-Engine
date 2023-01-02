@@ -7,86 +7,96 @@
 
 #include "toolbox/Maths.h"
 
-Terrain::Terrain(int gridX, int gridZ, Loader* loader, TerrainTexturePack* texturePack, TerrainTexture* blendMap)
-	: m_x(gridX * TERRAIN_SIZE), m_z(gridZ * TERRAIN_SIZE), m_texturePack(texturePack), m_blendMap(blendMap) {
-	m_model = generateTerrain(loader, "res/textures/heightmap.png");
+Terrain::Terrain(
+		const float grid_x,
+		const float grid_z,
+		const std::shared_ptr<Loader>& loader,
+		std::shared_ptr<TerrainTexturePack> texture_pack,
+		std::shared_ptr<TerrainTexture> blend_map) :
+	m_x(grid_x * TERRAIN_SIZE),
+	m_z(grid_z * TERRAIN_SIZE),
+	m_texture_pack(std::move(texture_pack)),
+	m_blend_map(std::move(blend_map)) {
+
+	m_model = generate_terrain(loader, "res/textures/height_map.png");
 }
 
 Terrain::~Terrain() {
-	for(int i = 0; i < m_heightsSize; i++)
+	for(int i = 0; i < m_heights_size; i++)
 		delete m_heights[i];
 
 	delete m_heights;
 }
 
-RawModel* Terrain::generateTerrain(Loader* loader, std::string heightMap) {
+RawModel* Terrain::generate_terrain(
+		const std::shared_ptr<Loader>& loader,
+		const std::string& height_map_location) {
+
 	int width, height, channels;
-	unsigned char* image = stbi_load(heightMap.c_str(), &width, &height, &channels, STBI_rgb_alpha);
-	if(image == NULL)
-		std::cout << "Failed to load image!\n";
+	unsigned char* image = stbi_load(height_map_location.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+	if(image == nullptr)
+		throw std::runtime_error("Failed to load image!\n");
 
-	TextureData* textureData = new TextureData(image, width, height);
+	const auto texture_data = std::make_unique<TextureData>(image, width, height);
 
+	const int vertex_count = m_heights_size = height;
+	int count = vertex_count * vertex_count;
 
-	int VERTEX_COUNT = m_heightsSize = height;
-	int count = VERTEX_COUNT * VERTEX_COUNT;
-
-	m_heights = new float*[VERTEX_COUNT];
-	for(int i = 0; i < VERTEX_COUNT; i++)
-		m_heights[i] = new float[VERTEX_COUNT];
+	m_heights = new float*[vertex_count];
+	for(int i = 0; i < vertex_count; i++)
+		m_heights[i] = new float[vertex_count];
 
 	std::vector<float> vertices;
 	std::vector<float> normals;
-	std::vector<float> textureCoords;
+	std::vector<float> texture_coords;
 	std::vector<unsigned int> indices;
 
-	for(int i = 0; i < VERTEX_COUNT; i++) {
-		for(int j = 0; j < VERTEX_COUNT; j++) {
-			vertices.push_back((float)j / ((float)VERTEX_COUNT - 1) * TERRAIN_SIZE);
-			float height = getHeight(j, i, textureData);
-			m_heights[j][i] = height;
-			vertices.push_back(height);
-			vertices.push_back((float)i/((float)VERTEX_COUNT - 1) * TERRAIN_SIZE);
+	for(int i = 0; i < vertex_count; i++) {
+		for(int j = 0; j < vertex_count; j++) {
+			vertices.push_back(static_cast<float>(j) / (static_cast<float>(vertex_count) - 1.f) * TERRAIN_SIZE);
+			float terrain_height = get_height(j, i, texture_data);
+			m_heights[j][i] = terrain_height;
+			vertices.push_back(terrain_height);
+			vertices.push_back(static_cast<float>(i) / (static_cast<float>(vertex_count) - 1.f) * TERRAIN_SIZE);
 
-			glm::vec3 normal = calculateNormal(j, i, textureData);
+			glm::vec3 normal = calculate_normal(j, i, texture_data);
 			normals.push_back(normal.x);
 			normals.push_back(normal.y);
 			normals.push_back(normal.z);
-			textureCoords.push_back((float)j / ((float)VERTEX_COUNT - 1));
-			textureCoords.push_back((float)i / ((float)VERTEX_COUNT - 1));
+			texture_coords.push_back(static_cast<float>(j) / (static_cast<float>(vertex_count) - 1.f));
+			texture_coords.push_back(static_cast<float>(i) / (static_cast<float>(vertex_count) - 1.f));
 		}
 	}
-	for(int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
-		for(int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
-			int topLeft = (gz * VERTEX_COUNT) + gx;
-			int topRight = topLeft + 1;
-			int bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
-			int bottomRight = bottomLeft + 1;
-			indices.push_back(topLeft);
-			indices.push_back(bottomLeft);
-			indices.push_back(topRight);
-			indices.push_back(topRight);
-			indices.push_back(bottomLeft);
-			indices.push_back(bottomRight);
+	for(int gz = 0; gz < vertex_count - 1; gz++) {
+		for(int gx = 0; gx < vertex_count - 1; gx++) {
+			const int top_left = (gz * vertex_count) + gx;
+			const int top_right = top_left + 1;
+			const int bottom_left = ((gz + 1) * vertex_count) + gx;
+			const int bottom_right = bottom_left + 1;
+			indices.push_back(top_left);
+			indices.push_back(bottom_left);
+			indices.push_back(top_right);
+			indices.push_back(top_right);
+			indices.push_back(bottom_left);
+			indices.push_back(bottom_right);
 		}
 	}
 
 	//Clean up
-	delete textureData;
 	stbi_image_free(image);
 
-	return loader->loadToVAO(vertices, textureCoords, normals, indices);
+	return loader->loadToVAO(vertices, texture_coords, normals, indices);
 }
 
-float Terrain::getHeight(int x, int z, TextureData* textureData) {
-	if(x < 0 || x >= textureData->getWidth() || z < 0 || z >= textureData->getHeight())
+float Terrain::get_height(const int x, const int z, const std::unique_ptr<TextureData>& texture_data) const {
+	if(x < 0 || x >= texture_data->get_width() || z < 0 || z >= texture_data->get_height())
 		return 0;
 
-	int index = 4 * (x + z * textureData->getWidth());
-	unsigned char* data = textureData->getData();
-	int r = *(data + index);
-	int g = *(data + index + 1);
-	int b = *(data + index + 2);
+	const int index = 4 * (x + z * texture_data->get_width());
+	const unsigned char* data = texture_data->get_data();
+	const float r = *(data + index);
+	const float g = *(data + index + 1);
+	const float b = *(data + index + 2);
 
 	float height = r + g + b;
 	height -= MAX_PIXEL_COLOR / 2;
@@ -96,41 +106,42 @@ float Terrain::getHeight(int x, int z, TextureData* textureData) {
 	return height;
 }
 
-glm::vec3 Terrain::calculateNormal(int x, int z, TextureData* textureData) {
-	float heightL = getHeight(x - 1, z, textureData);
-	float heightR = getHeight(x + 1, z, textureData);
-	float heightU = getHeight(x, z - 1, textureData);
-	float heightD = getHeight(x, z + 1, textureData);
+glm::vec3 Terrain::calculate_normal(const int x, const int z, const std::unique_ptr<TextureData>& texture_data) const {
+	const float height_l = get_height(x - 1, z, texture_data);
+	const float height_r = get_height(x + 1, z, texture_data);
+	const float height_u = get_height(x, z - 1, texture_data);
+	const float height_d = get_height(x, z + 1, texture_data);
 
-	glm::vec3 normal(heightL - heightR, 2.0f, heightD - heightU);
+	glm::vec3 normal(height_l - height_r, 2.0f, height_d - height_u);
 	normal = glm::normalize(normal);
 
 	return normal;
 }
 
-float Terrain::getHeightOfTerrain(float worldX, float worldZ) {
-	float terrainX = worldX - m_x;
-	float terrainZ = worldZ - m_z;
-	float gridSquareSize = TERRAIN_SIZE / ((float)m_heightsSize - 1);
-	int gridX = (int) glm::floor(terrainX / gridSquareSize);
-	int gridZ = (int) glm::floor(terrainZ / gridSquareSize);
-	if(gridX >= m_heightsSize - 1 || gridZ >= m_heightsSize - 1 || gridX < 0 || gridZ < 0) 
+float Terrain::get_height_of_terrain(const float world_x, const float world_z) const {
+	const float terrain_x = world_x - m_x;
+	const float terrain_z = world_z - m_z;
+	float grid_square_size = TERRAIN_SIZE / (static_cast<float>(m_heights_size) - 1);
+	const int grid_x = static_cast<int>(glm::floor(terrain_x / grid_square_size));
+	const int grid_z = static_cast<int>(glm::floor(terrain_z / grid_square_size));
+
+	if(grid_x >= m_heights_size - 1 || grid_z >= m_heights_size - 1 || grid_x < 0 || grid_z < 0) 
 		return 0;
 
-	float xCoord = glm::modf(terrainX, gridSquareSize) / gridSquareSize;
-	float zCoord = glm::modf(terrainZ, gridSquareSize) / gridSquareSize;
+	float x_coord = glm::modf(terrain_x, grid_square_size) / grid_square_size;
+	float z_coord = glm::modf(terrain_z, grid_square_size) / grid_square_size;
 
 	float answer;
-	if(xCoord <= (1 - zCoord)) {
-		answer = barycentric(glm::vec3(0, m_heights[gridX][gridZ], 0),
-							 glm::vec3(1, m_heights[gridX + 1][gridZ], 0),
-							 glm::vec3(0, m_heights[gridX][gridZ + 1], 1),
-							 glm::vec2(xCoord, zCoord));
+	if(x_coord <= (1 - z_coord)) {
+		answer = barycentric(glm::vec3(0, m_heights[grid_x][grid_z], 0),
+							 glm::vec3(1, m_heights[grid_x + 1][grid_z], 0),
+							 glm::vec3(0, m_heights[grid_x][grid_z + 1], 1),
+							 glm::vec2(x_coord, z_coord));
 	} else {
-		answer = barycentric(glm::vec3(1, m_heights[gridX + 1][gridZ], 0),
-							 glm::vec3(1, m_heights[gridX + 1][gridZ + 1], 0),
-							 glm::vec3(0, m_heights[gridX][gridZ + 1], 1),
-							 glm::vec2(xCoord, zCoord));
+		answer = barycentric(glm::vec3(1, m_heights[grid_x + 1][grid_z], 0),
+							 glm::vec3(1, m_heights[grid_x + 1][grid_z + 1], 0),
+							 glm::vec3(0, m_heights[grid_x][grid_z + 1], 1),
+							 glm::vec2(x_coord, z_coord));
 	}
 
 	return answer;
