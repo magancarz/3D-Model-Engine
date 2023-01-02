@@ -1,7 +1,7 @@
 #include "ShadowShader.h"
 
-ShadowShader::ShadowShader()
-	: ShaderProgram("res/shaders/shadowVert.glsl", "res/shaders/shadowFrag.glsl") {
+ShadowShader::ShadowShader() :
+ShaderProgram("res/shaders/shadowVert.glsl", "res/shaders/shadowFrag.glsl") {
 	bind_attributes();
 	get_all_uniform_locations();
 }
@@ -12,9 +12,9 @@ void ShadowShader::bind_attributes() {
 }
 
 void ShadowShader::get_all_uniform_locations() {
-	location_mvpMatrix = get_uniform_location("mvp");
+	location_mvp_matrix = get_uniform_location("mvp");
 }
 	
-void ShadowShader::loadMVPMatrix(glm::mat4 mvpMatrix) {
-	load_matrix(location_mvpMatrix, mvpMatrix);
+void ShadowShader::load_mvp_matrix(const glm::mat4& mvp_matrix) const {
+	load_matrix(location_mvp_matrix, mvp_matrix);
 }

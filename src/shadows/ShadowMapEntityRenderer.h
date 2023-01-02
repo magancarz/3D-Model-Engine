@@ -9,14 +9,13 @@
 
 class ShadowMapEntityRenderer {
 public:
-	ShadowMapEntityRenderer(ShadowShader* shader, glm::mat4* projectionViewMatrix)
-		: m_shader(shader), m_projectionViewMatrix(projectionViewMatrix)  {}
+	ShadowMapEntityRenderer(std::shared_ptr<ShadowShader> shader, glm::mat4* projection_view_matrix);
 
 	/**
 	* Renders entities to the shadow map. Each model is first bound and then all
 	* of the entities using that model are rendered to the shadow map.
 	*/
-	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entitiesMap);
+	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entities_map) const;
 
 private:
 	/**
@@ -24,7 +23,7 @@ private:
 	* because that is where the positions are stored in the VAO, and only the
 	* positions are required in the vertex shader.
 	*/
-	void bindModel(RawModel* rawModel);
+	static void bind_model(RawModel* raw_model);
 
 	/**
 	* Prepares an entity to be rendered. The model matrix is created in the
@@ -32,8 +31,9 @@ private:
 	* in the past we've done this in the vertex shader) to create the
 	* mvp-matrix. This is then loaded to the vertex shader as a uniform.
 	*/
-	void prepareInstance(Entity* entity);
+	void prepare_instance(const std::shared_ptr<Entity>& entity) const;
 
-	glm::mat4* m_projectionViewMatrix;
-	ShadowShader* m_shader;
+	std::shared_ptr<ShadowShader> m_shader;
+
+	glm::mat4* m_projection_view_matrix;
 };

@@ -16,12 +16,7 @@ public:
 	* Shadow Frame Buffer class to which the scene is rendered. The size of the
 	* shadow map is determined here.
 	*/
-	ShadowMapMasterRenderer(Camera* camera);
-	
-	/**
-	* Clean up the sahder and FBO on closing.
-	*/
-	~ShadowMapMasterRenderer();
+	ShadowMapMasterRenderer(const std::shared_ptr<Camera>& camera);
 
 	/**
 	 * Carries out the shadow render pass. This renders the entities to the
@@ -31,7 +26,9 @@ public:
 	 * very far from the scene. It then prepares to render, renders the entities
 	 * to the shadow map, and finishes rendering.
 	 */
-	void render(const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entitiesMap, const std::shared_ptr<Light>& sun);
+	void render(
+		const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entities_map,
+		const std::shared_ptr<Light>& sun);
 
 	/**
 	 * This biased projection-view matrix is used to convert fragments into
@@ -41,18 +38,18 @@ public:
 	 * 
 	 * @return The to-shadow-map-space matrix.
 	 */
-	glm::mat4 getToShadowMapSpaceMatrix() { return m_offset * m_projectionViewMatrix; }
+	glm::mat4 get_to_shadow_map_space_matrix() const;
 
 	/**
 	* Returns the ID of the shadow map texture. The ID will always stay the
 	* same, even when the contents of the shadow map texture change each frame.
 	*/
-	unsigned int getShadowMap() { return m_shadowFBO->getShadowMap(); }
+	unsigned int get_shadow_map() const;
 
 	/**
 	Returns the light's "view" matrix.
 	*/
-	glm::mat4& getLightSpaceTransform() { return m_lightViewMatrix; }
+	glm::mat4 get_light_space_transform() const;
 
 private:
 	/**
@@ -69,14 +66,14 @@ private:
 	FBOs depth attachment from last frame. The simple shader program is also
 	started.
 	 */
-	void prepare(glm::vec3 lightDirection, ShadowBox* box);
+	void prepare(const glm::vec3& light_direction);
 
 	/**
 	Finish the shadow render pass. Stops the shader and unbinds the shadow
 	FBO, so everything rendered after this point is rendered to the screen,
 	rather than to the shadow FBO.
 	*/
-	void finish();
+	void finish() const;
 
 	/**
 	Updates the "view" matrix of the light. This creates a view matrix which
@@ -86,33 +83,31 @@ private:
 	where and how the "view cuboid" is positioned in the world. The size of
 	the view cuboid, however, is determined by the projection matrix.
 	 */
-	void updateLightViewMatrix(glm::vec3 direction, glm::vec3 center);
+	void update_light_view_matrix(const glm::vec3& direction, const glm::vec3& center);
 
 	/**
 	 * Creates the orthographic projection matrix. This projection matrix
 	 * basically sets the width, length and height of the "view cuboid", based
 	 * on the values that were calculated in the Shadow Box class.
 	 */
-	void updateOrthoProjectionMatrix(float width, float height, float length);
+	void update_ortho_projection_matrix(float width, float height, float length);
 
 	/**
 	 * Create the offset for part of the conversion to shadow map space. This
 	 * conversion is necessary to convert from one coordinate system to the
 	 * coordinate system that we can use to sample to shadow map.
 	 */
-	glm::mat4 createOffset();
+	static glm::mat4 create_offset();
 
 	const int SHADOW_MAP_SIZE = 4096;
 
-	ShadowFrameBuffer* m_shadowFBO;
-	ShadowShader* m_shader;
-	ShadowBox* m_shadowBox;
-	ShadowMapEntityRenderer* m_entityRenderer;
+	std::unique_ptr<ShadowFrameBuffer> m_shadow_fbo;
+	std::shared_ptr<ShadowShader> m_shader;
+	std::unique_ptr<ShadowBox> m_shadow_box;
+	std::unique_ptr<ShadowMapEntityRenderer> m_shadow_map_entity_renderer;
 
-	glm::mat4 m_projectionMatrix = glm::mat4(1.0f),
-			  m_lightViewMatrix = glm::mat4(1.0f),
-			  m_projectionViewMatrix = glm::mat4(1.0f),
-			  m_offset = glm::mat4(1.0f);
-
-
+	glm::mat4 m_projection_matrix      = glm::mat4(1.0f),
+			  m_light_view_matrix      = glm::mat4(1.0f),
+			  m_projection_view_matrix = glm::mat4(1.0f),
+			  m_offset                 = glm::mat4(1.0f);
 };

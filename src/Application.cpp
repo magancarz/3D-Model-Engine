@@ -79,6 +79,7 @@ int main(void) {
     auto textured_barrel_model = std::make_shared<TexturedModel>(*barrel_model, *barrel_texture);
     auto& texture2 = textured_barrel_model->getTexture();
     texture2.setNormalMap(loader->loadTexture("res/textures/barrelNormal.png"));
+    texture2.setSpecularMap(loader->loadTexture("res/textures/barrelS.png"));
 
     /* create light objects */
     auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));

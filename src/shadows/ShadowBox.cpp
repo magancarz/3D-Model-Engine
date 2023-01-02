@@ -3,111 +3,122 @@
 #include "toolbox/DisplayManager.h"
 #include "../renderEngine/MasterRenderer.h"
 
-ShadowBox::ShadowBox(glm::mat4* lightViewMatrix, Camera* camera):
-m_lightViewMatrix(lightViewMatrix), m_cam(camera) {
-	calculateWidthsAndHeights();
+ShadowBox::ShadowBox(glm::mat4* light_view_matrix, std::shared_ptr<Camera> camera) :
+m_light_view_matrix(light_view_matrix), m_camera(std::move(camera)) {
+
+	calculate_widths_and_heights();
 }
 
 void ShadowBox::update() {
-	glm::mat4 rotation = calculateCameraRotationMatrix();
-	glm::vec3 forwardVector = rotation * FORWARD;
+	const glm::mat4 rotation = calculate_camera_rotation_matrix();
+	const glm::vec3 forward_vector = rotation * FORWARD;
 
-	glm::vec3 toFar = glm::vec3(forwardVector);
-	toFar *= SHADOW_DISTANCE;
-	glm::vec3 toNear = glm::vec3(forwardVector);
-	toNear *= MasterRenderer::NEAR_PLANE;
-	glm::vec3 centerNear = toNear + m_cam->getPosition();
-	glm::vec3 centerFar = toFar + m_cam->getPosition();
+	auto to_far = glm::vec3(forward_vector);
+	to_far *= SHADOW_DISTANCE;
+	auto to_near = glm::vec3(forward_vector);
+	to_near *= MasterRenderer::NEAR_PLANE;
+	const glm::vec3 center_near = to_near + m_camera->getPosition();
+	const glm::vec3 center_far = to_far + m_camera->getPosition();
 
-	std::vector<glm::vec4> points = calculateFrustumVertices(rotation, forwardVector, centerNear, centerFar);
+	const auto points = calculate_frustum_vertices(rotation, forward_vector, center_near, center_far);
 
 	bool first = true;
-	for(std::vector<glm::vec4>::iterator it = points.begin(); it != points.end(); it++) {
-		glm::vec4 point = *it;
+	for(const auto point : points) {
 		if(first) {
-			m_minX = point.x;
-			m_maxX = point.x;
-			m_minY = point.y;
-			m_maxY = point.y;
-			m_minZ = point.z;
-			m_maxZ = point.z;
+			m_min_x = point.x;
+			m_max_x = point.x;
+			m_min_y = point.y;
+			m_max_y = point.y;
+			m_min_z = point.z;
+			m_max_z = point.z;
 			first = false;
 			continue;
 		}
 
-		if(point.x > m_maxX) {
-			m_maxX = point.x;
-		} else if(point.x < m_minX) {
-			m_minX = point.x;
+		if(point.x > m_max_x) {
+			m_max_x = point.x;
+		} else if(point.x < m_min_x) {
+			m_min_x = point.x;
 		}
 
-		if(point.y > m_maxY) {
-			m_maxY = point.y;
-		} else if(point.y < m_minY) {
-			m_minY = point.y;
+		if(point.y > m_max_y) {
+			m_max_y = point.y;
+		} else if(point.y < m_min_y) {
+			m_min_y = point.y;
 		}
 
-		if(point.z > m_maxZ) {
-			m_maxZ = point.z;
-		} else if(point.z < m_minZ) {
-			m_minZ = point.z;
+		if(point.z > m_max_z) {
+			m_max_z = point.z;
+		} else if(point.z < m_min_z) {
+			m_min_z = point.z;
 		}
 	}
-	m_maxZ += OFFSET;
+	m_max_z += OFFSET;
 }
 
-glm::vec3 ShadowBox::getCenter() {
-	float x = (m_minX + m_maxX) / 2.f;
-	float y = (m_minY + m_maxY) / 2.f;
-	float z = (m_minZ + m_maxZ) / 2.f;
-	glm::vec4 cen = glm::vec4(x, y, z, 1.f);
-	glm::mat4 invertedLight;
-	invertedLight = glm::inverse(*m_lightViewMatrix);
-	return glm::vec3(invertedLight * cen);
+glm::vec3 ShadowBox::get_center() const{
+	const float x = (m_min_x + m_max_x) / 2.f;
+	const float y = (m_min_y + m_max_y) / 2.f;
+	const float z = (m_min_z + m_max_z) / 2.f;
+	const auto cen = glm::vec4(x, y, z, 1.f);
+	const glm::mat4 inverted_light = glm::inverse(*m_light_view_matrix);
+	return { inverted_light * cen };
 }
 
-std::vector<glm::vec4> ShadowBox::calculateFrustumVertices(const glm::mat4& rotation, const glm::vec3& forwardVector, const glm::vec3& centerNear, const glm::vec3& centerFar) {
-	glm::vec3 upVector = rotation * UP;
-	glm::vec3 rightVector = glm::cross(forwardVector, upVector);
-	glm::vec3 downVector = glm::vec3(-upVector.x, -upVector.y, -upVector.z);
-	glm::vec3 leftVector = glm::vec3(-rightVector.x, -rightVector.y, -rightVector.z);
-	glm::vec3 farTop = centerFar + glm::vec3(upVector.x * m_farHeight, upVector.y * m_farHeight, upVector.z * m_farHeight);
-	glm::vec3 farBottom = centerFar + glm::vec3(downVector.x * m_farHeight, downVector.y * m_farHeight, downVector.z * m_farHeight);
-	glm::vec3 nearTop = centerNear + glm::vec3(upVector.x * m_nearHeight, upVector.y * m_nearHeight, upVector.z * m_nearHeight);
-	glm::vec3 nearBottom = centerNear + glm::vec3(downVector.x * m_nearHeight, downVector.y * m_nearHeight, downVector.z * m_nearHeight);
+void ShadowBox::set_light_view_matrix(glm::mat4* light_view_matrix) { m_light_view_matrix = light_view_matrix; }
+
+float ShadowBox::get_width() const { return m_max_x - m_min_x; }
+float ShadowBox::get_height() const { return m_max_y - m_min_y; }
+float ShadowBox::get_length() const { return m_max_z - m_min_z; }
+
+std::vector<glm::vec4> ShadowBox::calculate_frustum_vertices(
+		const glm::mat4& rotation,
+		const glm::vec3& forward_vector,
+		const glm::vec3& center_near,
+		const glm::vec3& center_far) const {
+
+	glm::vec3 up_vector = rotation * UP;
+	glm::vec3 right_vector = glm::cross(forward_vector, up_vector);
+	glm::vec3 down_vector = glm::vec3(-up_vector.x, -up_vector.y, -up_vector.z);
+	glm::vec3 left_vector = glm::vec3(-right_vector.x, -right_vector.y, -right_vector.z);
+	glm::vec3 far_top = center_far + glm::vec3(up_vector.x * m_far_height, up_vector.y * m_far_height, up_vector.z * m_far_height);
+	glm::vec3 far_bottom = center_far + glm::vec3(down_vector.x * m_far_height, down_vector.y * m_far_height, down_vector.z * m_far_height);
+	glm::vec3 near_top = center_near + glm::vec3(up_vector.x * m_near_height, up_vector.y * m_near_height, up_vector.z * m_near_height);
+	glm::vec3 near_bottom = center_near + glm::vec3(down_vector.x * m_near_height, down_vector.y * m_near_height, down_vector.z * m_near_height);
+
 	std::vector<glm::vec4> points;
-	points.push_back(calculateLightSpaceFrustumCorner(farTop, rightVector, m_farWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(farTop, leftVector, m_farWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(farBottom, rightVector, m_farWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(farBottom, leftVector, m_farWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(nearTop, rightVector, m_nearWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(nearTop, leftVector, m_nearWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(nearBottom, rightVector, m_nearWidth));
-	points.push_back(calculateLightSpaceFrustumCorner(nearBottom, leftVector, m_nearWidth));
+	points.push_back(calculate_light_space_frustum_corner(far_top, right_vector, m_far_width));
+	points.push_back(calculate_light_space_frustum_corner(far_top, left_vector, m_far_width));
+	points.push_back(calculate_light_space_frustum_corner(far_bottom, right_vector, m_far_width));
+	points.push_back(calculate_light_space_frustum_corner(far_bottom, left_vector, m_far_width));
+	points.push_back(calculate_light_space_frustum_corner(near_top, right_vector, m_near_width));
+	points.push_back(calculate_light_space_frustum_corner(near_top, left_vector, m_near_width));
+	points.push_back(calculate_light_space_frustum_corner(near_bottom, right_vector, m_near_width));
+	points.push_back(calculate_light_space_frustum_corner(near_bottom, left_vector, m_near_width));
 
 	return points;
 }
 
-glm::vec4 ShadowBox::calculateLightSpaceFrustumCorner(glm::vec3& startPoint, glm::vec3& direction, float width) {
-	glm::vec3 point = startPoint + glm::vec3(direction.x * width, direction.y * width, direction.z * width);
-	glm::vec4 point4f = glm::vec4((*m_lightViewMatrix) * glm::vec4(point.x, point.y, point.z, 1.f));
-	return point4f;
+glm::vec4 ShadowBox::calculate_light_space_frustum_corner(const glm::vec3& start_point, const glm::vec3& direction, const float width) const {
+	const auto point = start_point + glm::vec3(direction.x * width, direction.y * width, direction.z * width);
+	const auto point4_f = glm::vec4((*m_light_view_matrix) * glm::vec4(point.x, point.y, point.z, 1.f));
+	return point4_f;
 }
 
-glm::mat4 ShadowBox::calculateCameraRotationMatrix() {
+glm::mat4 ShadowBox::calculate_camera_rotation_matrix() const {
 	glm::mat4 rotation;
-	rotation = glm::rotate(rotation, glm::radians(-m_cam->getYaw()), glm::vec3(0, 1, 0));
-	rotation = glm::rotate(rotation, glm::radians(-m_cam->getPitch()), glm::vec3(1, 0, 0));
+	rotation = glm::rotate(rotation, glm::radians(-m_camera->getYaw()), glm::vec3(0, 1, 0));
+	rotation = glm::rotate(rotation, glm::radians(-m_camera->getPitch()), glm::vec3(1, 0, 0));
 	return rotation;
 }
 
-void ShadowBox::calculateWidthsAndHeights() {
-	m_farWidth = (float) (SHADOW_DISTANCE * glm::tan(glm::radians(MasterRenderer::FOV)));
-	m_nearWidth = (float) (MasterRenderer::NEAR_PLANE * glm::tan(glm::radians(MasterRenderer::FOV)));
-	m_farHeight = m_farWidth / getAspectRatio();
-	m_nearHeight = m_nearWidth / getAspectRatio();
+void ShadowBox::calculate_widths_and_heights() {
+	m_far_width = SHADOW_DISTANCE * glm::tan(glm::radians(MasterRenderer::FOV));
+	m_near_width = MasterRenderer::NEAR_PLANE * glm::tan(glm::radians(MasterRenderer::FOV));
+	m_far_height = m_far_width / get_aspect_ratio();
+	m_near_height = m_near_width / get_aspect_ratio();
 }
 
-float ShadowBox::getAspectRatio() {
-	return (float) WINDOW_WIDTH / (float) WINDOW_HEIGHT;
+float ShadowBox::get_aspect_ratio() {
+	return static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT);
 }

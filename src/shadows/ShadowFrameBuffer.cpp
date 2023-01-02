@@ -4,49 +4,52 @@
 
 #include "toolbox/DisplayManager.h"
 
-ShadowFrameBuffer::ShadowFrameBuffer(int width, int height)
-	: WIDTH(width), HEIGHT(height) {
-	initialiseFrameBuffer();
+ShadowFrameBuffer::ShadowFrameBuffer(const int width, const int height) :
+m_width(width), m_height(height) {
+
+	initialise_frame_buffer();
 }
 
 ShadowFrameBuffer::~ShadowFrameBuffer() {
 	glDeleteFramebuffers(1, &m_fbo);
-	glDeleteTextures(1, &m_shadowMap);
+	glDeleteTextures(1, &m_shadow_map);
 }
 
-void ShadowFrameBuffer::bindFrameBuffer() {
-	bindFrameBuffer(m_fbo, WIDTH, HEIGHT);
+void ShadowFrameBuffer::bind_frame_buffer() const {
+	bind_frame_buffer(m_fbo, m_width, m_height);
 }
 
-void ShadowFrameBuffer::unbindFrameBuffer() {
+void ShadowFrameBuffer::unbind_frame_buffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
-void ShadowFrameBuffer::initialiseFrameBuffer() {
-	m_fbo = createFrameBuffer();
-	m_shadowMap = createDepthBufferAttachment(WIDTH, HEIGHT);
-	unbindFrameBuffer();
+unsigned int ShadowFrameBuffer::get_shadow_map() const { return m_shadow_map; }
+
+void ShadowFrameBuffer::initialise_frame_buffer() {
+	m_fbo = create_frame_buffer();
+	m_shadow_map = create_depth_buffer_attachment(m_width, m_height);
+	unbind_frame_buffer();
 }
 
-void ShadowFrameBuffer::bindFrameBuffer(unsigned int frameBuffer, int width, int height) {
+void ShadowFrameBuffer::bind_frame_buffer(const unsigned int frame_buffer, const int width, const int height) {
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frameBuffer);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, frame_buffer);
 	glViewport(0, 0, width, height);
 }
 
-unsigned int ShadowFrameBuffer::createFrameBuffer() {
-	unsigned int frameBuffer = 0;
-	glGenFramebuffers(1, &frameBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, frameBuffer, 0);
+unsigned int ShadowFrameBuffer::create_frame_buffer() {
+	unsigned int frame_buffer = 0;
+	glGenFramebuffers(1, &frame_buffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, frame_buffer, 0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 
-	return frameBuffer;
+	return frame_buffer;
 }
 
-unsigned int ShadowFrameBuffer::createDepthBufferAttachment(int width, int height) {
+unsigned int ShadowFrameBuffer::create_depth_buffer_attachment(const int width, const int height) {
 	unsigned int texture = 0;
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -57,5 +60,6 @@ unsigned int ShadowFrameBuffer::createDepthBufferAttachment(int width, int heigh
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture, 0);
+
 	return texture;
 }
