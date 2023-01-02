@@ -10,7 +10,6 @@
 class MasterRenderer {
 public:
 	MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera);
-	~MasterRenderer();
 
 	void render(
 		const std::vector<std::shared_ptr<Light>>& lights,
@@ -44,7 +43,6 @@ private:
 	glm::mat4 m_projection_matrix;
 	
 	std::unique_ptr<NormalMappingShader> m_normal_mapped_objects_shader;
-	std::unique_ptr<TerrainShader> m_terrain_shader;
 
 	std::unique_ptr<EntityRenderer> m_entity_renderer;
 	std::unique_ptr<TerrainRenderer> m_terrain_renderer;

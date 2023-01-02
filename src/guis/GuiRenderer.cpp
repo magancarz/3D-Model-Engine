@@ -25,7 +25,6 @@ GuiRenderer::GuiRenderer(Loader* loader) {
 
 GuiRenderer::~GuiRenderer() {
 	//Clean up GUI shader
-	m_shader->clean_up();
 	delete m_shader;
 }
 

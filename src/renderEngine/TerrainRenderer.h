@@ -1,19 +1,26 @@
 #pragma once
 
+#include <memory>
+
 #include "terrain/TerrainShader.h"
 
 class TerrainRenderer {
 public:
-	TerrainRenderer(TerrainShader* shader, glm::mat4 projectionMatrix);
+	TerrainRenderer(std::unique_ptr<TerrainShader> shader, const glm::mat4& projection_matrix);
 
-	void render(const std::vector<std::shared_ptr<Terrain>>& terrains, const glm::mat4& toShadowMapSpace);
+	void render(
+		const std::vector<std::shared_ptr<Terrain>>& terrains,
+		const glm::mat4& to_shadow_map_space,
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const;
 
-	inline void setShader(TerrainShader* shader) { m_shader = shader; };
 private:
-	void prepareTerrain(Terrain* terrain);
-	void bindTextures(Terrain* terrain);
-	void unbindTexturedModel();
-	void loadModelMatrix(Terrain* terrain);
+	void prepare_terrain(const std::shared_ptr<Terrain>& terrain) const;
+	void load_model_matrix(const std::shared_ptr<Terrain>& terrain) const;
 
-	TerrainShader* m_shader;
+	static void bind_textures(const std::shared_ptr<Terrain>& terrain);
+	static void unbind_textured_model();
+
+	std::unique_ptr<TerrainShader> m_terrain_shader;
 };

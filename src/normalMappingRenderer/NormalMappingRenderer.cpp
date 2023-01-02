@@ -15,7 +15,6 @@ NormalMappingRenderer::NormalMappingRenderer(glm::mat4 proj) {
 }
 
 NormalMappingRenderer::~NormalMappingRenderer() {
-	m_shader->clean_up();
 	delete m_shader;
 }
 

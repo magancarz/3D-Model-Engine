@@ -8,45 +8,39 @@ class TerrainShader : public ShaderProgram {
 public:
 	TerrainShader();
 
-	void loadTransformationMatrix(glm::mat4 matrix);
-	void loadProjectionMatrix(glm::mat4 matrix);
-	void loadViewMatrix(Camera& camera);
-	void loadLights(const std::vector<std::shared_ptr<Light>>& lights);
-	void loadShineVariables(float shineDamper, float reflectivity);
-	void loadSkyColor(float r, float g, float b);
-	void loadClipPlane(glm::vec4 plane);
-	void loadToShadowMapSpaceMatrix(glm::mat4 toShadowMapSpace);
+	void load_transformation_matrix(const glm::mat4& matrix) const;
+	void load_projection_matrix(const glm::mat4& matrix) const;
+	void load_view_matrix(const std::shared_ptr<Camera>& camera) const;
+	void load_lights(const std::vector<std::shared_ptr<Light>>& lights) const;
+	void load_shine_variables(float shine_damper, float reflectivity) const;
+	void load_sky_color(float r, float g, float b) const;
+	void load_clip_plane(const glm::vec4& plane) const;
+	void load_to_shadow_map_space_matrix(const glm::mat4& to_shadow_map_space) const;
 
-	void connectTextureUnits();
-protected:
-	void virtual bind_attributes() override;
-	void virtual get_all_uniform_locations() override;
+	void connect_texture_units() const;
+
+	void bind_attributes() override;
+	void get_all_uniform_locations() override;
+
 private:
-	const std::string VERTEX_FILE = "res/shaders/vert.shader";
-	const std::string FRAGMENT_FILE = "res/shaders/frag.shader";
+	static constexpr int MAX_LIGHTS = 4;
 
-	static const int MAX_LIGHTS = 4;
-
-	unsigned int location_transformationMatrix;
-	unsigned int location_projectionMatrix;
-	unsigned int location_viewMatrix;
-
-	unsigned int location_lightPosition[MAX_LIGHTS];
-	unsigned int location_lightColor[MAX_LIGHTS];
-	unsigned int location_attenuation[MAX_LIGHTS];
-	unsigned int location_shineDamper;
-	unsigned int location_reflectivity;
-
-	unsigned int location_skyColor;
-
-	unsigned int location_backgroundTexture;
-	unsigned int location_rTexture;
-	unsigned int location_gTexture;
-	unsigned int location_bTexture;
-	unsigned int location_blendMap;
-
-	unsigned int location_plane;
-
-	unsigned int location_toShadowMapSpace;
-	unsigned int location_shadowMap;
+	// uniform variables
+	int	location_transformation_matrix,
+		location_projection_matrix,
+		location_view_matrix,
+		location_light_position[MAX_LIGHTS],
+		location_light_color[MAX_LIGHTS],
+		location_attenuation[MAX_LIGHTS],
+		location_shine_damper,
+		location_reflectivity,
+		location_sky_color,
+		location_background_texture,
+		location_r_texture,
+		location_g_texture,
+		location_b_texture,
+		location_blend_map,
+		location_plane,
+		location_to_shadow_map_space,
+		location_shadow_map;
 };

@@ -7,10 +7,10 @@
 class ShaderProgram {
 public:
 	ShaderProgram(const std::string& vertex_file, const std::string& fragment_file);
-	
+	~ShaderProgram();
+
 	void start() const;
 	static void stop();
-	void clean_up() const;
 
 	void virtual bind_attributes() = 0;
 	void virtual get_all_uniform_locations() = 0;

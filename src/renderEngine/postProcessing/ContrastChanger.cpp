@@ -17,7 +17,6 @@ void ContrastChanger::render(unsigned int texture) {
 
 void ContrastChanger::cleanUp() {
 	m_renderer->cleanUp();
-	m_shader->clean_up();
 	delete m_renderer;
 	delete m_shader;
 }

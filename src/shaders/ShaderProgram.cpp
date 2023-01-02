@@ -17,20 +17,20 @@ ShaderProgram::ShaderProgram(const std::string& vertex_file, const std::string& 
 	glValidateProgram(m_program_id);
 }
 
+ShaderProgram::~ShaderProgram() {
+	glDetachShader(m_program_id, m_vertex_shader_id);
+	glDetachShader(m_program_id, m_fragment_shader_id);
+	glDeleteShader(m_vertex_shader_id);
+	glDeleteShader(m_fragment_shader_id);
+	glDeleteProgram(m_program_id);
+}
+
 void ShaderProgram::start() const {
 	glUseProgram(m_program_id);
 }
 
 void ShaderProgram::stop() {
 	glUseProgram(0);
-}
-
-void ShaderProgram::clean_up() const {
-	glDetachShader(m_program_id, m_vertex_shader_id);
-	glDetachShader(m_program_id, m_fragment_shader_id);
-	glDeleteShader(m_vertex_shader_id);
-	glDeleteShader(m_fragment_shader_id);
-	glDeleteProgram(m_program_id);
 }
 
 void ShaderProgram::bind_attribute(const unsigned int attribute, const char* variable_name) const {

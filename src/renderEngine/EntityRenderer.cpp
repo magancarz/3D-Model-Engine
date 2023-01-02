@@ -14,10 +14,6 @@ m_static_shader(std::move(static_shader)), m_projection_matrix(projection_matrix
 	m_static_shader->stop();
 }
 
-EntityRenderer::~EntityRenderer() {
-	m_static_shader->clean_up();
-}
-
 void EntityRenderer::render(
 		const std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>>& entity_map,
 		const std::vector<std::shared_ptr<Light>>& lights,

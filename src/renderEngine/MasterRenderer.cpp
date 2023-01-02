@@ -3,19 +3,13 @@
 #include "toolbox/DisplayManager.h"
 
 MasterRenderer::MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera) {
-	m_terrain_shader = std::make_unique<TerrainShader>();
-	
 	create_projection_matrix();
 
 	m_entity_renderer = std::make_unique<EntityRenderer>(std::make_unique<StaticShader>(), m_projection_matrix);
-	m_terrain_renderer = std::make_unique<TerrainRenderer>(m_terrain_shader.get(), m_projection_matrix);
+	m_terrain_renderer = std::make_unique<TerrainRenderer>(std::make_unique<TerrainShader>(), m_projection_matrix);
 	m_skybox_renderer = std::make_unique<SkyboxRenderer>(loader.get(), m_projection_matrix);
 	m_normal_mapping_renderer = std::make_unique<NormalMappingRenderer>(m_projection_matrix);
 	m_shadow_map_renderer = std::make_unique<ShadowMapMasterRenderer>(camera.get());
-}
-
-MasterRenderer::~MasterRenderer() {
-	m_terrain_shader->clean_up();
 }
 
 void MasterRenderer::render(
@@ -27,13 +21,7 @@ void MasterRenderer::render(
 
 	//m_normal_mapping_renderer->render(m_normal_mapped_entities, clip_plane, lights, camera);
 
-	m_terrain_shader->start();
-	m_terrain_shader->loadClipPlane(clip_plane);
-	m_terrain_shader->loadSkyColor(RED, GREEN, BLUE);
-	m_terrain_shader->loadLights(lights);
-	m_terrain_shader->loadViewMatrix(*camera);
-	m_terrain_renderer->render(m_terrains, m_shadow_map_renderer->getToShadowMapSpaceMatrix());
-	m_terrain_shader->stop();
+	m_terrain_renderer->render(m_terrains, m_shadow_map_renderer->getToShadowMapSpaceMatrix(), lights, camera, clip_plane);
 
 	m_skybox_renderer->render(*camera, RED, GREEN, BLUE);
 }
