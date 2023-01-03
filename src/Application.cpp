@@ -45,39 +45,37 @@ int main(void) {
 
     /* initialize model loaders */
     auto loader = std::make_shared<Loader>();
-    auto normal_mapped_obj_loader = std::make_shared<NormalMappingOBJLoader>();
 
     /* create terrain */
-    auto background_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/grass.png"));
-    auto r_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/mud.png"));
-    auto g_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/grassFlowers.png"));
-    auto b_texture = std::make_unique<TerrainTexture>(loader->loadTexture("res/textures/path.png"));
-    auto blend_map = std::make_shared<TerrainTexture>(loader->loadTexture("res/textures/black.png"));
+    auto background_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/grass.png"));
+    auto r_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/mud.png"));
+    auto g_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/grassFlowers.png"));
+    auto b_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/path.png"));
+    auto blend_map = std::make_shared<TerrainTexture>(loader->load_texture("res/textures/black.png"));
 
     auto terrain_texture_pack = std::make_shared<TerrainTexturePack>(std::move(background_texture), std::move(r_texture), std::move(g_texture), std::move(b_texture));
 
     auto terrain = std::make_shared<Terrain>(0, 0, loader, std::move(terrain_texture_pack), std::move(blend_map));
 
     /* load 3d models */
-    auto stall_model = std::unique_ptr<RawModel>(loadOBJ("res/models/stall.obj", loader.get()));
-    auto stall_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/stallTexture.png"));
-    auto textured_stall_model = std::make_shared<TexturedModel>(*stall_model, *stall_texture);
+    auto stall_model = OBJLoader::load_obj("res/models/stall.obj", loader);
+    auto stall_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/stallTexture.png"));
+    auto textured_stall_model = std::make_shared<TexturedModel>(stall_model, stall_texture);
 
-    auto cherry_tree_model = std::unique_ptr<RawModel>(loadOBJ("res/models/cherry.obj", loader.get()));
-    auto cherry_tree_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/cherry.png"));
-    auto textured_cherry_tree_model = std::make_shared<TexturedModel>(*cherry_tree_model, *cherry_tree_texture);
+    auto cherry_tree_model = OBJLoader::load_obj("res/models/cherry.obj", loader);
+    auto cherry_tree_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/cherry.png"));
+    auto textured_cherry_tree_model = std::make_shared<TexturedModel>(cherry_tree_model, cherry_tree_texture);
 
-    auto lantern_model = std::unique_ptr<RawModel>(loadOBJ("res/models/lantern.obj", loader.get()));
-    auto lantern_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/lantern.png"));
-    auto textured_lantern_model = std::make_shared<TexturedModel>(*lantern_model, *lantern_texture);
-    textured_lantern_model->getTexture().setSpecularMap(loader->loadTexture("res/textures/lanternS.png"));
+    auto lantern_model = OBJLoader::load_obj("res/models/lantern.obj", loader);
+    auto lantern_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/lantern.png"));
+    lantern_texture->set_specular_map(loader->load_texture("res/textures/lanternS.png"));
+    auto textured_lantern_model = std::make_shared<TexturedModel>(lantern_model, lantern_texture);
 
-    auto barrel_model = std::unique_ptr<RawModel>(normal_mapped_obj_loader->loadNormalMappedOBJ("res/models/barrel.obj", *loader));
-    auto barrel_texture = std::make_unique<ModelTexture>(loader->loadTexture("res/textures/barrel.png"));
-    auto textured_barrel_model = std::make_shared<TexturedModel>(*barrel_model, *barrel_texture);
-    auto& texture2 = textured_barrel_model->getTexture();
-    texture2.setNormalMap(loader->loadTexture("res/textures/barrelNormal.png"));
-    texture2.setSpecularMap(loader->loadTexture("res/textures/barrelS.png"));
+    auto barrel_model = NormalMappingOBJLoader::load_normal_mapped_obj("res/models/barrel.obj", loader);
+    auto barrel_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/barrel.png"));
+    barrel_texture->set_normal_map(loader->load_texture("res/textures/barrelNormal.png"));
+    barrel_texture->set_specular_map(loader->load_texture("res/textures/barrelS.png"));
+    auto textured_barrel_model = std::make_shared<TexturedModel>(barrel_model, barrel_texture);
 
     /* create light objects */
     auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
@@ -204,9 +202,6 @@ int main(void) {
         //Check if window needs to close
         DisplayManager::check_close_requests();
     }
-
-    //Clean up resources
-    loader->cleanUp();
 
     DisplayManager::close_display();
 

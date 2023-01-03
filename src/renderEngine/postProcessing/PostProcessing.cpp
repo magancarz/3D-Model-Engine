@@ -5,7 +5,7 @@
 #include "toolbox/DisplayManager.h"
 
 PostProcessing::PostProcessing(const std::shared_ptr<Loader>& loader) {
-	m_quad = loader->loadToVAO(QUAD_POSITIONS, 2);
+	m_quad = loader->load_to_vao(QUAD_POSITIONS, 2);
 	m_contrast_changer = std::make_unique<ContrastChanger>();
 	m_horizontal_blur = std::make_unique<HorizontalBlur>(DisplayManager::WINDOW_WIDTH / 2, DisplayManager::WINDOW_HEIGHT / 2);
 	m_vertical_blur = std::make_unique<VerticalBlur>(DisplayManager::WINDOW_WIDTH / 2, DisplayManager::WINDOW_HEIGHT / 2);
@@ -24,7 +24,7 @@ void PostProcessing::draw(const unsigned int color_texture, const unsigned int b
 }
 
 void PostProcessing::start() const {
-	glBindVertexArray(m_quad->getVaoID());
+	glBindVertexArray(m_quad->get_vao_id());
 	glEnableVertexAttribArray(0);
 	glDisable(GL_DEPTH_TEST);
 }

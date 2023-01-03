@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <GL/glew.h>
@@ -9,51 +10,64 @@
 
 class Loader {
 public:
-	RawModel* loadToVAO(const std::vector<float>& positions,
-						const std::vector<float>& texture_coords,
-						const std::vector<float>& normals,
-						const std::vector<unsigned int>& indices);
+	~Loader();
 
-	RawModel* loadToVAO(const std::vector<float>& positions,
-						const std::vector<float>& texture_coords,
-						const std::vector<float>& normals,
-						const std::vector<float>& tangents,
-						const std::vector<unsigned int>& indices);
+	std::shared_ptr<RawModel> load_to_vao(
+		const std::vector<float>& positions,
+		int dimensions);
 
-	unsigned int loadTexture(const std::string& fileName, float lodValue);
-	unsigned int loadTexture(const std::string& fileName);
+	std::shared_ptr<RawModel> load_to_vao(
+		const std::vector<float>& positions,
+		const std::vector<float>& texture_coords,
+		const std::vector<float>& normals,
+		const std::vector<unsigned int>& indices);
 
-	unsigned int loadFontTexture(const std::string& fileName);
+	std::shared_ptr<RawModel> load_to_vao(
+		const std::vector<float>& positions,
+		const std::vector<float>& texture_coords,
+		const std::vector<float>& normals,
+		const std::vector<float>& tangents,
+		const std::vector<unsigned int>& indices);
 
-	int createEmptyVBO(std::vector<GLfloat>& data);
-	void updateVBO(unsigned int vboID, std::vector<float>& data);
+	unsigned int load_to_vao(
+		const std::vector<float>& positions,
+		const std::vector<float>& texture_coords);
 
-	int loadToVAO(std::vector<float>& positions, std::vector<float>& textureCoords);
-	RawModel* loadToVAO(const std::vector<float> positions, int dimensions);
+	static std::shared_ptr<TextureData> load_image(const std::string& file_name);
 
-	void addInstanceAttribute(unsigned int vaoID, unsigned int vboID,
-							  unsigned int attribute, int dataSize,
-							  GLsizei instancedDataLength, int offset);
+	unsigned int load_texture(const std::string& file_name, float lod_value);
 
+	unsigned int load_texture(const std::string& file_name);
 
+	unsigned int load_font_texture(const std::string& file_name);
 
-	TextureData* loadImage(std::string fileName);
+	unsigned int load_cube_map(const std::vector<std::string>& texture_files);
 
-	int loadCubeMap(std::vector<std::string> textureFiles);
+	unsigned int create_empty_vbo(const std::vector<float>& data);
 
-	void cleanUp();
+	static void update_vbo(unsigned int vbo_id, const std::vector<float>& data);
+
+	static void add_instance_attribute(
+		unsigned int vao_id,
+		unsigned int vbo_id,
+		unsigned int attribute,
+		int data_size,
+		int instanced_data_length,
+		int offset);
 
 private:
 	std::vector<unsigned int> vaos;
 	std::vector<unsigned int> vbos;
 	std::vector<unsigned int> textures;
 
-	unsigned int createVAO();
-	void unbindVAO();
+	unsigned int create_vao();
+	static void unbind_vao();
 
-	void storeDataInAttributeList(unsigned int attributeNumber,
-								  unsigned int coordinateSize,
-								  const float* data, unsigned int count);
+	void store_data_in_attribute_list(
+		unsigned int attribute_number,
+		unsigned int coordinate_size,
+		const float* data,
+		unsigned int count);
 
-	void bindIndicesBuffer(const unsigned int* indices, const unsigned int count);
+	void bind_indices_buffer(const unsigned int* indices, unsigned int count);
 };

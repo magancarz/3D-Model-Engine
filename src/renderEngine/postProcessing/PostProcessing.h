@@ -34,7 +34,7 @@ private:
 	std::unique_ptr<BrightFilter> m_bright_filter;
 	std::unique_ptr<CombineFilter> m_combine_filter;
 
-	RawModel* m_quad;
+	std::shared_ptr<RawModel> m_quad;
 };
 
 

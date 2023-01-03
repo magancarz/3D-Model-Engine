@@ -1,31 +1,43 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
+#include <memory>
+
 class Vertex {
 public:
-	Vertex(int index, glm::vec3 position)
-		: m_index(index), m_position(position), m_length(position.length()) {}
+	Vertex(int index, const glm::vec3& position);
 
-	inline int getIndex() { return m_index; };
-	inline float getLength() { return m_length; };
-	inline bool isSet() { return m_textureIndex != NO_INDEX && m_normalIndex != NO_INDEX; };
-	inline bool hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther) { return textureIndexOther == m_textureIndex && normalIndexOther == m_normalIndex; };
+	bool is_set() const;
 
-	glm::vec3 getPosition() { return m_position; };
-	int getTextureIndex() { return m_textureIndex; };
-	int getNormalIndex() { return m_normalIndex; };
-	Vertex* getDuplicateVertex() { return m_duplicateVertex; };
+	bool has_same_texture_and_normal(int texture_index_other, int normal_index_other) const;
 
-	void setTextureIndex(int textureIndex) { m_textureIndex = textureIndex; };
-	void setNormalIndex(int normalIndex) { m_normalIndex = normalIndex; };
+	int get_index() const;
 
-	void setDuplicateVertex(Vertex* duplicateVertex) { m_duplicateVertex = duplicateVertex; };
+	glm::vec3 get_position() const;
+
+	int get_texture_index() const;
+	void set_texture_index(int texture_index);
+
+	int get_normal_index() const;
+	void set_normal_index(int normal_index);
+
+	float get_length() const;
+
+	std::shared_ptr<Vertex> get_duplicate_vertex();
+	void set_duplicate_vertex(std::shared_ptr<Vertex> duplicate_vertex);
+
 private:
-	const int NO_INDEX = -1;
+	inline static const int NO_INDEX = -1;
+
+	int m_index;
 
 	glm::vec3 m_position;
-	int m_textureIndex = NO_INDEX;
-	int m_normalIndex = NO_INDEX;
-	Vertex* m_duplicateVertex = nullptr;
-	int m_index;
+
+	int m_texture_index = NO_INDEX;
+	int m_normal_index  = NO_INDEX;
+
 	float m_length;
+
+	std::shared_ptr<Vertex> m_duplicate_vertex = nullptr;
 };

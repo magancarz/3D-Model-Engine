@@ -26,7 +26,7 @@ void NormalMappingRenderer::render(
 	for(const auto& [textured_model, entities] : entity_map) {
 		prepare_textured_model(textured_model);
 
-		const auto textured_model_vertex_count = textured_model->getRawModel().getVertexCount();
+		const auto textured_model_vertex_count = textured_model->get_raw_model()->get_vertex_count();
   		for(const auto& entity : entities) {
   			prepare_instance(entity);
   			glDrawElements(GL_TRIANGLES, textured_model_vertex_count, GL_UNSIGNED_INT, nullptr);
@@ -40,20 +40,20 @@ void NormalMappingRenderer::render(
 
 
 void NormalMappingRenderer::prepare_textured_model(const std::shared_ptr<TexturedModel>& textured_model) const {
-	const auto raw_model = textured_model->getRawModel();
-	glBindVertexArray(raw_model.getVaoID());
+	const auto raw_model = textured_model->get_raw_model();
+	glBindVertexArray(raw_model->get_vao_id());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
-	auto texture = textured_model->getTexture();
-	m_normal_mapping_shader->load_number_of_rows(texture.getNumberOfRows());
-	m_normal_mapping_shader->load_fake_lighting_variable(texture.isUsingFakeLighting());
-	m_normal_mapping_shader->load_shine_variables(texture.getShineDamper(), texture.getReflectivity());
+	auto texture = textured_model->get_texture();
+	m_normal_mapping_shader->load_number_of_rows(texture->get_number_of_rows());
+	m_normal_mapping_shader->load_fake_lighting_variable(texture->is_using_fake_lighting());
+	m_normal_mapping_shader->load_shine_variables(texture->get_shine_damper(), texture->get_reflectivity());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.getID());
+	glBindTexture(GL_TEXTURE_2D, texture->get_id());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture.getNormalMap());
+	glBindTexture(GL_TEXTURE_2D, texture->get_normal_map());
 }
 
 void NormalMappingRenderer::unbind_textured_model() {

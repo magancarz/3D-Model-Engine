@@ -13,7 +13,7 @@ public:
 
 	void render(std::vector<GuiTexture>* guis);
 private:
-	const RawModel* quad;
+	std::shared_ptr<RawModel> quad;
 	
 	GuiShader* m_shader;
 };

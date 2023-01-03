@@ -27,7 +27,7 @@ void TerrainRenderer::render(
 	for(const auto& terrain : terrains) {
 		prepare_terrain(terrain);
 		load_model_matrix(terrain);
-		glDrawElements(GL_TRIANGLES, terrain->get_model()->getVertexCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, terrain->get_model()->get_vertex_count(), GL_UNSIGNED_INT, nullptr);
 		unbind_textured_model();
 	}
 	m_terrain_shader->stop();
@@ -35,7 +35,7 @@ void TerrainRenderer::render(
 
 void TerrainRenderer::prepare_terrain(const std::shared_ptr<Terrain>& terrain) const {
 	const auto model = terrain->get_model();
-	glBindVertexArray(model->getVaoID());
+	glBindVertexArray(model->get_vao_id());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);

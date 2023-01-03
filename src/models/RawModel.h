@@ -2,11 +2,12 @@
 
 class RawModel {
 public:
-	RawModel(unsigned int vaoID, unsigned int vertexCount);
+	RawModel(unsigned int vao_id, unsigned int vertex_count);
 
-	inline unsigned int getVaoID() const { return m_vaoID; };
-	inline unsigned int getVertexCount() const { return m_vertexCount; };
+	unsigned int get_vao_id() const;
+	unsigned int get_vertex_count() const;
+
 private:
-	unsigned int m_vaoID;
-	unsigned int m_vertexCount;
+	unsigned int m_vao_id,
+				 m_vertex_count;
 };

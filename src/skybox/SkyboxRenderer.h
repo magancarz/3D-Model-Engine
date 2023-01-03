@@ -16,7 +16,7 @@ private:
 
 	float m_time = 0;
 
-	RawModel* m_cube;
+	std::shared_ptr<RawModel> m_cube;
 	std::unique_ptr<SkyboxShader> m_skybox_shader;
 
 	int m_texture, m_night_texture;

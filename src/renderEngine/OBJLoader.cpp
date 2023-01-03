@@ -2,102 +2,113 @@
 
 #include <glm/glm.hpp>
 
-#include <iostream>
 #include <sstream>
 #include <fstream>
+#include <ranges>
 
 #include "Vertex.h"
 
-void dealWithAlreadyProcessedVertex(Vertex* previousVertex, int newTextureIndex, int newNormalIndex,
-                                    std::vector<unsigned int>& indices, std::vector<Vertex*>& vertices) {
-	if(previousVertex->hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
-		indices.push_back(previousVertex->getIndex());
+void OBJLoader::deal_with_already_processed_vertex(
+		const std::shared_ptr<Vertex>& previous_vertex,
+		const int new_texture_index,
+		const int new_normal_index,
+		std::vector<unsigned int>& indices,
+		std::vector<std::shared_ptr<Vertex>>& vertices) {
+
+	if(previous_vertex->has_same_texture_and_normal(new_texture_index, new_normal_index)) {
+		indices.push_back(previous_vertex->get_index());
 	} else {
-		Vertex* anotherVertex = previousVertex->getDuplicateVertex();
-		if(anotherVertex != nullptr) {
-			dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex, indices, vertices);
+		const auto another_vertex = previous_vertex->get_duplicate_vertex();
+		if(another_vertex != nullptr) {
+			deal_with_already_processed_vertex(another_vertex, new_texture_index, new_normal_index, indices, vertices);
 		} else {
-			Vertex* duplicateVertex = new Vertex(vertices.size(), previousVertex->getPosition());
-			duplicateVertex->setTextureIndex(newTextureIndex);
-			duplicateVertex->setNormalIndex(newNormalIndex);
-			previousVertex->setDuplicateVertex(duplicateVertex);
-			vertices.push_back(duplicateVertex);
-			indices.push_back(duplicateVertex->getIndex());
+			const auto duplicate_vertex = std::make_shared<Vertex>(vertices.size(), previous_vertex->get_position());
+			duplicate_vertex->set_texture_index(new_texture_index);
+			duplicate_vertex->set_normal_index(new_normal_index);
+			previous_vertex->set_duplicate_vertex(duplicate_vertex);
+			vertices.push_back(duplicate_vertex);
+			indices.push_back(duplicate_vertex->get_index());
 		}
 	}
 }
 
-void processVertex(int index, int textureIndex, int normalIndex, std::vector<Vertex*>& vertices, std::vector<unsigned int>& indices) {
-	Vertex* currentVertex = vertices[index];
-	if(!currentVertex->isSet()) {
-		currentVertex->setTextureIndex(textureIndex);
-		currentVertex->setNormalIndex(normalIndex);
+void OBJLoader::process_vertex(
+		const unsigned int index,
+		const unsigned int texture_index,
+		const unsigned int normal_index,
+		std::vector<std::shared_ptr<Vertex>>& vertices,
+		std::vector<unsigned int>& indices) {
+
+	const auto& current_vertex = vertices[index];
+	if(!current_vertex->is_set()) {
+		current_vertex->set_texture_index(texture_index);
+		current_vertex->set_normal_index(normal_index);
 		indices.push_back(index);
 	} else {
-		dealWithAlreadyProcessedVertex(currentVertex, textureIndex, normalIndex, indices, vertices);
+		deal_with_already_processed_vertex(current_vertex, texture_index, normal_index, indices, vertices);
 	}
 }
 
-float convertDataToArrays(std::vector<Vertex*>& vertices, std::vector<glm::vec2>& textures,
-	std::vector<glm::vec3>& normals, std::vector<float>& verticesArray,
-	std::vector<float>& texturesArray, std::vector<float>& normalsArray) {
-	float furthestPoint = 0;
+float OBJLoader::convert_data_to_arrays(
+		const std::vector<std::shared_ptr<Vertex>>& vertices,
+		const std::vector<glm::vec2>& textures,
+		const std::vector<glm::vec3>& normals,
+		std::vector<float>& vertices_array,
+		std::vector<float>& textures_array,
+		std::vector<float>& normals_array) {
 
-	for(size_t i = 0; i < vertices.size(); i++) {
-		Vertex* currentVertex = vertices[i];
-		if(currentVertex->getLength() > furthestPoint)
-			furthestPoint = currentVertex->getLength();
+	float furthest_point = 0;
 
-		glm::vec3 position = currentVertex->getPosition();
-		glm::vec2 textureCoord = textures[currentVertex->getTextureIndex()];
-		glm::vec3 normalVector = normals[currentVertex->getNormalIndex()];
+	for(const auto vertex : vertices) {
+		if(vertex->get_length() > furthest_point)
+			furthest_point = vertex->get_length();
 
-		verticesArray.push_back(position[0]);
-		verticesArray.push_back(position[1]);
-		verticesArray.push_back(position[2]);
-		texturesArray.push_back(textureCoord[0]);
-		texturesArray.push_back(1.0f - textureCoord[1]);
-		normalsArray.push_back(normalVector[0]);
-		normalsArray.push_back(normalVector[1]);
-		normalsArray.push_back(normalVector[2]);
+		glm::vec3 position = vertex->get_position();
+		glm::vec2 texture_coord = textures[vertex->get_texture_index()];
+		glm::vec3 normal_vector = normals[vertex->get_normal_index()];
+
+		vertices_array.push_back(position[0]);
+		vertices_array.push_back(position[1]);
+		vertices_array.push_back(position[2]);
+		textures_array.push_back(texture_coord[0]);
+		textures_array.push_back(1.0f - texture_coord[1]);
+		normals_array.push_back(normal_vector[0]);
+		normals_array.push_back(normal_vector[1]);
+		normals_array.push_back(normal_vector[2]);
 	}
 
-	return furthestPoint;
+	return furthest_point;
 }
 
-void removeUnusedVertices(std::vector<Vertex*>& vertices) {
-	std::vector<Vertex*>::iterator it;
-
-	for(it = vertices.begin(); it != vertices.end(); it++) {
-		Vertex* vertex = *it;
-		if(!vertex->isSet()) {
-			vertex->setTextureIndex(0);
-			vertex->setNormalIndex(0);
+void OBJLoader::remove_unused_vertices(const std::vector<std::shared_ptr<Vertex>>& vertices) {
+	for(auto& vertex : vertices) {
+		if(!vertex->is_set()) {
+			vertex->set_texture_index(0);
+			vertex->set_normal_index(0);
 		}
 	}
 }
 
-RawModel* loadOBJ(const std::string& fileName, Loader* loader) {
-	std::ifstream inFile(fileName, std::ios::in);
+std::shared_ptr<RawModel> OBJLoader::load_obj(const std::string& file_name, const std::shared_ptr<Loader>& loader) {
+	std::ifstream in_file(file_name, std::ios::in);
 
-	if(!inFile) {
-		std::cerr << "Unable to load obj file!\n";
-		exit(1);
+	if(!in_file) {
+		throw std::runtime_error("Unable to load obj file!\n");
 	}
 
 	std::string line;
-	std::vector<Vertex*> vertices;
+	std::vector<std::shared_ptr<Vertex>> vertices;
 	std::vector<glm::vec2> textures;
 	std::vector<glm::vec3> normals;
-	std::vector<GLuint> indices;
+	std::vector<unsigned int> indices;
 
 	//This loop collects the vertices, texture coords and normals from the obj file.
-	while(!inFile.eof()) {
-		getline(inFile, line);
+	while(!in_file.eof()) {
+		getline(in_file, line);
 
 		std::istringstream iss(line);
 		std::string starts;
-		GLfloat x, y, z;
+		float x, y, z;
 
 		//Starts contains e.g. v, vt, tv, s, f
 		iss >> starts;
@@ -106,8 +117,8 @@ RawModel* loadOBJ(const std::string& fileName, Loader* loader) {
 			//e.g. v 3.227124 -0.065127 -1.000000
 			iss >> x >> y >> z;
 			glm::vec3 vertex(x, y, z);
-			Vertex* newVertex = new Vertex(vertices.size(), vertex);
-			vertices.push_back(newVertex);
+			auto new_vertex = std::make_shared<Vertex>(vertices.size(), vertex);
+			vertices.push_back(new_vertex);
 		} else if(starts == "vt") {
 			//e.g. vt 0.905299 0.932320
 			iss >> x >> y;
@@ -124,25 +135,25 @@ RawModel* loadOBJ(const std::string& fileName, Loader* loader) {
 		}
 	}
 
-	std::vector<GLfloat> verticesArray;
-	std::vector<GLfloat> normalsArray;
-	std::vector<GLfloat> textureArray;
-	std::vector<GLuint> indicesArray;
+	std::vector<float> vertices_array;
+	std::vector<float> normals_array;
+	std::vector<float> texture_array;
+	std::vector<unsigned int> indices_array;
 
 	//read the faces in a second loop
-	while(!inFile.eof()) {
-		if(line == "")
+	while(!in_file.eof()) {
+		if(line.empty())
 			break;
 
 		std::istringstream iss(line);
 		std::string starts;
-		GLuint u[9];
 
 		iss >> starts;
 
 		if(starts == "f") {
+			unsigned int u[9];
 			//e.g. f 41/1/1 38/2/1 45/3/1
-			std::string tmp, f = "";
+			std::string tmp, f;
 			iss >> tmp;
 			f += tmp + " ";
 			iss >> tmp;
@@ -151,39 +162,35 @@ RawModel* loadOBJ(const std::string& fileName, Loader* loader) {
 			f += tmp;
 
 			//replace /'s with space
-			size_t x = f.find("/");
+			size_t x = f.find('/');
 			while(x < std::string::npos) {
 				f.replace(x, 1, " ");
-				x = f.find("/", x + 1);
+				x = f.find('/', x + 1);
 			}
 			std::istringstream iss2(f);
-			for(int i = 0; i < 9; i++) {
+			for(const int i : std::views::iota(0, 9)) {
 				iss2 >> u[i];
 				//the indices in the obj file start from 1, ours start from 0
 				u[i]--;
 			}
 
 			//process vertices
-			processVertex(u[0], u[1], u[2], vertices, indices);
-			processVertex(u[3], u[4], u[5], vertices, indices);
-			processVertex(u[6], u[7], u[8], vertices, indices);
+			process_vertex(u[0], u[1], u[2], vertices, indices);
+			process_vertex(u[3], u[4], u[5], vertices, indices);
+			process_vertex(u[6], u[7], u[8], vertices, indices);
 		}
 
-		getline(inFile, line);
+		getline(in_file, line);
 	}
 	
-	removeUnusedVertices(vertices);
+	remove_unused_vertices(vertices);
 	
-	float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, textureArray, normalsArray);
+	float furthest = convert_data_to_arrays(vertices, textures, normals, vertices_array, texture_array, normals_array);
 
-	for(int i = 0; i < (int)indices.size(); i++) {
-		unsigned int u = indices[i];
-		indicesArray.push_back(u);
+	indices_array.resize(indices.size());
+	for(const auto u : indices) {
+		indices_array.push_back(u);
 	}
 
-	for(int i = 0; i < (int)vertices.size(); i++)
-		delete vertices[i];
-
-	return loader->loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
-
+	return loader->load_to_vao(vertices_array, texture_array, normals_array, indices_array);
 }

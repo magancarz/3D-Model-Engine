@@ -29,7 +29,7 @@ private:
 
 	static constexpr float WAVE_SPEED = 0.05f;
 
-	RawModel* m_quad;
+	std::shared_ptr<RawModel> m_quad;
 	std::unique_ptr<WaterShader> m_water_shader;
 	std::shared_ptr<WaterFrameBuffers> m_water_frame_buffers;
 

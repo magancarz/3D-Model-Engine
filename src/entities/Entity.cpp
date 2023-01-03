@@ -18,13 +18,13 @@ m_model(std::move(model)), m_position(position), m_rx(rx), m_ry(ry), m_rz(rz), m
 }
 
 float Entity::get_texture_x_offset() const {
-	const int column = m_texture_index % m_model->getTexture().getNumberOfRows();
-	return static_cast<float>(column) / static_cast<float>(m_model->getTexture().getNumberOfRows());
+	const int column = m_texture_index % m_model->get_texture()->get_number_of_rows();
+	return static_cast<float>(column) / static_cast<float>(m_model->get_texture()->get_number_of_rows());
 }
 
 float Entity::get_texture_y_offset() const {
-	const int row = m_texture_index / m_model->getTexture().getNumberOfRows();
-	return static_cast<float>(row) / static_cast<float>(m_model->getTexture().getNumberOfRows());
+	const int row = m_texture_index / m_model->get_texture()->get_number_of_rows();
+	return static_cast<float>(row) / static_cast<float>(m_model->get_texture()->get_number_of_rows());
 }
 
 std::shared_ptr<TexturedModel> Entity::get_textured_model() { return m_model; }

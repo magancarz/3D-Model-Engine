@@ -17,7 +17,7 @@ GuiRenderer::GuiRenderer(Loader* loader) {
 	for(int i = 0; i < 8; i++) {
 		positions[i] = values[i];
 	}
-	quad = loader->loadToVAO(positions, 2);
+	quad = loader->load_to_vao(positions, 2);
 
 	//Create shader
 	m_shader = new GuiShader();
@@ -30,7 +30,7 @@ GuiRenderer::~GuiRenderer() {
 
 void GuiRenderer::render(std::vector<GuiTexture>* guis) {
 	m_shader->start();
-	glBindVertexArray(quad->getVaoID());
+	glBindVertexArray(quad->get_vao_id());
 	glEnableVertexAttribArray(0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -42,7 +42,7 @@ void GuiRenderer::render(std::vector<GuiTexture>* guis) {
 		glBindTexture(GL_TEXTURE_2D, it->getTexture());
 		glm::mat4 matrix = create_transformation_matrix(it->getPosition(), it->getScale());
 		m_shader->loadTransformation(matrix);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->getVertexCount());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad->get_vertex_count());
 	}
 
 	glEnable(GL_DEPTH_TEST);

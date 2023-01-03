@@ -30,7 +30,7 @@ void EntityRenderer::render(
 
 		for(const auto& entity : entities) {
 			prepare_instance(entity);
-			glDrawElements(GL_TRIANGLES, textured_model->getRawModel().getVertexCount(), GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, textured_model->get_raw_model()->get_vertex_count(), GL_UNSIGNED_INT, nullptr);
 		}
 
 		unbind_textured_model();
@@ -39,21 +39,21 @@ void EntityRenderer::render(
 }
 
 void EntityRenderer::prepare_textured_model(const std::shared_ptr<TexturedModel>& textured_model) const {
-	const auto& model = textured_model->getRawModel();
-	glBindVertexArray(model.getVaoID());
+	const auto& model = textured_model->get_raw_model();
+	glBindVertexArray(model->get_vao_id());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	auto texture = textured_model->getTexture();
-	m_static_shader->load_number_of_rows(texture.getNumberOfRows());
-	m_static_shader->load_fake_lighting_variable(texture.isUsingFakeLighting());
-	m_static_shader->load_shine_variables(texture.getShineDamper(), texture.getReflectivity());
+	auto texture = textured_model->get_texture();
+	m_static_shader->load_number_of_rows(texture->get_number_of_rows());
+	m_static_shader->load_fake_lighting_variable(texture->is_using_fake_lighting());
+	m_static_shader->load_shine_variables(texture->get_shine_damper(), texture->get_reflectivity());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.getID());
-	m_static_shader->load_use_specular_map(texture.hasSpecularMap());
-	if(texture.hasSpecularMap()) {
+	glBindTexture(GL_TEXTURE_2D, texture->get_id());
+	m_static_shader->load_use_specular_map(texture->has_specular_map());
+	if(texture->has_specular_map()) {
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture.getSpecularMap());
+		glBindTexture(GL_TEXTURE_2D, texture->get_specular_map());
 	}
 }
 
@@ -73,6 +73,6 @@ void EntityRenderer::prepare_instance(const std::shared_ptr<Entity>& entity) con
 		entity->get_scale());
 	m_static_shader->load_transformation_matrix(transformation_matrix);
 	m_static_shader->load_offset(glm::vec2(entity->get_texture_x_offset(), entity->get_texture_y_offset()));
-	auto texture = entity->get_textured_model()->getTexture();
-	m_static_shader->load_shine_variables(texture.getShineDamper(), texture.getReflectivity());
+	const auto texture = entity->get_textured_model()->get_texture();
+	m_static_shader->load_shine_variables(texture->get_shine_damper(), texture->get_reflectivity());
 }

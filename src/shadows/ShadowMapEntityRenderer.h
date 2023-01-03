@@ -23,7 +23,7 @@ private:
 	* because that is where the QUAD_POSITIONS are stored in the VAO, and only the
 	* QUAD_POSITIONS are required in the vertex shader.
 	*/
-	static void bind_model(RawModel* raw_model);
+	static void bind_model(const std::shared_ptr<RawModel>& raw_model);
 
 	/**
 	* Prepares an entity to be rendered. The model matrix is created in the

@@ -24,14 +24,14 @@ public:
 
 	float get_x() const;
 	float get_z() const;
-	RawModel* get_model() const;
+	std::shared_ptr<RawModel> get_model() const;
 	std::shared_ptr<TerrainTexturePack> get_terrain_texture_pack() const;
 	std::shared_ptr<TerrainTexture> get_blend_map() const;
 
 	float get_height_of_terrain(float world_x, float world_z) const;
 
 private:
-	RawModel* generate_terrain(
+	std::shared_ptr<RawModel> generate_terrain(
 		const std::shared_ptr<Loader>& loader,
 		const std::string& height_map_location);
 
@@ -44,7 +44,7 @@ private:
 	int m_heights_size;
 
 	float m_x, m_z;
-	RawModel* m_model;
+	std::shared_ptr<RawModel> m_model;
 	std::shared_ptr<TerrainTexturePack> m_texture_pack;
 	std::shared_ptr<TerrainTexture> m_blend_map;
 };

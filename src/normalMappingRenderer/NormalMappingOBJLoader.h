@@ -10,36 +10,40 @@
 #include "../renderEngine/Loader.h"
 #include "VertexNM.h"
 
-class NormalMappingOBJLoader {
-public:
-	static RawModel* loadNormalMappedOBJ(std::string objFileName, Loader& loader);
-	static VertexNM* processVertex(
+namespace NormalMappingOBJLoader {
+
+	std::shared_ptr<VertexNM> process_vertex(
 		int index,
-		int textureIndex,
-		int normalIndex,
-		std::vector<VertexNM*>& vertices,
-		std::vector<GLuint>& indices);
+		int texture_index,
+		int normal_index,
+		std::vector<std::shared_ptr<VertexNM>>& vertices,
+		std::vector<unsigned int>& indices);
 
-	static void calculateTangents(
-		VertexNM* v0, VertexNM* v1, VertexNM* v2,
-		std::vector<glm::vec2>& textures);
+	void calculate_tangents(
+		const std::shared_ptr<VertexNM>& v0,
+		const std::shared_ptr<VertexNM>& v1,
+		const std::shared_ptr<VertexNM>& v2,
+		const std::vector<glm::vec2>& textures);
 
-	static GLfloat convertDataToArrays(
-		std::vector<VertexNM*>& vertices,
-		std::vector<glm::vec2>& textures,
-		std::vector<glm::vec3>& normals,
-		std::vector<GLfloat>& verticesArray,
-		std::vector<GLfloat>& texturesArray,
-		std::vector<GLfloat>& normalsArray,
-		std::vector<GLfloat>& tangentsArray
-		);
+	float convert_data_to_arrays(
+		const std::vector<std::shared_ptr<VertexNM>>& vertices,
+		const std::vector<glm::vec2>& textures,
+		const std::vector<glm::vec3>& normals,
+		std::vector<float>& vertices_array,
+		std::vector<float>& textures_array,
+		std::vector<float>& normals_array,
+		std::vector<float>& tangents_array);
 
-	static VertexNM* dealWithAlreadyProcessedVertex(
-		VertexNM *previousVertex,
-		int newTextureIndex,
-		int newNormalIndex,
-		std::vector<GLuint>& indices,
-		std::vector<VertexNM*>& vertices);
+	std::shared_ptr<VertexNM> deal_with_already_processed_vertex(
+		std::shared_ptr<VertexNM> previous_vertex,
+		int new_texture_index,
+		int new_normal_index,
+		std::vector<unsigned int>& indices,
+		std::vector<std::shared_ptr<VertexNM>>& vertices);
 
-	static void removeUnusedVertices(std::vector<VertexNM*>& vertices);
-};
+	void remove_unused_vertices(std::vector<std::shared_ptr<VertexNM>>& vertices);
+
+	std::shared_ptr<RawModel> load_normal_mapped_obj(
+		const std::string& obj_file_name,
+		const std::shared_ptr<Loader>& loader);
+}

@@ -1,40 +1,53 @@
 #pragma once
 
+#include <memory>
 #include <glm/glm.hpp>
 
 #include <vector>
 
 class VertexNM {
 public:
-	VertexNM(int index, glm::vec3 position);
-	~VertexNM();
-	void addTangent(glm::vec3 tangent);
-	VertexNM* duplicate(int newIndex);
-	void averageTangents();
-	
-	inline glm::vec3 getAverageTangent() { return m_averagedTangent; };
-	inline int getIndex() { return m_index; };
-	inline int getLength() { return m_length; };
-	inline bool isSet() { return m_textureIndex != NO_INDEX && m_normalIndex != NO_INDEX; };
-	inline bool hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther) { return textureIndexOther == m_textureIndex && normalIndexOther == m_normalIndex; };
-	glm::vec3 getPosition() { return m_position; };
-	int getTextureIndex() { return m_textureIndex; };
-	int getNormalIndex() { return m_normalIndex; };
-	VertexNM* getDuplicateVertex() { return m_duplicateVertex; };
+	VertexNM(int index, const glm::vec3& position);
 
-	void setTextureIndex(int textureIndex) { m_textureIndex = textureIndex; };
-	void setNormalIndex(int normalIndex) { m_normalIndex = normalIndex; };
-	void setDuplicateVertex(VertexNM* duplicateVertex) { m_duplicateVertex = duplicateVertex; };
+	bool is_set() const;
+
+	bool has_same_texture_and_normal(int texture_index_other, int normal_index_other) const;
+
+	int get_index() const;
+
+	glm::vec3 get_position() const;
+
+	int get_texture_index() const;
+	void set_texture_index(int texture_index);
+
+	int get_normal_index() const;
+	void set_normal_index(int normal_index);
+
+	int get_length() const;
+
+	std::shared_ptr<VertexNM> get_duplicate_vertex();
+	void set_duplicate_vertex(std::shared_ptr<VertexNM> duplicate_vertex);
+
+	std::shared_ptr<VertexNM> duplicate(int new_index) const;
+
+	void average_tangents();
+	void add_tangent(const glm::vec3& tangent);
+	glm::vec3 get_average_tangent() const;
 
 private:
 	static constexpr int NO_INDEX = -1;
 
-	glm::vec3 m_position;
-	int m_textureIndex = NO_INDEX;
-	int m_normalIndex = NO_INDEX;
-	VertexNM* m_duplicateVertex = nullptr;
 	int m_index;
+
+	glm::vec3 m_position;
+
+	int m_texture_index = NO_INDEX;
+	int m_normal_index = NO_INDEX;
+
 	float m_length;
+
+	std::shared_ptr<VertexNM> m_duplicate_vertex = nullptr;
+
 	std::vector<glm::vec3> m_tangents;
-	glm::vec3 m_averagedTangent;
+	glm::vec3 m_averaged_tangent;
 };

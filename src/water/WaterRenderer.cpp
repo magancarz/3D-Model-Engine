@@ -14,8 +14,8 @@ m_water_frame_buffers(std::move(water_frame_buffers)) {
 	m_water_shader->load_projection_matrix(projection);
 	m_water_shader->stop();
 
-	m_dudv_texture = loader->loadTexture("res/textures/waterDUDV.png");
-	m_normal_map = loader->loadTexture("res/textures/matchingNormalMap.png");
+	m_dudv_texture = loader->load_texture("res/textures/waterDUDV.png");
+	m_normal_map = loader->load_texture("res/textures/matchingNormalMap.png");
 
 	set_up_vao(loader);
 }
@@ -35,7 +35,7 @@ void WaterRenderer::render(
 			0, 0, 0,
 			WaterTile::WATER_TILE_SIZE);
 		m_water_shader->load_model_matrix(model_matrix);
-		glDrawArrays(GL_TRIANGLES, 0, m_quad->getVertexCount());
+		glDrawArrays(GL_TRIANGLES, 0, m_quad->get_vertex_count());
 	}
 	unbind();
 }
@@ -51,7 +51,7 @@ void WaterRenderer::prepare_render(
 	m_water_shader->load_move_factor(m_move_factor);
 	m_water_shader->load_light(sun);
 
-	glBindVertexArray(m_quad->getVaoID());
+	glBindVertexArray(m_quad->get_vao_id());
 	glEnableVertexAttribArray(0);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_water_frame_buffers->get_reflection_texture());
@@ -83,5 +83,5 @@ void WaterRenderer::set_up_vao(const std::shared_ptr<Loader>& loader) {
 		 1, -1, -1,
 		 1,  1,  1
 	};
-	m_quad = loader->loadToVAO(vertices, 2);
+	m_quad = loader->load_to_vao(vertices, 2);
 }
