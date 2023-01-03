@@ -17,8 +17,8 @@ void ShadowBox::update() {
 	to_far *= SHADOW_DISTANCE;
 	auto to_near = glm::vec3(forward_vector);
 	to_near *= MasterRenderer::NEAR_PLANE;
-	const glm::vec3 center_near = to_near + m_camera->getPosition();
-	const glm::vec3 center_far = to_far + m_camera->getPosition();
+	const glm::vec3 center_near = to_near + m_camera->get_position();
+	const glm::vec3 center_far = to_far + m_camera->get_position();
 
 	const auto points = calculate_frustum_vertices(rotation, forward_vector, center_near, center_far);
 
@@ -107,8 +107,8 @@ glm::vec4 ShadowBox::calculate_light_space_frustum_corner(const glm::vec3& start
 
 glm::mat4 ShadowBox::calculate_camera_rotation_matrix() const {
 	glm::mat4 rotation;
-	rotation = glm::rotate(rotation, glm::radians(-m_camera->getYaw()), glm::vec3(0, 1, 0));
-	rotation = glm::rotate(rotation, glm::radians(-m_camera->getPitch()), glm::vec3(1, 0, 0));
+	rotation = glm::rotate(rotation, glm::radians(-m_camera->get_yaw()), glm::vec3(0, 1, 0));
+	rotation = glm::rotate(rotation, glm::radians(-m_camera->get_pitch()), glm::vec3(1, 0, 0));
 	return rotation;
 }
 

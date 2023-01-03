@@ -1,23 +1,30 @@
 #include "Entity.h"
 
-Entity::Entity(std::shared_ptr<TexturedModel> model, const glm::vec3& position, const float rx, const float ry, const float rz, const float scale) :
+Entity::Entity(
+	std::shared_ptr<TexturedModel> model,
+	const glm::vec3& position,
+	const float rx, const float ry, const float rz, const float scale) :
 m_model(std::move(model)), m_position(position), m_rx(rx), m_ry(ry), m_rz(rz), m_scale(scale) {
 
 }
 
-Entity::Entity(std::shared_ptr<TexturedModel> model, const int texture_index, const glm::vec3& position, const float rx, const float ry, const float rz, const float scale) :
+Entity::Entity(
+	std::shared_ptr<TexturedModel> model,
+	const int texture_index,
+	const glm::vec3& position,
+	const float rx, const float ry, const float rz, const float scale) :
 m_model(std::move(model)), m_position(position), m_rx(rx), m_ry(ry), m_rz(rz), m_scale(scale), m_texture_index(texture_index) {
 
 }
 
-float Entity::get_texture_x_offset() {
+float Entity::get_texture_x_offset() const {
 	const int column = m_texture_index % m_model->getTexture().getNumberOfRows();
-	return (float)column / (float)m_model->getTexture().getNumberOfRows();
+	return static_cast<float>(column) / static_cast<float>(m_model->getTexture().getNumberOfRows());
 }
 
-float Entity::get_texture_y_offset() {
+float Entity::get_texture_y_offset() const {
 	const int row = m_texture_index / m_model->getTexture().getNumberOfRows();
-	return (float)row / (float)m_model->getTexture().getNumberOfRows();
+	return static_cast<float>(row) / static_cast<float>(m_model->getTexture().getNumberOfRows());
 }
 
 std::shared_ptr<TexturedModel> Entity::get_textured_model() { return m_model; }

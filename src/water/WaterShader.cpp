@@ -11,9 +11,9 @@ void WaterShader::load_projection_matrix(const glm::mat4& projection) const {
 }
 
 void WaterShader::load_view_matrix(const std::shared_ptr<Camera>& camera) const {
-	const auto view_matrix = camera->getView();
+	const auto view_matrix = camera->get_view();
 	load_matrix(location_view_matrix, view_matrix);
-	load_vector3_f(location_camera_position, camera->getPosition());
+	load_vector3_f(location_camera_position, camera->get_position());
 }
 
 void WaterShader::load_model_matrix(const glm::mat4& model_matrix) const {

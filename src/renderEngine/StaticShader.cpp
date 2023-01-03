@@ -18,7 +18,7 @@ void StaticShader::load_projection_matrix(const glm::mat4& matrix) const {
 }
 
 void StaticShader::load_view_matrix(const std::shared_ptr<Camera>& camera) const {
-	const auto view = camera->getView();
+	const auto view = camera->get_view();
 	load_matrix(location_view_matrix, view);
 }
 

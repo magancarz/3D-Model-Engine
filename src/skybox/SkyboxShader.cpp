@@ -14,7 +14,7 @@ void SkyboxShader::load_projection_matrix(const glm::mat4& matrix) const {
 }
 
 void SkyboxShader::load_view_matrix(const std::shared_ptr<Camera>& camera) {
-	glm::mat4 view = camera->getView();
+	glm::mat4 view = camera->get_view();
 	view[3][0] = 0;
 	view[3][1] = 0;
 	view[3][2] = 0;

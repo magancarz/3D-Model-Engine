@@ -10,15 +10,22 @@ const float GRAVITY = -50.0f;
 
 class Entity {
 public:
-	Entity(std::shared_ptr<TexturedModel> model, const glm::vec3& position, float rx, float ry, float rz, float scale);
+	Entity(
+		std::shared_ptr<TexturedModel> model,
+		const glm::vec3& position,
+		float rx, float ry, float rz, float scale);
 
-	Entity(std::shared_ptr<TexturedModel> model, int texture_index, const glm::vec3& position, float rx, float ry, float rz, float scale);
+	Entity(
+		std::shared_ptr<TexturedModel> model,
+		int texture_index,
+		const glm::vec3& position,
+		float rx, float ry, float rz, float scale);
 	
 	void increase_position(float dx, float dy, float dz);
 	void increase_rotation(float rx, float ry, float rz);
 
-	float get_texture_x_offset();
-	float get_texture_y_offset();
+	float get_texture_x_offset() const;
+	float get_texture_y_offset() const;
 
 	std::shared_ptr<TexturedModel> get_textured_model();
 	glm::vec3 get_position() const;

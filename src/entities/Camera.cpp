@@ -2,137 +2,141 @@
 
 #include "toolbox/DisplayManager.h"
 
-Camera::Camera(Player& player, glm::vec3 position) :
-m_player(player), m_position(position) {
-	m_movementSpeed = 0.3f;
+Camera::Camera(std::shared_ptr<Player> player, const glm::vec3& position) :
+m_player(std::move(player)), m_position(position) {
+
+	m_movement_speed = 0.3f;
 	m_sensitivity = 0.35f;
 
-	m_worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	m_world_up = glm::vec3(0.0f, 1.0f, 0.0f);
 	m_right = glm::vec3(0.0f);
-	m_up = m_worldUp;
+	m_up = m_world_up;
 
 	m_pitch = 10.0f;
 	m_yaw = 0.0f;
 	m_roll = 0.0f;
-
-	//updateCameraVectors();
 }
 
-void Camera::invertPitch() {
+void Camera::invert_pitch() {
 	m_pitch = -m_pitch;
 }
 
-glm::mat4 Camera::getView() {
-	glm::mat4 viewMatrix = glm::mat4(1.0f); // identity matrix
+glm::mat4 Camera::get_view() const {
+	auto view_matrix = glm::mat4(1.0f);
 
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(getPitch()), glm::vec3(1, 0, 0));
-	viewMatrix = glm::rotate(viewMatrix, glm::radians(getYaw()), glm::vec3(0, 1, 0));
+	view_matrix = glm::rotate(view_matrix, glm::radians(get_pitch()), glm::vec3(1, 0, 0));
+	view_matrix = glm::rotate(view_matrix, glm::radians(get_yaw()), glm::vec3(0, 1, 0));
 
-	glm::vec3 cameraPos = getPosition();
-	glm::vec3 negativeCameraPos = glm::vec3(-cameraPos[0], -cameraPos[1], -cameraPos[2]);
+	const auto camera_pos = get_position();
+	const auto negative_camera_pos = glm::vec3(-camera_pos[0], -camera_pos[1], -camera_pos[2]);
 
-	viewMatrix = glm::translate(viewMatrix, negativeCameraPos);
+	view_matrix = glm::translate(view_matrix, negative_camera_pos);
 
-	return viewMatrix;
+	return view_matrix;
 }
 
 void Camera::rotate() {
-	float yaw = DisplayManager::getMouseXOffset();
-	float pitch = DisplayManager::getMouseYOffset();
+	const float yaw = DisplayManager::getMouseXOffset();
+	const float pitch = DisplayManager::getMouseYOffset();
 	m_pitch += yaw * m_sensitivity;
 	m_yaw += pitch * m_sensitivity;
 
-	if(this->m_pitch > 80.f)
-		this->m_pitch = 80.f;
-	else if(this->m_pitch < -80.f)
-		this->m_pitch = -80.f;
+	if(m_pitch > 80.f)
+		m_pitch = 80.f;
+	else if(m_pitch < -80.f)
+		m_pitch = -80.f;
 
-	if(this->m_yaw > 360.f || this->m_yaw < -360.f)
-		this->m_yaw = 0.f;
+	if(m_yaw > 360.f || m_yaw < -360.f)
+		m_yaw = 0.f;
 }
 
 void Camera::move() {
-	updateCameraVectors();
+	update_camera_vectors();
 
-	//calculateZoom();
-	calculatePitch();
-	calculateAngleAroundThePlayer();
-	float horizontalDistance = calculateHorizontalDistance();
-	float verticalDistance = calculateVerticalDistance();
-	//calculateCameraPosition(horizontalDistance, verticalDistance);
+	//calculate_zoom();
+	calculate_pitch();
+	calculate_angle_around_the_player();
+	//float horizontal_distance = calculate_horizontal_distance();
+	//float vertical_distance = calculate_vertical_distance();
 
-	m_yaw = 180.f - (m_player.get_rot_y() + m_angleAroundThePlayer);
-	m_yaw = (float) fmod(m_yaw, 360.f);
+	m_yaw = 180.f - (m_player->get_rot_y() + m_angle_around_the_player);
+	m_yaw = fmod(m_yaw, 360.f);
 
-	m_position.x = m_player.get_position().x;
-	m_position.y = m_player.get_position().y + CAMERA_HEIGHT;
-	m_position.z = m_player.get_position().z;
-
-	/*
-	if(inputManager.isKeyDown(GLFW_KEY_W))
-		m_position += m_front * m_movementSpeed;
-	else if(inputManager.isKeyDown(GLFW_KEY_S))
-		m_position -= m_front * m_movementSpeed;
-	if(inputManager.isKeyDown(GLFW_KEY_A))
-		m_position -= m_right * m_movementSpeed;
-	else if(inputManager.isKeyDown(GLFW_KEY_D))
-		m_position += m_right * m_movementSpeed;
-	*/
+	m_position.x = m_player->get_position().x;
+	m_position.y = m_player->get_position().y + CAMERA_HEIGHT;
+	m_position.z = m_player->get_position().z;
 }
 
-void Camera::calculateZoom() {
-	float zoomLevel = DisplayManager::getDWheel() * 1.0f;
-	m_distanceFromThePlayer -= zoomLevel;
+void Camera::calculate_zoom() {
+	const float zoom_level = DisplayManager::getDWheel() * 1.0f;
+	m_distance_from_the_player -= zoom_level;
 }
 
-void Camera::calculatePitch() {
+void Camera::calculate_pitch() {
 	//3rd person camera code
 	/*if(inputManager.isRightMouseButtonDown()) {
 		float pitchChange = display.getMouseYOffset() * 0.1f;
 		m_pitch -= pitchChange;
 	}*/
 
-	float pitchChange = DisplayManager::getMouseYOffset() * 0.1f;
-	m_pitch += pitchChange;
+	const float pitch_change = DisplayManager::getMouseYOffset() * 0.1f;
+	m_pitch += pitch_change;
 }
 
-void Camera::calculateAngleAroundThePlayer() {
+void Camera::calculate_angle_around_the_player() {
 	//3rd person camera code
 	/*if(inputManager.isLeftMouseButtonDown()) {
 		float angleChange = display.getMouseXOffset() * 0.1f;
-		m_angleAroundThePlayer -= angleChange;
+		m_angle_around_the_player -= angleChange;
 	}*/
-	float angleChange = DisplayManager::getMouseXOffset() * 0.1f;
-	m_angleAroundThePlayer -= angleChange;
+	const float angle_change = DisplayManager::getMouseXOffset() * 0.1f;
+	m_angle_around_the_player -= angle_change;
 }
 
-float Camera::calculateHorizontalDistance() {
-	return m_distanceFromThePlayer * (float) glm::cos(glm::radians(m_pitch));
+float Camera::calculate_horizontal_distance() const {
+	return m_distance_from_the_player * glm::cos(glm::radians(m_pitch));
 }
 
-float Camera::calculateVerticalDistance() {
-	return m_distanceFromThePlayer * (float)glm::sin(glm::radians(m_pitch));
+float Camera::calculate_vertical_distance() const {
+	return m_distance_from_the_player * glm::sin(glm::radians(m_pitch));
 }
 
-void Camera::calculateCameraPosition(float horizontalDistance, float verticalDistance) {
-	float theta = m_player.get_rot_y() + m_angleAroundThePlayer;
-	float offsetX = (float)(horizontalDistance * glm::sin(glm::radians(theta)));
-	float offsetZ = (float)(horizontalDistance * glm::cos(glm::radians(theta)));
-	glm::vec3 playerPosition = m_player.get_position();
-	m_position.x = playerPosition.x - offsetX;
-	m_position.y = playerPosition.y + verticalDistance;
-	m_position.z = playerPosition.z - offsetZ;
+void Camera::calculate_camera_position(const float horizontal_distance, const float vertical_distance) {
+	const float theta = m_player->get_rot_y() + m_angle_around_the_player;
+	const float offset_x = horizontal_distance * glm::sin(glm::radians(theta));
+	const float offset_z = horizontal_distance * glm::cos(glm::radians(theta));
+	const auto player_position = m_player->get_position();
+	m_position.x = player_position.x - offset_x;
+	m_position.y = player_position.y + vertical_distance;
+	m_position.z = player_position.z - offset_z;
 }
 
-void Camera::updateCameraVectors() {
+void Camera::update_camera_vectors() {
 	m_front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
 	m_front.y = sin(glm::radians(m_pitch));
 	m_front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
 
 	m_front = glm::normalize(m_front);
-	m_right = glm::normalize(glm::cross(m_front, m_worldUp));
+	m_right = glm::normalize(glm::cross(m_front, m_world_up));
 	m_up = glm::normalize(glm::cross(m_right, m_front));
 
-	m_player.setFront(m_front);
-	m_player.setRight(m_right);
+	m_player->set_front(m_front);
+	m_player->set_right(m_right);
 }
+
+void Camera::set_position(const glm::vec3& position) { m_position = position; }
+void Camera::set_pitch(const float pitch) { m_pitch = pitch; }
+void Camera::set_yaw(const float yaw) { m_yaw = yaw; }
+void Camera::set_roll(const float roll) { m_roll = roll; }
+
+void Camera::increase_pitch(const float pitch) { m_pitch += pitch * m_sensitivity; }
+void Camera::increase_yaw(const float yaw) { m_yaw += yaw * m_sensitivity; }
+void Camera::increase_roll(const float roll) { m_roll += roll * m_sensitivity; }
+
+glm::vec3 Camera::get_position() const { return m_position; }
+float Camera::get_pitch() const { return m_pitch; }
+float Camera::get_yaw() const { return m_yaw; }
+float Camera::get_roll() const { return m_roll; }
+float Camera::get_sensitivity() const { return m_sensitivity; }
+glm::vec3 Camera::get_camera_front() const { return m_front; }
+glm::vec3 Camera::get_camera_right() const { return m_right; }

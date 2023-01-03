@@ -5,26 +5,29 @@
 
 class Player : public Entity {
 public:
-	Player(std::shared_ptr<TexturedModel> model, const glm::vec3& position, float rot_x, float rot_y, float rot_z, float scale);
+	Player(
+		std::shared_ptr<TexturedModel> model,
+		const glm::vec3& position,
+		float rot_x, float rot_y, float rot_z, float scale);
 
-	void move(Terrain& terrain, float cameraYaw, float cameraPitch);
+	void move(const std::shared_ptr<Terrain>& terrain, float camera_yaw, float camera_pitch);
 
-	inline void setFront(const glm::vec3& cameraFront) { m_front = cameraFront; }
-	inline void setRight(const glm::vec3& cameraRight) { m_right = cameraRight; }
+	void set_front(const glm::vec3& camera_front);
+	void set_right(const glm::vec3& camera_right);
+
 private:
-	void checkInputs();
+	void check_inputs();
 	void jump();
 
-	const float RUN_SPEED = 20.0f,
-				TURN_SPEED = 160.0f,
-				JUMP_POWER = 30.0f;
+	inline static const float RUN_SPEED  = 20.0f,
+						      TURN_SPEED = 160.0f,
+						      JUMP_POWER = 30.0f;
 
-	float m_currentSpeedX = 0,
-		  m_currentSpeedZ = 0,
-		  m_currentTurnSpeed = 0,
-		  m_upwardsSpeed = 0,
-		  m_canJump = true;
+	float m_current_speed_x = 0,
+		  m_current_speed_z = 0,
+		  m_current_turn_speed = 0,
+		  m_upwards_speed = 0;
 
-	glm::vec3 m_front,
-			  m_right;
+	glm::vec3 m_front = glm::vec3(0.f, 0.f, 1.f),
+			  m_right = glm::vec3(-1.f, 0.f, 0.f);
 };

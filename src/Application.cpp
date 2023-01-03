@@ -96,7 +96,7 @@ int main(void) {
     /* create player and camera */
     auto player = std::make_shared<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
 
-    auto camera = std::make_shared<Camera>(*player, glm::vec3(-5.0f, 6.0f, -5.0f));
+    auto camera = std::make_shared<Camera>(player, glm::vec3(-5.0f, 6.0f, -5.0f));
 
     /* create master renderer */
     auto master_renderer = std::make_unique<MasterRenderer>(loader, camera);
@@ -118,7 +118,7 @@ int main(void) {
     auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(270, 0, 229), 0, 0, 0, 1);
 
     /* create tree objects */
-    std::uniform_int_distribution<unsigned int> map_distribution(0, TERRAIN_SIZE);
+    std::uniform_int_distribution<int> map_distribution(0, TERRAIN_SIZE);
     std::uniform_int_distribution<int> tree_rotation(0, 180);
 
     /* predictable sequence of random values is what we want, because we are able to add other objects without collisions */
@@ -126,7 +126,7 @@ int main(void) {
     auto map_distribution_generator = [&]() { return map_distribution(random_number_engine); };
     auto tree_rotation_generator = [&]() { return tree_rotation(random_number_engine); };
     for(int i = 0; i < 300; i++) {
-		unsigned int tree_x, tree_z;
+    	int tree_x, tree_z;
 
         do {
         	tree_x = map_distribution_generator(),
@@ -146,7 +146,7 @@ int main(void) {
     /* Loop until the user closes the window */
     while(!DisplayManager::isCloseRequested) {
         //Events
-        player->move(*terrain, camera->getYaw(), camera->getPitch());
+        player->move(terrain, camera->get_yaw(), camera->get_pitch());
         camera->move();
 
         //Reset input values
@@ -170,12 +170,13 @@ int main(void) {
 
         //Water
         water_frame_buffers->bind_reflection_frame_buffer();
-        float distance = 2 * (camera->getPosition().y - water_tile->get_height());
-        camera->getPosition().y -= distance;
-        camera->invertPitch();
+        const auto camera_position = camera->get_position();
+        float distance = 2 * (camera_position.y - water_tile->get_height());
+        camera->set_position(glm::vec3(camera_position.x, camera_position.y - distance, camera_position.z));
+        camera->invert_pitch();
         master_renderer->render(lights, camera, glm::vec4(0, 1, 0, -water_tile->get_height()));
-        camera->getPosition().y += distance;
-        camera->invertPitch();
+        camera->set_position(glm::vec3(camera_position.x, camera_position.y, camera_position.z));
+        camera->invert_pitch();
         water_frame_buffers->unbind_current_frame_buffer();
 
         water_frame_buffers->bind_refraction_frame_buffer();

@@ -8,14 +8,14 @@ MousePicker::MousePicker(
 	Terrain* terrain): camera(camera)
 {
 	this->projectionMatrix = projection;
-	this->viewMatrix = camera.getView();
+	this->viewMatrix = camera.get_view();
 	this->terrain = terrain;
 	this->currentTerrainPointIsOK = false;
 }
 
 void MousePicker::update()
 {
-	viewMatrix = camera.getView();
+	viewMatrix = camera.get_view();
 	currentRay = calculateMouseRay();
 	bool ok = false;
 	if (intersectionInRange(0, RAY_RANGE, currentRay)) {
@@ -71,7 +71,7 @@ glm::vec2 MousePicker::getNormalizedDeviceCoords(
 
 glm::vec3 MousePicker::getPointOnRay(glm::vec3& ray, GLfloat distance)
 {
-	glm::vec3 start = camera.getPosition();
+	glm::vec3 start = camera.get_position();
 	glm::vec3 scaledRay = glm::vec3(ray.x * distance, ray.y * distance, ray.z * distance);
 	return glm::vec3(start.x + scaledRay.x, start.y + scaledRay.y, start.z + scaledRay.z);
 }
