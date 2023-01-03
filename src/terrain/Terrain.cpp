@@ -91,7 +91,6 @@ RawModel* Terrain::generate_terrain(
 		}
 	}
 
-	//Clean up
 	stbi_image_free(image);
 
 	return loader->loadToVAO(vertices, texture_coords, normals, indices);
@@ -142,15 +141,15 @@ float Terrain::get_height_of_terrain(const float world_x, const float world_z) c
 
 	float answer;
 	if(x_coord <= (1 - z_coord)) {
-		answer = barycentric(glm::vec3(0, m_heights[grid_x][grid_z], 0),
+		answer = static_cast<float>(barycentric(glm::vec3(0, m_heights[grid_x][grid_z], 0),
 							 glm::vec3(1, m_heights[grid_x + 1][grid_z], 0),
 							 glm::vec3(0, m_heights[grid_x][grid_z + 1], 1),
-							 glm::vec2(x_coord, z_coord));
+							 glm::vec2(x_coord, z_coord)));
 	} else {
-		answer = barycentric(glm::vec3(1, m_heights[grid_x + 1][grid_z], 0),
+		answer = static_cast<float>(barycentric(glm::vec3(1, m_heights[grid_x + 1][grid_z], 0),
 							 glm::vec3(1, m_heights[grid_x + 1][grid_z + 1], 0),
 							 glm::vec3(0, m_heights[grid_x][grid_z + 1], 1),
-							 glm::vec2(x_coord, z_coord));
+							 glm::vec2(x_coord, z_coord)));
 	}
 
 	return answer;

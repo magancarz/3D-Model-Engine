@@ -65,6 +65,6 @@ void TerrainRenderer::unbind_textured_model() {
 }
 
 void TerrainRenderer::load_model_matrix(const std::shared_ptr<Terrain>& terrain) const {
-	const auto transformation_matrix = createTransformationMatrix(glm::vec3(terrain->get_x(), 0, terrain->get_z()), 0, 0, 0, 1);
+	const auto transformation_matrix = create_transformation_matrix(glm::vec3(terrain->get_x(), 0, terrain->get_z()), 0, 0, 0, 1);
 	m_terrain_shader->load_transformation_matrix(transformation_matrix);
 }

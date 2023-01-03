@@ -31,7 +31,7 @@ void ShadowMapEntityRenderer::bind_model(RawModel* raw_model) {
 }
 
 void ShadowMapEntityRenderer::prepare_instance(const std::shared_ptr<Entity>& entity) const {
-	const auto transformation_matrix = createTransformationMatrix(entity->get_position(), entity->get_rot_x(), entity->get_rot_y(), entity->get_rot_z(), entity->get_scale());
+	const auto transformation_matrix = create_transformation_matrix(entity->get_position(), entity->get_rot_x(), entity->get_rot_y(), entity->get_rot_z(), entity->get_scale());
 	const auto mvp_matrix = (*m_projection_view_matrix) * transformation_matrix;
 	m_shader->load_mvp_matrix(mvp_matrix);
 }

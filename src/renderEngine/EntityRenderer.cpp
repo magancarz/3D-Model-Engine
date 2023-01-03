@@ -65,7 +65,7 @@ void EntityRenderer::unbind_textured_model() {
 }
 
 void EntityRenderer::prepare_instance(const std::shared_ptr<Entity>& entity) const {
-	const auto transformation_matrix = createTransformationMatrix(
+	const auto transformation_matrix = create_transformation_matrix(
 		entity->get_position(),
 		entity->get_rot_x(),
 		entity->get_rot_y(),

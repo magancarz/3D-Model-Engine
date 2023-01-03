@@ -1,5 +1,6 @@
 #include "Player.h"
 
+#include <iostream>
 #include <GL/glew.h>
 
 #include "toolbox/DisplayManager.h"

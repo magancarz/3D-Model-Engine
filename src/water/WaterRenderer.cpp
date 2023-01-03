@@ -28,7 +28,7 @@ void WaterRenderer::render(
 	prepare_render(camera, sun);
 
 	for(const auto& water_tile : water_tiles) {
-		const glm::mat4 model_matrix = createTransformationMatrix(
+		const glm::mat4 model_matrix = create_transformation_matrix(
 			glm::vec3(water_tile->get_x(),
 			water_tile->get_height(),
 			water_tile->get_z()),
