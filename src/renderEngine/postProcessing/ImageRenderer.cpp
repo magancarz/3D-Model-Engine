@@ -5,7 +5,7 @@
 #include "toolbox/DisplayManager.h"
 
 ImageRenderer::ImageRenderer() {
-	m_fbo = std::make_shared<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_NONE);
+
 }
 
 ImageRenderer::ImageRenderer(const unsigned int width, const unsigned int height) {

@@ -13,28 +13,28 @@
 
 class PostProcessing {
 public:
-	static void post_processing_init(const std::shared_ptr<Loader>& loader);
+	PostProcessing(const std::shared_ptr<Loader>& loader);
 
-	static void post_processing_draw(unsigned int color_texture, unsigned int bright_texture);
+	void draw(unsigned int color_texture, unsigned int bright_texture) const;
 
-	static void post_processing_start();
+	void start() const;
 
-	static void post_processing_end();
+	static void end();
 
 private:
-	inline static const std::vector<float> post_processing_positions = {
+	inline static const std::vector<float> QUAD_POSITIONS = {
 		-1,  1,
 		-1, -1,
 		 1,  1,
 		 1, -1 };
 
-	inline static std::unique_ptr<ContrastChanger> post_processing_contrast_changer;
-	inline static std::unique_ptr<HorizontalBlur> post_processing_horizontal_blur;
-	inline static std::unique_ptr<VerticalBlur> post_processing_vertical_blur;
-	inline static std::unique_ptr<BrightFilter> post_processing_bright_filter;
-	inline static std::unique_ptr<CombineFilter> post_processing_combine_filter;
+	std::unique_ptr<ContrastChanger> m_contrast_changer;
+	std::unique_ptr<HorizontalBlur> m_horizontal_blur;
+	std::unique_ptr<VerticalBlur> m_vertical_blur;
+	std::unique_ptr<BrightFilter> m_bright_filter;
+	std::unique_ptr<CombineFilter> m_combine_filter;
 
-	inline static RawModel* post_processing_quad;
+	RawModel* m_quad;
 };
 
 

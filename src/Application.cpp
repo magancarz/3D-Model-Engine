@@ -33,8 +33,6 @@ namespace locations {
 }
 
 int main(void) {
-	bool post_processing_enabled = true;
-
     /* initialize the glfw library */
     if(!glfwInit())
         return -1;
@@ -138,11 +136,11 @@ int main(void) {
     }
     
     /* post-processing effects */
+    auto post_processing = std::make_unique<PostProcessing>(loader);
+
     auto multi_sample_fbo = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
     auto output_fbo1 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
     auto output_fbo2 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
-
-    if(post_processing_enabled) PostProcessing::post_processing_init(loader);
 
     /* Loop until the user closes the window */
     while(!DisplayManager::is_close_requested) {
@@ -195,7 +193,7 @@ int main(void) {
         multi_sample_fbo->unbind_frame_buffer();
         multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT0, output_fbo1);
         multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT1, output_fbo2);
-        if(post_processing_enabled) PostProcessing::post_processing_draw(output_fbo1->get_color_texture(), output_fbo2->get_color_texture());
+        post_processing->draw(output_fbo1->get_color_texture(), output_fbo2->get_color_texture());
 
         //Clean up renderer
         master_renderer->clean_up_objects_maps();

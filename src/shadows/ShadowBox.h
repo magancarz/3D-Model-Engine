@@ -34,7 +34,7 @@ public:
 private:
 	/**
 	Calculates the position of the vertex at each corner of the view frustum
-	in light space (8 vertices in total, so this returns 8 positions).
+	in light space (8 vertices in total, so this returns 8 QUAD_POSITIONS).
 	*/
 	std::vector<glm::vec4> calculate_frustum_vertices(
 		const glm::mat4& rotation,

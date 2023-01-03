@@ -2,9 +2,9 @@
 
 #include <GL/glew.h>
 
-VerticalBlur::VerticalBlur(const unsigned int target_fbo_height) {
+VerticalBlur::VerticalBlur(const unsigned int target_fbo_width, const unsigned int target_fbo_height) {
 	m_shader = std::make_unique<VerticalBlurShader>();
-	m_renderer = std::make_unique<ImageRenderer>();
+	m_renderer = std::make_unique<ImageRenderer>(target_fbo_width, target_fbo_height);
 
 	m_shader->start();
 	m_shader->load_target_height(target_fbo_height);

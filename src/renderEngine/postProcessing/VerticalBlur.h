@@ -5,7 +5,7 @@
 
 class VerticalBlur {
 public:
-	VerticalBlur(unsigned int target_fbo_height);
+	VerticalBlur(unsigned int target_fbo_width, unsigned int target_fbo_height);
 
 	void render(unsigned int texture) const;
 

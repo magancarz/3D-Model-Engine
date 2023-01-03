@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #define FBO_NONE 0
 #define FBO_DEPTH_TEXTURE 1
 #define FBO_DEPTH_RENDER_BUFFER 2
@@ -12,41 +14,41 @@ public:
 	/// </summary>
 	/// <param name="width"> - the width of the FBO</param>
 	/// <param name="height"> - the height of the FBO</param>
-	/// <param name="depthBufferType"> - an int indicating the type of depth buffer 
+	/// <param name="depth_buffer_type"> - an int indicating the type of depth buffer 
 	/// attachment that this FBO should use</param>
-	FBO(unsigned int width, unsigned int height, unsigned int depthBufferType);
+	FBO(int width, int height, unsigned int depth_buffer_type);
 
-	FBO(unsigned int width, unsigned int height);
+	FBO(int width, int height);
 
 	/// <summary>
 	/// Deletes the frame buffer and its attachments when the program closes.
 	/// </summary>
-	void cleanUp();
+	void clean_up() const;
 
 	/// <summary>
 	/// Binds the frame buffer, setting it as the current render target. Anything
 	/// rendered after this will be rendered to this FBO, and not to the screen.
 	/// </summary>
-	void bindFrameBuffer();
+	void bind_frame_buffer() const;
 
 	/// <summary>
 	/// Unbinds the frame buffer, setting the default frame buffer as the current
 	/// render target. Anything rendered after this will be rendered to the
 	/// screen, and not this FBO.
 	/// </summary>
-	void unbindFrameBuffer();
+	static void unbind_frame_buffer();
 
 	/// <summary>
 	/// Binds the current FBO to be read from.
 	/// </summary>
-	void bindToRead();
+	void bind_to_read() const;
 
-	void resolveToFBO(unsigned int readBuffer, FBO* outputFBO);
+	void resolve_to_fbo(unsigned int read_buffer, const std::unique_ptr<FBO>& output_fbo) const;
 
-	void resolveToScreen();
+	void resolve_to_screen() const;
 
-	inline unsigned int getColorTexture() { return m_colorTexture; }
-	inline unsigned int getDepthTexture() { return m_depthTexture; }
+	unsigned int get_color_texture() const;
+	unsigned int get_depth_texture() const;
 
 private:
 	/// <summary>
@@ -54,42 +56,42 @@ private:
 	/// possibly a depth buffer.
 	/// </summary>
 	/// <param name="type"> - the type of depth buffer attachment to be attached to the FBO</param>
-	void initialiseFrameBuffer(unsigned int type);
+	void initialise_frame_buffer(unsigned int type);
 
 	/// <summary>
 	/// Creates a new frame buffer object and sets the buffer to which drawing
 	/// will occur - color attachment 0. This is the attachment where the color
 	/// buffer texture is.
 	/// </summary>
-	void createFrameBuffer();
+	void create_frame_buffer();
 
-	void determineDrawBuffers();
+	void determine_draw_buffers() const;
 
 	/// <summary>
 	/// Creates a texture and sets it as the color buffer attachment for this FBO.
 	/// </summary>
-	void createTextureAttachment();
+	void create_texture_attachment();
 
 	/// <summary>
 	/// Adds a depth buffer to the FBO in the form of a texture, which can later
 	/// be sampled.
 	/// </summary>
-	void createDepthTextureAttachment();
+	void create_depth_texture_attachment();
 
-	int createMultisampleColorAttachment(int attachment);
+	unsigned int create_multi_sample_color_attachment(int attachment) const;
 
 	/// <summary>
 	/// Adds a depth buffer to the FBO in the form of a render buffer. This can't
 	/// be used for sampling in the shaders.
 	/// </summary>
-	void createDepthBufferAttachment();
+	void create_depth_buffer_attachment();
 
-	const unsigned int m_width = 0, m_height = 0;
+	const int m_width = 0, m_height = 0;
 
-	unsigned int m_frameBuffer, m_depthBuffer,
-				 m_colorBuffer1, m_colorBuffer2;
+	unsigned int m_frame_buffer, m_depth_buffer,
+				 m_color_buffer1, m_color_buffer2;
 
-	unsigned int m_colorTexture, m_depthTexture;
+	unsigned int m_color_texture, m_depth_texture;
 
-	bool m_multisampleAndMultiTarget = false;
+	bool m_multi_sample_and_multi_target = false;
 };

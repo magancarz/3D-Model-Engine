@@ -20,8 +20,8 @@ public:
 private:
 	/**
 	* Binds a raw model before rendering. Only the attribute 0 is enabled here
-	* because that is where the positions are stored in the VAO, and only the
-	* positions are required in the vertex shader.
+	* because that is where the QUAD_POSITIONS are stored in the VAO, and only the
+	* QUAD_POSITIONS are required in the vertex shader.
 	*/
 	static void bind_model(RawModel* raw_model);
 
