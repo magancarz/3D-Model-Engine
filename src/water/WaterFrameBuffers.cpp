@@ -26,7 +26,7 @@ void WaterFrameBuffers::bind_refraction_frame_buffer() const {
 
 void WaterFrameBuffers::unbind_current_frame_buffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glViewport(0, 0, DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
 }
 
 unsigned int WaterFrameBuffers::get_reflection_texture() const { return m_reflection_texture; }

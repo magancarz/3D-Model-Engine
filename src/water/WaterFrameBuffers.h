@@ -25,11 +25,11 @@ private:
 	static unsigned int create_depth_texture_attachment(int width, int height);
 	static unsigned int create_depth_buffer_attachment(int width, int height);
 
-	static constexpr int REFLECTION_WIDTH = WINDOW_WIDTH;
-	static constexpr int REFLECTION_HEIGHT = WINDOW_HEIGHT;
+	static constexpr int REFLECTION_WIDTH = DisplayManager::WINDOW_WIDTH;
+	static constexpr int REFLECTION_HEIGHT = DisplayManager::WINDOW_HEIGHT;
 
-	static constexpr int REFRACTION_WIDTH = WINDOW_WIDTH;
-	static constexpr int REFRACTION_HEIGHT = WINDOW_HEIGHT;
+	static constexpr int REFRACTION_WIDTH = DisplayManager::WINDOW_WIDTH;
+	static constexpr int REFRACTION_HEIGHT = DisplayManager::WINDOW_HEIGHT;
 
 	unsigned int m_reflection_frame_buffer,
 				 m_reflection_texture,

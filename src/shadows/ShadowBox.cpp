@@ -120,5 +120,5 @@ void ShadowBox::calculate_widths_and_heights() {
 }
 
 float ShadowBox::get_aspect_ratio() {
-	return static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT);
+	return static_cast<float>(DisplayManager::WINDOW_WIDTH) / static_cast<float>(DisplayManager::WINDOW_HEIGHT);
 }

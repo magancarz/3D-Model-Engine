@@ -21,7 +21,7 @@ void ShadowFrameBuffer::bind_frame_buffer() const {
 
 void ShadowFrameBuffer::unbind_frame_buffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glViewport(0, 0, DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
 }
 
 unsigned int ShadowFrameBuffer::get_shadow_map() const { return m_shadow_map; }

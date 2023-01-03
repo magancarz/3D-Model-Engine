@@ -104,7 +104,7 @@ void MasterRenderer::clean_up_objects_maps() {
 
 void MasterRenderer::create_projection_matrix() {
 	m_projection_matrix = glm::mat4();
-	constexpr float aspect_ratio = static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT);
+	constexpr float aspect_ratio = static_cast<float>(DisplayManager::WINDOW_WIDTH) / static_cast<float>(DisplayManager::WINDOW_HEIGHT);
 	const float y_scale = 1.0f / glm::tan(glm::radians(FOV / 2.0f));
 	const float x_scale = y_scale / aspect_ratio;
 	constexpr float frustum_length = FAR_PLANE - NEAR_PLANE;

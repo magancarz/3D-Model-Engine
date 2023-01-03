@@ -3,49 +3,50 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 800
-#define WINDOW_TITLE "3D Model Viewer"
-
 class DisplayManager {
 public:
 	static void create_display();
-	static void updateDisplay();
-	static void closeDisplay();
+	static void update_display();
+	static void close_display();
 
-	static void checkCloseRequests();
+	static void check_close_requests();
 
-	static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-	static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-	static void cursorPosCallback(GLFWwindow* window, double xpos, double ypos);
-	static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+	static void key_callback(GLFWwindow* window, int key, int scan_code, int action, int mods);
+	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+	static void cursor_pos_callback(GLFWwindow* window, double x_pos, double y_pos);
+	static void scroll_callback(GLFWwindow* window, double x_offset, double y_offset);
 
-	static void resetInputValues();
+	static void reset_input_values();
 
-	static float getMouseX() { return lastMouseX; }
-	static float getMouseY() { return lastMouseY; }
+	static double get_mouse_x();
+	static double get_mouse_y();
 
-	static float getMouseXOffset() { return mouseOffsetX; }
-	static float getMouseYOffset() { return mouseOffsetY; }
+	static double get_mouse_x_offset();
+	static double get_mouse_y_offset();
 
-	static float getDWheel() { return mouseWheel; }
+	static double get_d_wheel();
 
-	static long getCurrentTime();
-	static float getFrameTimeSeconds();
+	static long get_current_time();
+	static double get_frame_time_seconds();
 
-	static GLFWwindow* getWindow() { return m_window; }
+	static GLFWwindow* get_window();
 
-	inline static bool isCloseRequested = false;
+	inline static bool is_close_requested = false;
+
+	inline static const int WINDOW_WIDTH = 1280,
+							WINDOW_HEIGHT = 800;
+
+	inline static const char* WINDOW_TITLE = "3D Model Engine";
+
 private:
-	inline static GLFWwindow* m_window;
+	inline static GLFWwindow* window;
 
+	inline static long last_frame_time;
+	inline static double delta;
 
-	inline static long m_lastFrameTime;
-	inline static float m_delta;
+	inline static double mouse_offset_x = 0, mouse_offset_y = 0;
+	inline static double last_mouse_x = 0, last_mouse_y = 0;
+	inline static bool first_mouse = true;
 
-	inline static float mouseOffsetX = 0.f, mouseOffsetY = 0.f;
-	inline static bool firstMouse = true;
-	inline static float lastMouseX = 0.f, lastMouseY = 0.f;
-
-	inline static float mouseWheel = 0.f;
+	inline static double mouse_wheel = 0;
 };

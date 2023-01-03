@@ -138,19 +138,19 @@ int main(void) {
     }
     
     /* post-processing effects */
-    auto multi_sample_fbo = std::make_unique<FBO>(WINDOW_WIDTH, WINDOW_HEIGHT);
-    auto output_fbo1 = std::make_unique<FBO>(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
-    auto output_fbo2 = std::make_unique<FBO>(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
+    auto multi_sample_fbo = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
+    auto output_fbo1 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
+    auto output_fbo2 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
     if(post_processing_enabled) POST_PROCESSING_INIT(loader.get());
 
     /* Loop until the user closes the window */
-    while(!DisplayManager::isCloseRequested) {
-        //Events
+    while(!DisplayManager::is_close_requested) {
+    	//Events
         player->move(terrain, camera->get_yaw(), camera->get_pitch());
         camera->move();
 
         //Reset input values
-        DisplayManager::resetInputValues();
+        DisplayManager::reset_input_values();
 
         /* Poll for and process events */
         glfwPollEvents();
@@ -200,10 +200,10 @@ int main(void) {
         master_renderer->clean_up_objects_maps();
 
         /* Swap front and back buffers */
-        DisplayManager::updateDisplay();
+        DisplayManager::update_display();
 
         //Check if window needs to close
-        DisplayManager::checkCloseRequests();
+        DisplayManager::check_close_requests();
     }
 
     //Clean up resources
@@ -211,7 +211,7 @@ int main(void) {
     multi_sample_fbo->cleanUp();
     if(post_processing_enabled) POST_PROCESSING_CLEAN_UP();
 
-    DisplayManager::closeDisplay();
+    DisplayManager::close_display();
 
     return 0;
 }

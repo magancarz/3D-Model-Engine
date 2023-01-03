@@ -46,7 +46,7 @@ void WaterRenderer::prepare_render(
 
 	m_water_shader->start();
 	m_water_shader->load_view_matrix(camera);
-	m_move_factor += WAVE_SPEED * DisplayManager::getFrameTimeSeconds();
+	m_move_factor += WAVE_SPEED * DisplayManager::get_frame_time_seconds();
 	m_move_factor = fmod(m_move_factor, 1.0);
 	m_water_shader->load_move_factor(m_move_factor);
 	m_water_shader->load_light(sun);

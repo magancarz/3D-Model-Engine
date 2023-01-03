@@ -30,7 +30,7 @@ void FBO::bindFrameBuffer() {
 
 void FBO::unbindFrameBuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+	glViewport(0, 0, DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
 }
 
 void FBO::bindToRead() {
@@ -52,7 +52,7 @@ void FBO::resolveToScreen() {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_frameBuffer);
 	glDrawBuffer(GL_BACK);
-	glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT,
+	glBlitFramebuffer(0, 0, m_width, m_height, 0, 0, DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT,
 					  GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	unbindFrameBuffer();
 }
