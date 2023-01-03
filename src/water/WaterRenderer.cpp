@@ -35,7 +35,7 @@ void WaterRenderer::render(
 			0, 0, 0,
 			WaterTile::WATER_TILE_SIZE);
 		m_water_shader->load_model_matrix(model_matrix);
-		glDrawArrays(GL_TRIANGLES, 0, m_quad->get_vertex_count());
+		glDrawArrays(GL_TRIANGLES, 0, static_cast<int>(m_quad->get_vertex_count()));
 	}
 	unbind();
 }
@@ -46,8 +46,8 @@ void WaterRenderer::prepare_render(
 
 	m_water_shader->start();
 	m_water_shader->load_view_matrix(camera);
-	m_move_factor += WAVE_SPEED * DisplayManager::get_frame_time_seconds();
-	m_move_factor = fmod(m_move_factor, 1.0);
+	m_move_factor += WAVE_SPEED * static_cast<float>(DisplayManager::get_frame_time_seconds());
+	m_move_factor = static_cast<float>(fmod(m_move_factor, 1.0));
 	m_water_shader->load_move_factor(m_move_factor);
 	m_water_shader->load_light(sun);
 

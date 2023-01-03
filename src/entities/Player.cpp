@@ -16,21 +16,21 @@ Entity(std::move(model), position, rot_x, rot_y, rot_z, scale) {
 
 void Player::move(const std::shared_ptr<Terrain>& terrain, const float camera_yaw, const float camera_pitch) {
 	check_inputs();
-	increase_rotation(0, m_current_turn_speed * DisplayManager::get_frame_time_seconds(), 0);
+	increase_rotation(0, m_current_turn_speed * static_cast<float>(DisplayManager::get_frame_time_seconds()), 0);
 	m_current_turn_speed = 0;
 
-	float distance = m_current_speed_x * DisplayManager::get_frame_time_seconds();
+	float distance = m_current_speed_x * static_cast<float>(DisplayManager::get_frame_time_seconds());
 	float dx = distance * cos(glm::radians(camera_yaw - 90.f)) * cos(glm::radians(camera_pitch));
 	float dz = distance * sin(glm::radians(camera_yaw - 90.f)) * cos(glm::radians(camera_pitch));
 	increase_position(dx, 0, dz);
 
-	distance = m_current_speed_z * DisplayManager::get_frame_time_seconds();
+	distance = m_current_speed_z * static_cast<float>(DisplayManager::get_frame_time_seconds());
 	dx = distance * cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
 	dz = distance * sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
 	increase_position(dx, 0, dz);
 
-	m_upwards_speed += GRAVITY * DisplayManager::get_frame_time_seconds();
-	increase_position(0, m_upwards_speed * DisplayManager::get_frame_time_seconds(), 0);
+	m_upwards_speed += GRAVITY * static_cast<float>(DisplayManager::get_frame_time_seconds());
+	increase_position(0, m_upwards_speed * static_cast<float>(DisplayManager::get_frame_time_seconds()), 0);
 
 	const glm::vec3 pos = get_position();
 	const float terrain_height = terrain->get_height_of_terrain(pos.x, pos.z);
@@ -53,7 +53,7 @@ void Player::check_inputs() {
 		m_current_speed_x = 0;
 	}
 
-	const float angle_change = DisplayManager::get_mouse_x_offset() * 0.1f;
+	const auto angle_change = static_cast<float>(DisplayManager::get_mouse_x_offset() * 0.1);
 	m_current_turn_speed -= angle_change;
 
 	if(Input::is_key_down(GLFW_KEY_A)) {

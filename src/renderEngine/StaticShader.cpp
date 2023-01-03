@@ -23,7 +23,7 @@ void StaticShader::load_view_matrix(const std::shared_ptr<Camera>& camera) const
 }
 
 void StaticShader::load_lights(const std::vector<std::shared_ptr<Light>>& lights) const {
-	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
+	for(const unsigned int i : std::views::iota(0, MAX_LIGHTS)) {
 		if(i < lights.size()) {
 			load_vector3_f(location_light_position[i], lights[i]->get_position());
 			load_vector3_f(location_light_color[i], lights[i]->get_color());

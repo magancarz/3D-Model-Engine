@@ -12,10 +12,10 @@ public:
 
 	unsigned int get_id() const;
 
-	void set_normal_map(int value);
+	void set_normal_map(unsigned int value);
 	int get_normal_map() const;
 
-	void set_specular_map(int value);
+	void set_specular_map(unsigned int value);
 
 	bool has_specular_map() const;
 	unsigned int get_specular_map() const;
@@ -27,7 +27,7 @@ public:
 	bool is_using_fake_lighting() const;
 
 	void set_number_of_rows(int value);
-	bool get_number_of_rows() const;
+	int get_number_of_rows() const;
 
 private:
 	unsigned int m_texture_id,

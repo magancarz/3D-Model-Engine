@@ -30,7 +30,7 @@ void EntityRenderer::render(
 
 		for(const auto& entity : entities) {
 			prepare_instance(entity);
-			glDrawElements(GL_TRIANGLES, textured_model->get_raw_model()->get_vertex_count(), GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, static_cast<int>(textured_model->get_raw_model()->get_vertex_count()), GL_UNSIGNED_INT, nullptr);
 		}
 
 		unbind_textured_model();
@@ -44,8 +44,8 @@ void EntityRenderer::prepare_textured_model(const std::shared_ptr<TexturedModel>
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-	auto texture = textured_model->get_texture();
-	m_static_shader->load_number_of_rows(texture->get_number_of_rows());
+	const auto texture = textured_model->get_texture();
+	m_static_shader->load_number_of_rows(static_cast<float>(texture->get_number_of_rows()));
 	m_static_shader->load_fake_lighting_variable(texture->is_using_fake_lighting());
 	m_static_shader->load_shine_variables(texture->get_shine_damper(), texture->get_reflectivity());
 	glActiveTexture(GL_TEXTURE0);

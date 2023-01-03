@@ -21,7 +21,7 @@ void NormalMappingShader::load_transformation_matrix(const glm::mat4& matrix) co
 }
 
 void NormalMappingShader::load_lights(const std::vector<std::shared_ptr<Light>>& lights) const {
-	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
+	for(const unsigned int i : std::views::iota(0, MAX_LIGHTS)) {
 		if(i < lights.size()) {
 			const auto& light = lights[i];
 			load_vector3_f(location_light_position[i], light->get_position());
@@ -68,7 +68,7 @@ void NormalMappingShader::load_fog_variables(const float density, const float gr
 } 
 
 void NormalMappingShader::load_number_of_rows(const int value) const {
-	load_float(location_number_of_rows, value);
+	load_float(location_number_of_rows, static_cast<float>(value));
 }
 
 void NormalMappingShader::load_offset(const float x, const float y) const {

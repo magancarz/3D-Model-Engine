@@ -11,10 +11,10 @@ float ModelTexture::get_reflectivity() const { return m_reflectivity; }
 
 unsigned int ModelTexture::get_id() const { return m_texture_id; }
 
-void ModelTexture::set_normal_map(const int value) { m_normal_map = value; }
+void ModelTexture::set_normal_map(const unsigned int value) { m_normal_map = value; }
 int ModelTexture::get_normal_map() const { return m_normal_map; }
 
-void ModelTexture::set_specular_map(const int value) { 
+void ModelTexture::set_specular_map(const unsigned int value) { 
 	m_specular_map = value;
 	m_has_specular_map = true; 
 }
@@ -29,4 +29,4 @@ void ModelTexture::use_fake_lighting(const bool value) { m_use_fake_lighting = v
 bool ModelTexture::is_using_fake_lighting() const { return m_use_fake_lighting; }
 
 void ModelTexture::set_number_of_rows(const int value) { m_number_of_rows = value; }
-bool ModelTexture::get_number_of_rows() const { return m_number_of_rows; }
+int ModelTexture::get_number_of_rows() const { return m_number_of_rows; }

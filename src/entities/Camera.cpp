@@ -36,8 +36,8 @@ glm::mat4 Camera::get_view() const {
 }
 
 void Camera::rotate() {
-	const float yaw = DisplayManager::get_mouse_x_offset();
-	const float pitch = DisplayManager::get_mouse_y_offset();
+	const auto yaw = static_cast<float>(DisplayManager::get_mouse_x_offset());
+	const auto pitch = static_cast<float>(DisplayManager::get_mouse_y_offset());
 	m_pitch += yaw * m_sensitivity;
 	m_yaw += pitch * m_sensitivity;
 
@@ -68,7 +68,7 @@ void Camera::move() {
 }
 
 void Camera::calculate_zoom() {
-	const float zoom_level = DisplayManager::get_d_wheel() * 1.0f;
+	const auto zoom_level = static_cast<float>(DisplayManager::get_d_wheel() * 1.0);
 	m_distance_from_the_player -= zoom_level;
 }
 
@@ -79,7 +79,7 @@ void Camera::calculate_pitch() {
 		m_pitch -= pitchChange;
 	}*/
 
-	const float pitch_change = DisplayManager::get_mouse_y_offset() * 0.1f;
+	const auto pitch_change = static_cast<float>(DisplayManager::get_mouse_y_offset() * 0.1);
 	m_pitch += pitch_change;
 }
 
@@ -89,7 +89,7 @@ void Camera::calculate_angle_around_the_player() {
 		float angleChange = display.getMouseXOffset() * 0.1f;
 		m_angle_around_the_player -= angleChange;
 	}*/
-	const float angle_change = DisplayManager::get_mouse_x_offset() * 0.1f;
+	const auto angle_change = static_cast<float>(DisplayManager::get_mouse_x_offset() * 0.1);
 	m_angle_around_the_player -= angle_change;
 }
 
