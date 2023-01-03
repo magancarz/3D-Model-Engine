@@ -133,5 +133,10 @@ void FBO::create_depth_buffer_attachment() {
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depth_buffer);
 }
 
-unsigned int FBO::get_color_texture() const { return m_color_texture; }
-unsigned int FBO::get_depth_texture() const { return m_depth_texture; }
+unsigned int FBO::get_color_texture() const {
+	return m_color_texture;
+}
+
+unsigned int FBO::get_depth_texture() const {
+	return m_depth_texture;
+}

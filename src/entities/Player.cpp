@@ -41,8 +41,13 @@ void Player::move(const std::shared_ptr<Terrain>& terrain, const float camera_ya
 	}
 }
 
-void Player::set_front(const glm::vec3& camera_front) { m_front = camera_front; }
-void Player::set_right(const glm::vec3& camera_right) { m_right = camera_right; }
+void Player::set_front(const glm::vec3& camera_front) {
+	m_front = camera_front;
+}
+
+void Player::set_right(const glm::vec3& camera_right) {
+	m_right = camera_right;
+}
 
 void Player::check_inputs() {
 	if(Input::is_key_down(GLFW_KEY_W)) {

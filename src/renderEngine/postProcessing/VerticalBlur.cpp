@@ -19,4 +19,6 @@ void VerticalBlur::render(const unsigned int texture) const {
 	m_shader->stop();
 }
 
-unsigned int VerticalBlur::get_output_texture() const { return m_renderer->get_output_texture(); }
+unsigned int VerticalBlur::get_output_texture() const {
+	return m_renderer->get_output_texture();
+}

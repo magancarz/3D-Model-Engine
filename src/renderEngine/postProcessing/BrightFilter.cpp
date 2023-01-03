@@ -15,4 +15,6 @@ void BrightFilter::render(const unsigned int texture) const {
 	m_shader->stop();
 }
 
-unsigned int BrightFilter::get_output_texture() const { return m_renderer->get_output_texture(); }
+unsigned int BrightFilter::get_output_texture() const {
+	return m_renderer->get_output_texture();
+}

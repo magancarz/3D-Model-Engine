@@ -2,12 +2,6 @@
 
 #include <gl/glew.h>
 
-#include "toolbox/DisplayManager.h"
-
-ImageRenderer::ImageRenderer() {
-
-}
-
 ImageRenderer::ImageRenderer(const unsigned int width, const unsigned int height) {
 	m_fbo = std::make_shared<FBO>(width, height, FBO_NONE);
 }

@@ -85,8 +85,8 @@ int main(void) {
     std::vector<std::shared_ptr<Light>> lights;
     lights.push_back(sun);
     lights.push_back(light1);
-    lights.push_back(light2);
-    lights.push_back(light3);
+    //lights.push_back(light2);
+    //lights.push_back(light3);
 
     /* create player and camera */
     auto player = std::make_shared<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
