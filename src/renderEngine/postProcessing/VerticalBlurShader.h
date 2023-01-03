@@ -6,12 +6,11 @@ class VerticalBlurShader : public ShaderProgram {
 public:
 	VerticalBlurShader();
 
-	void loadTargetHeight(float width);
-
-private:
-	void get_all_uniform_locations() override;
+	void load_target_height(float width) const;
 
 	void bind_attributes() override;
+	void get_all_uniform_locations() override;
 
-	unsigned int location_targetHeight;
+private:
+	int location_target_height;
 };

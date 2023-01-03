@@ -2,23 +2,21 @@
 
 #include <GL/glew.h>
 
-VerticalBlur::VerticalBlur(unsigned int targetFBOWidth, unsigned int targetFBOHeight) :
-m_shader(new VerticalBlurShader), m_renderer(new ImageRenderer(targetFBOWidth, targetFBOHeight)) {
+VerticalBlur::VerticalBlur(const unsigned int target_fbo_height) {
+	m_shader = std::make_unique<VerticalBlurShader>();
+	m_renderer = std::make_unique<ImageRenderer>();
+
 	m_shader->start();
-	m_shader->loadTargetHeight(targetFBOHeight);
+	m_shader->load_target_height(target_fbo_height);
 	m_shader->stop();
 }
 
-void VerticalBlur::render(unsigned int texture) {
+void VerticalBlur::render(const unsigned int texture) const {
 	m_shader->start();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	m_renderer->renderQuad();
+	m_renderer->render_quad();
 	m_shader->stop();
 }
 
-void VerticalBlur::cleanUp() {
-	m_renderer->cleanUp();
-	delete m_renderer;
-	delete m_shader;
-}
+unsigned int VerticalBlur::get_output_texture() const { return m_renderer->get_output_texture(); }

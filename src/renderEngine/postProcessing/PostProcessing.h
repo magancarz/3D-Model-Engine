@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "ContrastChanger.h"
@@ -10,22 +11,31 @@
 #include "models/RawModel.h"
 #include "renderEngine/Loader.h"
 
-const std::vector<float> POST_PROCESSING_POSITIONS = { -1, 1, -1, -1, 1, 1, 1, -1 };
+class PostProcessing {
+public:
+	static void post_processing_init(const std::shared_ptr<Loader>& loader);
 
-static ContrastChanger* POST_PROCESSING_CONTRAST_CHANGER = nullptr;
-static HorizontalBlur* POST_PROCESSING_HORIZONTAL_BLUR = nullptr;
-static VerticalBlur* POST_PROCESSING_VERTICAL_BLUR = nullptr;
-static BrightFilter* POST_PROCESSING_BRIGHT_FILTER = nullptr;
-static CombineFilter* POST_PROCESSING_COMBINE_FILTER = nullptr;
+	static void post_processing_draw(unsigned int color_texture, unsigned int bright_texture);
 
-static RawModel* POST_PROCESSING_QUAD = nullptr;
+	static void post_processing_start();
 
-void POST_PROCESSING_INIT(Loader* loader);
+	static void post_processing_end();
 
-void POST_PROCESSING_DRAW(unsigned int colorTexture, unsigned int brightTexture);
+private:
+	inline static const std::vector<float> post_processing_positions = {
+		-1,  1,
+		-1, -1,
+		 1,  1,
+		 1, -1 };
 
-void POST_PROCESSING_CLEAN_UP();
+	inline static std::unique_ptr<ContrastChanger> post_processing_contrast_changer;
+	inline static std::unique_ptr<HorizontalBlur> post_processing_horizontal_blur;
+	inline static std::unique_ptr<VerticalBlur> post_processing_vertical_blur;
+	inline static std::unique_ptr<BrightFilter> post_processing_bright_filter;
+	inline static std::unique_ptr<CombineFilter> post_processing_combine_filter;
 
-void POST_PROCESSING_START();
+	inline static RawModel* post_processing_quad;
+};
 
-void POST_PROCESSING_END();
+
+

@@ -45,9 +45,9 @@ void Player::set_front(const glm::vec3& camera_front) { m_front = camera_front; 
 void Player::set_right(const glm::vec3& camera_right) { m_right = camera_right; }
 
 void Player::check_inputs() {
-	if(Input::isKeyDown(GLFW_KEY_W)) {
+	if(Input::is_key_down(GLFW_KEY_W)) {
 		m_current_speed_x = RUN_SPEED;
-	} else if(Input::isKeyDown(GLFW_KEY_S)) {
+	} else if(Input::is_key_down(GLFW_KEY_S)) {
 		m_current_speed_x = -RUN_SPEED;
 	} else {
 		m_current_speed_x = 0;
@@ -56,15 +56,15 @@ void Player::check_inputs() {
 	const float angle_change = DisplayManager::get_mouse_x_offset() * 0.1f;
 	m_current_turn_speed -= angle_change;
 
-	if(Input::isKeyDown(GLFW_KEY_A)) {
+	if(Input::is_key_down(GLFW_KEY_A)) {
 		m_current_speed_z = -RUN_SPEED;
-	} else if(Input::isKeyDown(GLFW_KEY_D)) {
+	} else if(Input::is_key_down(GLFW_KEY_D)) {
 		m_current_speed_z = RUN_SPEED;
 	} else {
 		m_current_speed_z = 0;
 	}
 
-	if(Input::isKeyDown(GLFW_KEY_SPACE))
+	if(Input::is_key_down(GLFW_KEY_SPACE))
 		jump();
 }
 

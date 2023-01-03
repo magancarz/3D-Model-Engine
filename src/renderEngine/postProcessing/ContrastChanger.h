@@ -1,17 +1,15 @@
 #pragma once
 
 #include "ContrastShader.h"
-#include "renderEngine/ImageRenderer.h"
+#include "renderEngine/postProcessing/ImageRenderer.h"
 
 class ContrastChanger {
 public:
 	ContrastChanger();
 
-	void render(unsigned int texture);
-
-	void cleanUp();
+	void render(unsigned int texture) const;
 
 private:
-	ImageRenderer* m_renderer;
-	ContrastShader* m_shader;
+	std::unique_ptr<ImageRenderer> m_renderer;
+	std::unique_ptr<ContrastShader> m_shader;
 };

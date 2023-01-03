@@ -7,7 +7,5 @@ public:
 	BrightFilterShader();
 
 	void bind_attributes() override;
-
-private:
 	void get_all_uniform_locations() override;
 };

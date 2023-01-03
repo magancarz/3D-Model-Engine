@@ -2,24 +2,20 @@
 
 #include <GL/glew.h>
 
-HorizontalBlur::HorizontalBlur(unsigned int targetFBOWidth, unsigned int targetFBOHeight) {
-	m_shader = new HorizontalBlurShader();
-	m_renderer = new ImageRenderer(targetFBOWidth, targetFBOHeight);
+HorizontalBlur::HorizontalBlur(const unsigned int target_fbo_width, const unsigned int target_fbo_height) {
+	m_shader = std::make_unique<HorizontalBlurShader>();
+	m_renderer = std::make_unique<ImageRenderer>(target_fbo_width, target_fbo_height);
 	m_shader->start();
-	m_shader->loadTargetWidth(targetFBOWidth);
+	m_shader->load_target_width(target_fbo_width);
 	m_shader->stop();
 }
 
-void HorizontalBlur::render(unsigned int texture) {
+void HorizontalBlur::render(const unsigned int texture) const {
 	m_shader->start();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	m_renderer->renderQuad();
+	m_renderer->render_quad();
 	m_shader->stop();
 }
 
-void HorizontalBlur::cleanUp() {
-	m_renderer->cleanUp();
-	delete m_renderer;
-	delete m_shader;
-}
+unsigned int HorizontalBlur::get_output_texture() const { return m_renderer->get_output_texture(); }

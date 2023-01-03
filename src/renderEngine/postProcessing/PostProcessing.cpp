@@ -4,50 +4,32 @@
 
 #include "toolbox/DisplayManager.h"
 
-void POST_PROCESSING_INIT(Loader* loader) {
-	POST_PROCESSING_QUAD = loader->loadToVAO(POST_PROCESSING_POSITIONS, 2);
-	POST_PROCESSING_CONTRAST_CHANGER = new ContrastChanger();
-	POST_PROCESSING_HORIZONTAL_BLUR = new HorizontalBlur(DisplayManager::WINDOW_WIDTH / 2, DisplayManager::WINDOW_HEIGHT / 2);
-	POST_PROCESSING_VERTICAL_BLUR = new VerticalBlur(DisplayManager::WINDOW_WIDTH / 2, DisplayManager::WINDOW_HEIGHT / 2);
-	POST_PROCESSING_BRIGHT_FILTER = new BrightFilter(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
-	POST_PROCESSING_COMBINE_FILTER = new CombineFilter();
+void PostProcessing::post_processing_init(const std::shared_ptr<Loader>& loader) {
+	post_processing_quad = loader->loadToVAO(post_processing_positions, 2);
+	post_processing_contrast_changer = std::make_unique<ContrastChanger>();
+	post_processing_horizontal_blur = std::make_unique<HorizontalBlur>(DisplayManager::WINDOW_WIDTH / 2, DisplayManager::WINDOW_HEIGHT / 2);
+	post_processing_vertical_blur = std::make_unique<VerticalBlur>(DisplayManager::WINDOW_HEIGHT / 2);
+	post_processing_bright_filter = std::make_unique<BrightFilter>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
+	post_processing_combine_filter = std::make_unique<CombineFilter>();
 }
 
-void POST_PROCESSING_DRAW(unsigned int colorTexture, unsigned int brightTexture) {
-	POST_PROCESSING_START();
+void PostProcessing::post_processing_draw(const unsigned int color_texture, const unsigned int bright_texture) {
+	post_processing_start();
 
-	//POST_PROCESSING_BRIGHT_FILTER->render(colorTexture);
-	POST_PROCESSING_HORIZONTAL_BLUR->render(brightTexture);
-	POST_PROCESSING_VERTICAL_BLUR->render(POST_PROCESSING_HORIZONTAL_BLUR->getOutputTexture());
-	POST_PROCESSING_COMBINE_FILTER->render(colorTexture, POST_PROCESSING_VERTICAL_BLUR->getOutputTexture());
-
-	//POST_PROCESSING_HORIZONTAL_BLUR->render(colorTexture);
-	//POST_PROCESSING_VERTICAL_BLUR->render(POST_PROCESSING_HORIZONTAL_BLUR->getOutputTexture());
-	//POST_PROCESSING_CONTRAST_CHANGER->render(POST_PROCESSING_VERTICAL_BLUR->getOutputTexture());
-
-	//POST_PROCESSING_CONTRAST_CHANGER->render(colorTexture);
+	post_processing_horizontal_blur->render(bright_texture);
+	post_processing_vertical_blur->render(post_processing_horizontal_blur->get_output_texture());
+	post_processing_combine_filter->render(color_texture, post_processing_vertical_blur->get_output_texture());
 	
-	POST_PROCESSING_END();
+	post_processing_end();
 }
 
-void POST_PROCESSING_CLEAN_UP() {
-	delete POST_PROCESSING_COMBINE_FILTER;
-	delete POST_PROCESSING_BRIGHT_FILTER;
-	POST_PROCESSING_HORIZONTAL_BLUR->cleanUp();
-	delete POST_PROCESSING_HORIZONTAL_BLUR;
-	POST_PROCESSING_VERTICAL_BLUR->cleanUp();
-	delete POST_PROCESSING_VERTICAL_BLUR;
-	delete POST_PROCESSING_QUAD;
-	delete POST_PROCESSING_CONTRAST_CHANGER;
-}
-
-void POST_PROCESSING_START() {
-	glBindVertexArray(POST_PROCESSING_QUAD->getVaoID());
+void PostProcessing::post_processing_start() {
+	glBindVertexArray(post_processing_quad->getVaoID());
 	glEnableVertexAttribArray(0);
 	glDisable(GL_DEPTH_TEST);
 }
 
-void POST_PROCESSING_END() {
+void PostProcessing::post_processing_end() {
 	glEnable(GL_DEPTH_TEST);
 	glDisableVertexAttribArray(0);
 	glBindVertexArray(0);

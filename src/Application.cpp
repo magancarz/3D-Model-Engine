@@ -4,6 +4,7 @@
 
 #include <random>
 #include <iostream>
+#include <ranges>
 
 #include "toolbox/DisplayManager.h"
 #include "renderEngine/Loader.h"
@@ -22,7 +23,6 @@
 #include "textures/TerrainTexture.h"
 #include "textures/TerrainTexturePack.h"
 #include "toolbox/Input.h"
-#include "water/WaterShader.h"
 
 namespace locations {
 	std::string res_folder_location = "res/";
@@ -118,22 +118,22 @@ int main(void) {
     auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(270, 0, 229), 0, 0, 0, 1);
 
     /* create tree objects */
-    std::uniform_int_distribution<int> map_distribution(0, TERRAIN_SIZE);
-    std::uniform_int_distribution<int> tree_rotation(0, 180);
+    std::uniform_real_distribution<float> map_distribution(0.f, TERRAIN_SIZE);
+    std::uniform_real_distribution<float> tree_rotation(0.f, 180.f);
 
     /* predictable sequence of random values is what we want, because we are able to add other objects without collisions */
-	auto random_number_engine = std::mt19937{555};
+	auto random_number_engine = std::mt19937{500};
     auto map_distribution_generator = [&]() { return map_distribution(random_number_engine); };
     auto tree_rotation_generator = [&]() { return tree_rotation(random_number_engine); };
-    for(int i = 0; i < 300; i++) {
-    	int tree_x, tree_z;
+    for(const int i : std::views::iota(0, 300)) {
+    	float tree_x, tree_z;
 
         do {
         	tree_x = map_distribution_generator(),
         	tree_z = map_distribution_generator();
         } while(terrain->get_height_of_terrain(tree_x, tree_z) <= 0);
 
-        int tree_rot_y = tree_rotation_generator();
+        float tree_rot_y = tree_rotation_generator();
         entities.push_back(std::make_shared<Entity>(textured_cherry_tree_model, glm::vec3(tree_x, terrain->get_height_of_terrain(tree_x, tree_z), tree_z), 0.0, tree_rot_y, 0.0, 5.0));
     }
     
@@ -141,7 +141,8 @@ int main(void) {
     auto multi_sample_fbo = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
     auto output_fbo1 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
     auto output_fbo2 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
-    if(post_processing_enabled) POST_PROCESSING_INIT(loader.get());
+
+    if(post_processing_enabled) PostProcessing::post_processing_init(loader);
 
     /* Loop until the user closes the window */
     while(!DisplayManager::is_close_requested) {
@@ -186,15 +187,15 @@ int main(void) {
         glDisable(GL_CLIP_DISTANCE0);
         water_frame_buffers->unbind_current_frame_buffer();
 
-        multi_sample_fbo->bindFrameBuffer();
+        multi_sample_fbo->bind_frame_buffer();
         master_renderer->render(lights, camera, glm::vec4(0, -1, 0, 10000));
 
         water_renderer->render(water_tiles, camera, sun);
         
-        multi_sample_fbo->unbindFrameBuffer();
-        multi_sample_fbo->resolveToFBO(GL_COLOR_ATTACHMENT0, output_fbo1.get());
-        multi_sample_fbo->resolveToFBO(GL_COLOR_ATTACHMENT1, output_fbo2.get());
-        if(post_processing_enabled) POST_PROCESSING_DRAW(output_fbo1->getColorTexture(), output_fbo2->getColorTexture());
+        multi_sample_fbo->unbind_frame_buffer();
+        multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT0, output_fbo1);
+        multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT1, output_fbo2);
+        if(post_processing_enabled) PostProcessing::post_processing_draw(output_fbo1->get_color_texture(), output_fbo2->get_color_texture());
 
         //Clean up renderer
         master_renderer->clean_up_objects_maps();
@@ -208,8 +209,6 @@ int main(void) {
 
     //Clean up resources
     loader->cleanUp();
-    multi_sample_fbo->cleanUp();
-    if(post_processing_enabled) POST_PROCESSING_CLEAN_UP();
 
     DisplayManager::close_display();
 

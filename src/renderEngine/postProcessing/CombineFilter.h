@@ -1,18 +1,15 @@
 #pragma once
 
 #include "CombineShader.h"
-#include "renderEngine/ImageRenderer.h"
+#include "renderEngine/postProcessing/ImageRenderer.h"
 
 class CombineFilter {
 public:
 	CombineFilter();
 
-	~CombineFilter();
-
-	void render(unsigned int colorTexture, unsigned int highlightTexture);
+	void render(unsigned int color_texture, unsigned int highlight_texture) const;
 
 private:
-	ImageRenderer* m_renderer;
-	CombineShader* m_shader;
-
+	std::unique_ptr<CombineShader> m_shader;
+	std::unique_ptr<ImageRenderer> m_renderer;
 };
