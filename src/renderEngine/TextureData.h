@@ -2,13 +2,12 @@
 
 class TextureData {
 public:
-	TextureData(unsigned char* data, const int height, const int width) :
-	m_data(data), m_width(height), m_height(width) {}
+	TextureData(unsigned char* data, const int height, const int width);
 
-	unsigned char* get_data() const { return m_data; }
+	unsigned char* get_data() const;
 
-	int get_width() const { return m_width; }
-	int get_height() const { return m_height; }
+	int get_width() const;
+	int get_height() const;
 
 private:
 	unsigned char* m_data;

@@ -124,19 +124,58 @@ void Camera::update_camera_vectors() {
 	m_player->set_right(m_right);
 }
 
-void Camera::set_position(const glm::vec3& position) { m_position = position; }
-void Camera::set_pitch(const float pitch) { m_pitch = pitch; }
-void Camera::set_yaw(const float yaw) { m_yaw = yaw; }
-void Camera::set_roll(const float roll) { m_roll = roll; }
+void Camera::set_position(const glm::vec3& position) {
+	m_position = position;
+}
 
-void Camera::increase_pitch(const float pitch) { m_pitch += pitch * m_sensitivity; }
-void Camera::increase_yaw(const float yaw) { m_yaw += yaw * m_sensitivity; }
-void Camera::increase_roll(const float roll) { m_roll += roll * m_sensitivity; }
+void Camera::set_pitch(const float pitch) {
+	m_pitch = pitch;
+}
 
-glm::vec3 Camera::get_position() const { return m_position; }
-float Camera::get_pitch() const { return m_pitch; }
-float Camera::get_yaw() const { return m_yaw; }
-float Camera::get_roll() const { return m_roll; }
-float Camera::get_sensitivity() const { return m_sensitivity; }
-glm::vec3 Camera::get_camera_front() const { return m_front; }
-glm::vec3 Camera::get_camera_right() const { return m_right; }
+void Camera::set_yaw(const float yaw) {
+	m_yaw = yaw;
+}
+
+void Camera::set_roll(const float roll) {
+	m_roll = roll;
+}
+
+void Camera::increase_pitch(const float pitch) {
+	m_pitch += pitch * m_sensitivity;
+}
+
+void Camera::increase_yaw(const float yaw) {
+	m_yaw += yaw * m_sensitivity;
+}
+
+void Camera::increase_roll(const float roll) {
+	m_roll += roll * m_sensitivity;
+}
+
+glm::vec3 Camera::get_position() const {
+	return m_position;
+}
+
+float Camera::get_pitch() const {
+	return m_pitch;
+}
+
+float Camera::get_yaw() const {
+	return m_yaw;
+}
+
+float Camera::get_roll() const {
+	return m_roll;
+}
+
+float Camera::get_sensitivity() const {
+	return m_sensitivity;
+}
+
+glm::vec3 Camera::get_camera_front() const {
+	return m_front;
+}
+
+glm::vec3 Camera::get_camera_right() const {
+	return m_right;
+}

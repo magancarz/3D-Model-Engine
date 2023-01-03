@@ -4,7 +4,7 @@
 
 class ImageRenderer {
 public:
-	ImageRenderer();
+	ImageRenderer() = default;
 
 	ImageRenderer(unsigned int width, unsigned int height);
 

@@ -8,15 +8,15 @@
 #include "toolbox/Maths.h"
 
 Terrain::Terrain(
-		const float grid_x,
-		const float grid_z,
-		const std::shared_ptr<Loader>& loader,
-		std::shared_ptr<TerrainTexturePack> texture_pack,
-		std::shared_ptr<TerrainTexture> blend_map) :
-	m_x(grid_x * TERRAIN_SIZE),
-	m_z(grid_z * TERRAIN_SIZE),
-	m_texture_pack(std::move(texture_pack)),
-	m_blend_map(std::move(blend_map)) {
+	const float grid_x,
+	const float grid_z,
+	const std::shared_ptr<Loader>& loader,
+	std::shared_ptr<TerrainTexturePack> texture_pack,
+	std::shared_ptr<TerrainTexture> blend_map) :
+m_x(grid_x * TERRAIN_SIZE),
+m_z(grid_z * TERRAIN_SIZE),
+m_texture_pack(std::move(texture_pack)),
+m_blend_map(std::move(blend_map)) {
 
 	m_model = generate_terrain(loader, "res/textures/height_map.png");
 }
@@ -28,14 +28,25 @@ Terrain::~Terrain() {
 	delete m_heights;
 }
 
-float Terrain::get_x() const { return m_x; }
-float Terrain::get_z() const { return m_z; }
+float Terrain::get_x() const {
+	return m_x;
+}
 
-std::shared_ptr<RawModel> Terrain::get_model() const { return m_model; }
+float Terrain::get_z() const {
+	return m_z;
+}
 
-std::shared_ptr<TerrainTexturePack> Terrain::get_terrain_texture_pack() const { return m_texture_pack; }
+std::shared_ptr<RawModel> Terrain::get_model() const {
+	return m_model;
+}
 
-std::shared_ptr<TerrainTexture> Terrain::get_blend_map() const { return m_blend_map; }
+std::shared_ptr<TerrainTexturePack> Terrain::get_terrain_texture_pack() const {
+	return m_texture_pack;
+}
+
+std::shared_ptr<TerrainTexture> Terrain::get_blend_map() const {
+	return m_blend_map;
+}
 
 std::shared_ptr<RawModel> Terrain::generate_terrain(
 		const std::shared_ptr<Loader>& loader,

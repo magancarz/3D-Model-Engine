@@ -136,12 +136,26 @@ double DisplayManager::get_frame_time_seconds() {
 	return delta;
 }
 
-double DisplayManager::get_mouse_x() { return last_mouse_x; }
-double DisplayManager::get_mouse_y() { return last_mouse_y; }
+double DisplayManager::get_mouse_x() {
+	return last_mouse_x;
+}
 
-double DisplayManager::get_mouse_x_offset() { return mouse_offset_x; }
-double DisplayManager::get_mouse_y_offset() { return mouse_offset_y; }
+double DisplayManager::get_mouse_y() {
+	return last_mouse_y;
+}
 
-double DisplayManager::get_d_wheel() { return mouse_wheel; }
+double DisplayManager::get_mouse_x_offset() {
+	return mouse_offset_x;
+}
 
-GLFWwindow* DisplayManager::get_window() { return window; }
+double DisplayManager::get_mouse_y_offset() {
+	return mouse_offset_y;
+}
+
+double DisplayManager::get_d_wheel() {
+	return mouse_wheel;
+}
+
+GLFWwindow* DisplayManager::get_window() {
+	return window;
+}

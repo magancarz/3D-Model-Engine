@@ -22,7 +22,18 @@ void Input::set_key_down(unsigned int key_code, bool value) {
 	key_down[key_code] = value;
 }
 
-void Input::set_left_mouse_button_down(const bool value) { left_mouse_button_down = value; }
-void Input::set_right_mouse_button_down(const bool value) { right_mouse_button_down = value; }
-bool Input::is_left_mouse_button_down() { return left_mouse_button_down; }
-bool Input::is_right_mouse_button_down() { return right_mouse_button_down; }
+void Input::set_left_mouse_button_down(const bool value) {
+	left_mouse_button_down = value;
+}
+
+void Input::set_right_mouse_button_down(const bool value) {
+	right_mouse_button_down = value;
+}
+
+bool Input::is_left_mouse_button_down() {
+	return left_mouse_button_down;
+}
+
+bool Input::is_right_mouse_button_down() {
+	return right_mouse_button_down;
+}

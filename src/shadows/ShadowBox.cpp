@@ -67,9 +67,17 @@ glm::vec3 ShadowBox::get_center() const{
 
 void ShadowBox::set_light_view_matrix(glm::mat4* light_view_matrix) { m_light_view_matrix = light_view_matrix; }
 
-float ShadowBox::get_width() const { return m_max_x - m_min_x; }
-float ShadowBox::get_height() const { return m_max_y - m_min_y; }
-float ShadowBox::get_length() const { return m_max_z - m_min_z; }
+float ShadowBox::get_width() const {
+	return m_max_x - m_min_x;
+}
+
+float ShadowBox::get_height() const {
+	return m_max_y - m_min_y;
+}
+
+float ShadowBox::get_length() const {
+	return m_max_z - m_min_z;
+}
 
 std::vector<glm::vec4> ShadowBox::calculate_frustum_vertices(
 		const glm::mat4& rotation,

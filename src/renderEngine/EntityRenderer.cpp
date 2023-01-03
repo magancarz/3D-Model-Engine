@@ -71,6 +71,7 @@ void EntityRenderer::prepare_instance(const std::shared_ptr<Entity>& entity) con
 		entity->get_rot_y(),
 		entity->get_rot_z(),
 		entity->get_scale());
+
 	m_static_shader->load_transformation_matrix(transformation_matrix);
 	m_static_shader->load_offset(glm::vec2(entity->get_texture_x_offset(), entity->get_texture_y_offset()));
 	const auto texture = entity->get_textured_model()->get_texture();

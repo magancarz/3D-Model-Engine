@@ -27,19 +27,53 @@ float Entity::get_texture_y_offset() const {
 	return static_cast<float>(row) / static_cast<float>(m_model->get_texture()->get_number_of_rows());
 }
 
-std::shared_ptr<TexturedModel> Entity::get_textured_model() { return m_model; }
-glm::vec3 Entity::get_position() const { return m_position; }
-float Entity::get_rot_x() const { return m_rx; }
-float Entity::get_rot_y() const { return m_ry; }
-float Entity::get_rot_z() const { return m_rz; }
-float Entity::get_scale() const { return m_scale; }
+std::shared_ptr<TexturedModel> Entity::get_textured_model() {
+	return m_model;
+}
 
-void Entity::set_textured_model(const std::shared_ptr<TexturedModel>& model) { m_model = model; }
-void Entity::set_position(const glm::vec3& position) { m_position = position; }
-void Entity::set_rot_x(const float rx) { m_rx = rx; }
-void Entity::set_rot_y(const float ry) { m_ry = ry; }
-void Entity::set_rot_z(const float rz) { m_rz = rz; }
-void Entity::set_scale(const float scale) { m_scale = scale; }
+glm::vec3 Entity::get_position() const {
+	return m_position;
+}
+
+float Entity::get_rot_x() const {
+	return m_rx;
+}
+
+float Entity::get_rot_y() const {
+	return m_ry;
+}
+
+float Entity::get_rot_z() const {
+	return m_rz;
+}
+
+float Entity::get_scale() const {
+	return m_scale;
+}
+
+void Entity::set_textured_model(const std::shared_ptr<TexturedModel>& model) {
+	m_model = model;
+}
+
+void Entity::set_position(const glm::vec3& position) {
+	m_position = position;
+}
+
+void Entity::set_rot_x(const float rx) {
+	m_rx = rx;
+}
+
+void Entity::set_rot_y(const float ry) {
+	m_ry = ry;
+}
+
+void Entity::set_rot_z(const float rz) {
+	m_rz = rz;
+}
+
+void Entity::set_scale(const float scale) {
+	m_scale = scale;
+}
 
 void Entity::increase_position(const float dx, const float dy, const float dz) {
 	m_position.x += dx;
