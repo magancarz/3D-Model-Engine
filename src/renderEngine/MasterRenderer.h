@@ -24,7 +24,9 @@ public:
 
 	void process_entity(const std::shared_ptr<Entity>& entity);
 	void process_entities(const std::vector<std::shared_ptr<Entity>>& entities);
+
 	void process_normal_map_entity(const std::shared_ptr<Entity>& entity);
+	void process_normal_map_entities(const std::vector<std::shared_ptr<Entity>>& entities);
 	void process_terrain(const std::shared_ptr<Terrain>& terrain);
 
 	glm::mat4 get_projection_matrix() const;

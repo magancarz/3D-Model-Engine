@@ -48,6 +48,12 @@ void MasterRenderer::process_entities(const std::vector<std::shared_ptr<Entity>>
 	}
 }
 
+void MasterRenderer::process_normal_map_entities(const std::vector<std::shared_ptr<Entity>>& entities) {
+	for(const auto& entity : entities) {
+		process_normal_map_entity(entity);
+	}
+}
+
 void MasterRenderer::process_entity(const std::shared_ptr<Entity>& entity) {
 	auto entity_model = entity->get_textured_model();
 

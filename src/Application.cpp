@@ -67,6 +67,11 @@ int main(void) {
     barrel_texture->set_specular_map(loader->load_texture("barrelS"));
     auto textured_barrel_model = std::make_shared<TexturedModel>(barrel_model, barrel_texture);
 
+    auto rock_model = NormalMappingOBJLoader::load_normal_mapped_obj("newRock", loader);
+    auto rock_texture = std::make_shared<ModelTexture>(loader->load_texture("rockDiffuse"));
+    rock_texture->set_normal_map(loader->load_texture("rockNormal"));
+    auto textured_rock_model = std::make_shared<TexturedModel>(rock_model, rock_texture);
+
     /* create light objects */
     auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.001, 0.00001));
     auto light1 = std::make_shared<Light>(glm::vec3(270, 12, 228), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
@@ -91,12 +96,17 @@ int main(void) {
 
     /* create entities */
     std::vector<std::shared_ptr<Entity>> entities;
+    std::vector<std::shared_ptr<Entity>> normal_mapped_entities;
 	entities.push_back(player);
     
     auto lantern = std::make_shared<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
     entities.push_back(lantern);
 
     auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(282, 0, 229), 0, 90.f, 90.f, 1);
+    normal_mapped_entities.push_back(barrel);
+
+    auto rock = std::make_shared<Entity>(textured_rock_model, glm::vec3(265, 1, 230), 0, 0, 0, 3);
+    normal_mapped_entities.push_back(rock);
 
     /* create tree objects */
     std::uniform_real_distribution<float> map_distribution(0.f, TERRAIN_SIZE);
@@ -145,7 +155,7 @@ int main(void) {
 
         /* Process entities */
         master_renderer->process_entities(entities);
-        master_renderer->process_normal_map_entity(barrel);
+        master_renderer->process_normal_map_entities(normal_mapped_entities);
 
         /* Water rendering */
         water_frame_buffers->bind_reflection_frame_buffer();
