@@ -14,8 +14,8 @@ m_water_frame_buffers(std::move(water_frame_buffers)) {
 	m_water_shader->load_projection_matrix(projection);
 	m_water_shader->stop();
 
-	m_dudv_texture = loader->load_texture("res/textures/waterDUDV.png");
-	m_normal_map = loader->load_texture("res/textures/matchingNormalMap.png");
+	m_dudv_texture = loader->load_texture("waterDUDV");
+	m_normal_map = loader->load_texture("matchingNormalMap");
 
 	set_up_vao(loader);
 }

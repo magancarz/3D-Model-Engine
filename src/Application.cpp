@@ -22,14 +22,6 @@
 #include "textures/TerrainTexturePack.h"
 #include "toolbox/Input.h"
 
-namespace locations {
-	std::string res_folder_location = "res/";
-    std::string textures_folder_location = "res/textures/";
-    std::string image_extension = ".png";
-    std::string shader_folder_location = "res/shaders/";
-    std::string shader_extension = ".glsl";
-}
-
 int main(void) {
     /* initialize the glfw library */
     if(!glfwInit())
@@ -45,34 +37,34 @@ int main(void) {
     auto loader = std::make_shared<Loader>();
 
     /* create terrain */
-    auto background_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/grass.png"));
-    auto r_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/mud.png"));
-    auto g_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/grassFlowers.png"));
-    auto b_texture = std::make_unique<TerrainTexture>(loader->load_texture("res/textures/path.png"));
-    auto blend_map = std::make_shared<TerrainTexture>(loader->load_texture("res/textures/black.png"));
+    auto background_texture = std::make_unique<TerrainTexture>(loader->load_texture("grass"));
+    auto r_texture = std::make_unique<TerrainTexture>(loader->load_texture("mud"));
+    auto g_texture = std::make_unique<TerrainTexture>(loader->load_texture("grassFlowers"));
+    auto b_texture = std::make_unique<TerrainTexture>(loader->load_texture("path"));
+    auto blend_map = std::make_shared<TerrainTexture>(loader->load_texture("black"));
 
     auto terrain_texture_pack = std::make_shared<TerrainTexturePack>(std::move(background_texture), std::move(r_texture), std::move(g_texture), std::move(b_texture));
 
     auto terrain = std::make_shared<Terrain>(0, 0, loader, std::move(terrain_texture_pack), std::move(blend_map));
 
     /* load 3d models */
-    auto stall_model = OBJLoader::load_obj("res/models/stall.obj", loader);
-    auto stall_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/stallTexture.png"));
+    auto stall_model = OBJLoader::load_obj("stall", loader);
+    auto stall_texture = std::make_shared<ModelTexture>(loader->load_texture("stallTexture"));
     auto textured_stall_model = std::make_shared<TexturedModel>(stall_model, stall_texture);
 
-    auto cherry_tree_model = OBJLoader::load_obj("res/models/cherry.obj", loader);
-    auto cherry_tree_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/cherry.png"));
+    auto cherry_tree_model = OBJLoader::load_obj("cherry", loader);
+    auto cherry_tree_texture = std::make_shared<ModelTexture>(loader->load_texture("cherry"));
     auto textured_cherry_tree_model = std::make_shared<TexturedModel>(cherry_tree_model, cherry_tree_texture);
 
-    auto lantern_model = OBJLoader::load_obj("res/models/lantern.obj", loader);
-    auto lantern_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/lantern.png"));
-    lantern_texture->set_specular_map(loader->load_texture("res/textures/lanternS.png"));
+    auto lantern_model = OBJLoader::load_obj("lantern", loader);
+    auto lantern_texture = std::make_shared<ModelTexture>(loader->load_texture("lantern"));
+    lantern_texture->set_specular_map(loader->load_texture("lanternS"));
     auto textured_lantern_model = std::make_shared<TexturedModel>(lantern_model, lantern_texture);
 
-    auto barrel_model = NormalMappingOBJLoader::load_normal_mapped_obj("res/models/barrel.obj", loader);
-    auto barrel_texture = std::make_shared<ModelTexture>(loader->load_texture("res/textures/barrel.png"));
-    barrel_texture->set_normal_map(loader->load_texture("res/textures/barrelNormal.png"));
-    barrel_texture->set_specular_map(loader->load_texture("res/textures/barrelS.png"));
+    auto barrel_model = NormalMappingOBJLoader::load_normal_mapped_obj("barrel", loader);
+    auto barrel_texture = std::make_shared<ModelTexture>(loader->load_texture("barrel"));
+    barrel_texture->set_normal_map(loader->load_texture("barrelNormal"));
+    barrel_texture->set_specular_map(loader->load_texture("barrelS"));
     auto textured_barrel_model = std::make_shared<TexturedModel>(barrel_model, barrel_texture);
 
     /* create light objects */
@@ -84,7 +76,6 @@ int main(void) {
     std::vector<std::shared_ptr<Light>> lights;
     lights.push_back(sun);
     lights.push_back(light1);
-    lights.push_back(light2);
 
     /* create player and camera */
     auto player = std::make_shared<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
@@ -139,27 +130,27 @@ int main(void) {
 
     /* Loop until the user closes the window */
     while(!DisplayManager::is_close_requested) {
-    	//Events
+    	/* Events */
         player->move(terrain, camera->get_yaw(), camera->get_pitch());
         camera->move();
 
-        //Reset input values
+        /* Reset input values */
         DisplayManager::reset_input_values();
 
         /* Poll for and process events */
         glfwPollEvents();
 
-        //OpenGL calls
+        /* OpenGL calls */
         glEnable(GL_CLIP_DISTANCE0);
 
-        //Process terrains
+        /* Process terrain objects */
         master_renderer->process_terrain(terrain);
 
-        //Process entities
+        /* Process entities */
         master_renderer->process_entities(entities);
         master_renderer->process_normal_map_entity(barrel);
 
-        //Water
+        /* Water rendering */
         water_frame_buffers->bind_reflection_frame_buffer();
         const auto camera_position = camera->get_position();
         float distance = 2 * (camera_position.y - water_tile->get_height());
@@ -173,7 +164,7 @@ int main(void) {
         water_frame_buffers->bind_refraction_frame_buffer();
         master_renderer->render(lights, camera, glm::vec4(0, -1, 0, water_tile->get_height()));
 
-        //Draw here
+        /* Draw here */
         glDisable(GL_CLIP_DISTANCE0);
         water_frame_buffers->unbind_current_frame_buffer();
 
@@ -187,13 +178,13 @@ int main(void) {
         multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT1, output_fbo2);
         post_processing->draw(output_fbo1->get_color_texture(), output_fbo2->get_color_texture());
 
-        //Clean up renderer
+        /* Clean up renderer */
         master_renderer->clean_up_objects_maps();
 
-        /* Swap front and back buffers */
+        /*  Swap front and back buffers */
         DisplayManager::update_display();
 
-        //Check if window needs to close
+        /* Check if window needs to close */
         DisplayManager::check_close_requests();
     }
 

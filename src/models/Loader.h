@@ -8,6 +8,16 @@
 #include "../models/RawModel.h"
 #include "TextureData.h"
 
+namespace locations {
+	inline std::string res_folder_location = "res/";
+    inline std::string textures_folder_location = "res/textures/";
+    inline std::string image_extension = ".png";
+	inline std::string models_folder_location = "res/models/";
+    inline std::string model_extension = ".obj";
+    inline std::string shader_extension = ".glsl";
+    inline std::string shader_folder_location = "res/shaders/";
+}
+
 class Loader {
 public:
 	~Loader();

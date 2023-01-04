@@ -128,7 +128,7 @@ std::shared_ptr<RawModel> NormalMappingOBJLoader::load_normal_mapped_obj(
 		const std::string& obj_file_name,
 		const std::shared_ptr<Loader>& loader) {
 
-	std::ifstream in_file(obj_file_name, std::ios::in);
+	std::ifstream in_file(locations::models_folder_location + obj_file_name + locations::model_extension, std::ios::in);
 
 	if(!in_file) {
 		throw std::runtime_error("Unable to load obj file!\n");
