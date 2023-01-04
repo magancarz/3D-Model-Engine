@@ -49,5 +49,5 @@ private:
 	std::shared_ptr<VertexNM> m_duplicate_vertex = nullptr;
 
 	std::vector<glm::vec3> m_tangents;
-	glm::vec3 m_averaged_tangent;
+	glm::vec3 m_averaged_tangent = glm::vec3(0.0);
 };
