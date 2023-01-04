@@ -8,8 +8,8 @@
 #include "VerticalBlur.h"
 #include "BrightFilter.h"
 #include "CombineFilter.h"
+#include "models/Loader.h"
 #include "models/RawModel.h"
-#include "renderEngine/Loader.h"
 
 class PostProcessing {
 public:

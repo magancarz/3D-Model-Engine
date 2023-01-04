@@ -7,11 +7,10 @@
 #include <ranges>
 
 #include "toolbox/DisplayManager.h"
-#include "renderEngine/Loader.h"
 #include "renderEngine/MasterRenderer.h"
-#include "renderEngine/OBJLoader.h"
-#include "normalMappingRenderer/NormalMappingOBJLoader.h"
 #include "models/TexturedModel.h"
+#include "models/OBJLoader.h"
+#include "models/NormalMappingOBJLoader.h"
 #include "entities/Camera.h"
 #include "entities/Player.h"
 #include "water/WaterRenderer.h"
@@ -85,8 +84,7 @@ int main(void) {
     std::vector<std::shared_ptr<Light>> lights;
     lights.push_back(sun);
     lights.push_back(light1);
-    //lights.push_back(light2);
-    //lights.push_back(light3);
+    lights.push_back(light2);
 
     /* create player and camera */
     auto player = std::make_shared<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
@@ -150,9 +148,6 @@ int main(void) {
 
         /* Poll for and process events */
         glfwPollEvents();
-
-        // before any rendering takes place, render shadow map
-        master_renderer->render_shadow_map(entities, sun);
 
         //OpenGL calls
         glEnable(GL_CLIP_DISTANCE0);

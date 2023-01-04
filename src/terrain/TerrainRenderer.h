@@ -10,7 +10,6 @@ public:
 
 	void render(
 		const std::vector<std::shared_ptr<Terrain>>& terrains,
-		const glm::mat4& to_shadow_map_space,
 		const std::vector<std::shared_ptr<Light>>& lights,
 		const std::shared_ptr<Camera>& camera,
 		const glm::vec4& clip_plane) const;

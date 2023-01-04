@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "Loader.h"
 #include "../models/RawModel.h"
-#include "../renderEngine/Loader.h"
 #include "VertexNM.h"
 
 namespace NormalMappingOBJLoader {

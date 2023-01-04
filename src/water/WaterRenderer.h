@@ -4,7 +4,6 @@
 #include "WaterTile.h"
 #include "WaterFrameBuffers.h"
 #include "WaterShader.h"
-#include "renderEngine/Loader.h"
 
 class WaterRenderer {
 public:

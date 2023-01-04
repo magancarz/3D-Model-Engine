@@ -2,7 +2,7 @@
 
 #include <gl/glew.h>
 
-#include "MasterRenderer.h"
+#include "renderEngine/MasterRenderer.h"
 #include "toolbox/Maths.h"
 
 EntityRenderer::EntityRenderer(const glm::mat4& projection_matrix) {

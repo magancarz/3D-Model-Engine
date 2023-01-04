@@ -1,7 +1,10 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
+#include "Loader.h"
 #include "Vertex.h"
-#include "../renderEngine/Loader.h"
 #include "../models/RawModel.h"
 
 namespace OBJLoader {

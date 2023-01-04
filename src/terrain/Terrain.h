@@ -2,11 +2,10 @@
 
 #include <glm/glm.hpp>
 
-#include "../renderEngine/Loader.h"
-#include "../renderEngine/TextureData.h"
 #include "../models/RawModel.h"
 #include "../textures/TerrainTexturePack.h"
 #include "../textures/TerrainTexture.h"
+#include "models/Loader.h"
 
 #define TERRAIN_SIZE 800
 #define TERRAIN_MAX_HEIGHT 40

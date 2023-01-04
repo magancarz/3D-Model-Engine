@@ -1,6 +1,6 @@
 #include "TerrainRenderer.h"
 
-#include "MasterRenderer.h"
+#include "renderEngine/MasterRenderer.h"
 #include "toolbox/Maths.h"
 
 TerrainRenderer::TerrainRenderer(const glm::mat4& projection_matrix) {
@@ -13,7 +13,6 @@ TerrainRenderer::TerrainRenderer(const glm::mat4& projection_matrix) {
 
 void TerrainRenderer::render(
 		const std::vector<std::shared_ptr<Terrain>>& terrains,
-		const glm::mat4& to_shadow_map_space,
 		const std::vector<std::shared_ptr<Light>>& lights,
 		const std::shared_ptr<Camera>& camera,
 		const glm::vec4& clip_plane) const {
@@ -23,7 +22,6 @@ void TerrainRenderer::render(
 	m_terrain_shader->load_sky_color(MasterRenderer::RED, MasterRenderer::GREEN, MasterRenderer::BLUE);
 	m_terrain_shader->load_lights(lights);
 	m_terrain_shader->load_view_matrix(camera);
-	m_terrain_shader->load_to_shadow_map_space_matrix(to_shadow_map_space);
 	for(const auto& terrain : terrains) {
 		prepare_terrain(terrain);
 		load_model_matrix(terrain);

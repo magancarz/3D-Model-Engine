@@ -9,7 +9,6 @@ MasterRenderer::MasterRenderer(const std::shared_ptr<Loader>& loader, const std:
 	m_terrain_renderer = std::make_unique<TerrainRenderer>(m_projection_matrix);
 	m_skybox_renderer = std::make_unique<SkyboxRenderer>(loader, m_projection_matrix);
 	m_normal_mapping_renderer = std::make_unique<NormalMappingRenderer>(m_projection_matrix);
-	m_shadow_map_renderer = std::make_unique<ShadowMapMasterRenderer>(camera);
 }
 
 void MasterRenderer::render(
@@ -23,26 +22,15 @@ void MasterRenderer::render(
 
 	m_normal_mapping_renderer->render(m_normal_mapped_entities, lights, camera, clip_plane);
 
-	m_terrain_renderer->render(m_terrains, m_shadow_map_renderer->get_to_shadow_map_space_matrix(), lights, camera, clip_plane);
+	m_terrain_renderer->render(m_terrains, lights, camera, clip_plane);
 
 	m_skybox_renderer->render(camera, RED, GREEN, BLUE);
 }
 
-void MasterRenderer::render_shadow_map(
-		const std::vector<std::shared_ptr<Entity>>& entity_list,
-		const std::shared_ptr<Light>& sun) {
-
-	process_entities(entity_list);
-	m_shadow_map_renderer->render(m_entities, sun);
-	m_entities.clear();
-}
-
-void MasterRenderer::prepare() const {
+void MasterRenderer::prepare() {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(RED, GREEN, BLUE, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, m_shadow_map_renderer->get_shadow_map());
 }
 
 void MasterRenderer::enable_culling() {
@@ -93,8 +81,6 @@ void MasterRenderer::process_terrain(const std::shared_ptr<Terrain>& terrain) {
 }
 
 glm::mat4 MasterRenderer::get_projection_matrix() const { return m_projection_matrix; }
-
-unsigned int MasterRenderer::get_shadow_map_texture() const { return m_shadow_map_renderer->get_shadow_map(); }
 
 void MasterRenderer::clean_up_objects_maps() {
 	m_entities.clear();

@@ -28,39 +28,6 @@ void SkyboxRenderer::render(const std::shared_ptr<Camera>& camera, const float r
 }
 
 void SkyboxRenderer::bind_textures() {
-	/* code for managing time of the day */
-	//m_time += display.getFrameTimeSeconds() * 100; // original: * 1000
-
-	m_time = 1000;
-	while (m_time >= 24000) {
-		m_time -= 24000;
-	}
-	int texture1, texture2;
-	float blend_factor;
-	if (m_time < 5000) {
-		texture1 = m_night_texture;
-		texture2 = m_night_texture;
-		blend_factor = (m_time - 0) / (5000 - 0);
-	}
-	else if (m_time >= 5000 && m_time < 8000) {
-		texture1 = m_night_texture;
-		texture2 = m_texture;
-		blend_factor = (m_time - 5000) / (8000 - 5000);
-	}
-	else if (m_time >= 8000 && m_time < 21000) {
-		texture1 = m_texture;
-		texture2 = m_texture;
-		blend_factor = (m_time - 8000) / (21000 - 8000);
-	}
-	else {
-		texture1 = m_texture;
-		texture2 = m_night_texture;
-		blend_factor = (m_time - 21000) / (24000 - 21000);
-	}
-
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texture1);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texture2);
-	m_skybox_shader->load_blend_factor(blend_factor);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_night_texture);
 }

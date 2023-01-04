@@ -1,10 +1,12 @@
 #pragma once
 
 #include "../skybox/SkyboxRenderer.h"
-#include "../normalMappingRenderer/NormalMappingRenderer.h"
-#include "../shadows/ShadowMapMasterRenderer.h"
-#include "EntityRenderer.h"
-#include "TerrainRenderer.h"
+#include "entities/EntityRenderer.h"
+#include "entities/Light.h"
+#include "entities/NormalMappingRenderer.h"
+#include "entities/NormalMappingShader.h"
+#include "models/Loader.h"
+#include "terrain/TerrainRenderer.h"
 
 class MasterRenderer {
 public:
@@ -14,12 +16,8 @@ public:
 		const std::vector<std::shared_ptr<Light>>& lights,
 		const std::shared_ptr<Camera>& camera,
 		const glm::vec4& clip_plane) const;
-
-	void render_shadow_map(
-		const std::vector<std::shared_ptr<Entity>>& entity_list,
-		const std::shared_ptr<Light>& sun);
 	
-	void prepare() const;
+	static void prepare();
 
 	static void enable_culling();
 	static void disable_culling();
@@ -47,7 +45,6 @@ private:
 	std::unique_ptr<TerrainRenderer> m_terrain_renderer;
 	std::unique_ptr<SkyboxRenderer> m_skybox_renderer;
 	std::unique_ptr<NormalMappingRenderer> m_normal_mapping_renderer;
-	std::unique_ptr<ShadowMapMasterRenderer> m_shadow_map_renderer;
 
 	std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>> m_entities;
 	std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>> m_normal_mapped_entities;
