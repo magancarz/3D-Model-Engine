@@ -68,13 +68,10 @@ int main(void) {
     auto textured_barrel_model = std::make_shared<TexturedModel>(barrel_model, barrel_texture);
 
     /* create light objects */
-    auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
-    auto light1 = std::make_shared<Light>(glm::vec3(278, 12, 224), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
-    auto light2 = std::make_shared<Light>(glm::vec3(0, 0, 0), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
-    auto light3 = std::make_shared<Light>(glm::vec3(0, 0, 0), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
+    auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.001, 0.00001));
+    auto light1 = std::make_shared<Light>(glm::vec3(270, 12, 228), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
 
     std::vector<std::shared_ptr<Light>> lights;
-    lights.push_back(sun);
     lights.push_back(light1);
 
     /* create player and camera */
@@ -99,7 +96,7 @@ int main(void) {
     auto lantern = std::make_shared<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
     entities.push_back(lantern);
 
-    auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(270, 0, 229), 0, 0, 0, 1);
+    auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(282, 0, 229), 0, 90.f, 90.f, 1);
 
     /* create tree objects */
     std::uniform_real_distribution<float> map_distribution(0.f, TERRAIN_SIZE);

@@ -81,7 +81,7 @@ std::shared_ptr<TextureData> Loader::load_image(const std::string& file_name) {
 	int width, height, format;
 	unsigned char* image = stbi_load(file.c_str(), &width, &height, &format, STBI_rgb_alpha);
 	if(image == nullptr)
-		std::cout << "Failed to load image!\n";
+		std::cout << "Failed to load " + file_name + " image!\n";
 	
 	return std::make_shared<TextureData>(image, width, height);
 }
@@ -144,7 +144,6 @@ unsigned int Loader::load_cube_map(const std::vector<std::string>& texture_files
 
 	//Texture files size should be always 6
 	for(const int i : std::views::iota(0, 6)) {
-		int width, height, format;
 		const auto data = load_image(texture_files[i]);
 		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data->get_width(), data->get_height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, data->get_data());
 		

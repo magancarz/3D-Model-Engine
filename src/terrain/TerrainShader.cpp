@@ -53,7 +53,7 @@ void TerrainShader::load_to_shadow_map_space_matrix(const glm::mat4& to_shadow_m
 
 void TerrainShader::bind_attributes() {
 	bind_attribute(0, "position");
-	bind_attribute(1, "textureCoords");
+	bind_attribute(1, "texture_coords");
 	bind_attribute(2, "normal");
 }
 
@@ -65,29 +65,29 @@ void TerrainShader::get_all_uniform_locations() {
 
 	//Light calculation uniforms
 	for(int i = 0; i < MAX_LIGHTS; i++) {
-		location_light_position[i] = get_uniform_location("lightPosition[" + std::to_string(i) + "]");
-		location_light_color[i] = get_uniform_location("lightColor[" + std::to_string(i) + "]");
+		location_light_position[i] = get_uniform_location("light_position[" + std::to_string(i) + "]");
+		location_light_color[i] = get_uniform_location("light_color[" + std::to_string(i) + "]");
 		location_attenuation[i] = get_uniform_location("attenuation[" + std::to_string(i) + "]");
 	}
-	location_shine_damper = get_uniform_location("shineDamper");
+	location_shine_damper = get_uniform_location("shine_damper");
 	location_reflectivity = get_uniform_location("reflectivity");
 
 	//Fog calculation uniforms
-	location_sky_color = get_uniform_location("skyColor");
+	location_sky_color = get_uniform_location("sky_color");
 
 	//Texture samplers
-	location_background_texture = get_uniform_location("backgroundTexture");
-	location_r_texture = get_uniform_location("rTexture");
-	location_g_texture = get_uniform_location("gTexture");
-	location_b_texture = get_uniform_location("bTexture");
-	location_blend_map = get_uniform_location("blendMap");
+	location_background_texture = get_uniform_location("background_texture");
+	location_r_texture = get_uniform_location("r_texture");
+	location_g_texture = get_uniform_location("g_texture");
+	location_b_texture = get_uniform_location("b_texture");
+	location_blend_map = get_uniform_location("blend_map");
 
 	//Clip plane
 	location_plane = get_uniform_location("plane");
 
 	//Shadows
-	location_to_shadow_map_space = get_uniform_location("toShadowMapSpace");
-	location_shadow_map = get_uniform_location("shadowMap");
+	location_to_shadow_map_space = get_uniform_location("to_shadow_map_space");
+	location_shadow_map = get_uniform_location("shadow_map");
 }
 
 void TerrainShader::connect_texture_units() const {

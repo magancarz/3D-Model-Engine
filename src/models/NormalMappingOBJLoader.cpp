@@ -62,7 +62,7 @@ float NormalMappingOBJLoader::convert_data_to_arrays(
 
 	float furthest_point = 0;
 
-	for(const auto current_vertex : vertices) {
+	for(const auto& current_vertex : vertices) {
 		if (current_vertex->get_length() > furthest_point) {
 			furthest_point = current_vertex->get_length();
 		}
@@ -88,8 +88,8 @@ float NormalMappingOBJLoader::convert_data_to_arrays(
 
 std::shared_ptr<VertexNM> NormalMappingOBJLoader::deal_with_already_processed_vertex(
 		std::shared_ptr<VertexNM> previous_vertex,
-		int new_texture_index,
-		int new_normal_index,
+		const int new_texture_index,
+		const int new_normal_index,
 		std::vector<unsigned int>& indices,
 		std::vector<std::shared_ptr<VertexNM>>& vertices) {
 
@@ -114,7 +114,7 @@ std::shared_ptr<VertexNM> NormalMappingOBJLoader::deal_with_already_processed_ve
 	return duplicate_vertex;
 }
 
-void NormalMappingOBJLoader::remove_unused_vertices(std::vector<std::shared_ptr<VertexNM>>& vertices) {
+void NormalMappingOBJLoader::remove_unused_vertices(const std::vector<std::shared_ptr<VertexNM>>& vertices) {
 	for(const auto& vertex : vertices) {
 		vertex->average_tangents();
 		if (!vertex->is_set()) {
@@ -131,7 +131,7 @@ std::shared_ptr<RawModel> NormalMappingOBJLoader::load_normal_mapped_obj(
 	std::ifstream in_file(locations::models_folder_location + obj_file_name + locations::model_extension, std::ios::in);
 
 	if(!in_file) {
-		throw std::runtime_error("Unable to load obj file!\n");
+		throw std::runtime_error("Unable to load " + obj_file_name + " obj file!\n");
 	}
 
 	std::string line;

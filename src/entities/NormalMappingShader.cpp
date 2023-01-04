@@ -82,31 +82,31 @@ void NormalMappingShader::load_clip_plane(const glm::vec4& plane) const {
 
 void NormalMappingShader::bind_attributes() {
 	bind_attribute(0, "position");
-	bind_attribute(1, "textureCoords");
+	bind_attribute(1, "texture_coords");
 	bind_attribute(2, "normal");
 	bind_attribute(3, "tangent");
 }
 
 void NormalMappingShader::get_all_uniform_locations() {
-	location_transformation_matrix = get_uniform_location("transformationMatrix");
-	location_projection_matrix = get_uniform_location("projectionMatrix");
-	location_view_matrix = get_uniform_location("viewMatrix");
-	location_shine_damper = get_uniform_location("shineDamper");
+	location_transformation_matrix = get_uniform_location("model");
+	location_projection_matrix = get_uniform_location("proj");
+	location_view_matrix = get_uniform_location("view");
+	location_shine_damper = get_uniform_location("shine_damper");
 	location_reflectivity = get_uniform_location("reflectivity");
-	location_use_fake_lighting = get_uniform_location("useFakeLighting");
-	location_sky_color = get_uniform_location("skyColor");
-	location_fog_density = get_uniform_location("fogDensity");
-	location_fog_gradient = get_uniform_location("fogGradient");
-	location_number_of_rows = get_uniform_location("numberOfRows");
-	location_texture_offset = get_uniform_location("textureOffset");
-	location_clip_plane = get_uniform_location("clipPlane");
-	location_model_texture = get_uniform_location("modelTexture");
-	location_normal_map = get_uniform_location("normalMap");
+	location_use_fake_lighting = get_uniform_location("use_fake_lighting");
+	location_sky_color = get_uniform_location("sky_color");
+	location_fog_density = get_uniform_location("fog_density");
+	location_fog_gradient = get_uniform_location("fog_gradient");
+	location_number_of_rows = get_uniform_location("number_of_rows");
+	location_texture_offset = get_uniform_location("texture_offset");
+	location_clip_plane = get_uniform_location("clip_plane");
+	location_model_texture = get_uniform_location("model_texture");
+	location_normal_map = get_uniform_location("normal_map");
 
 	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
 		std::string str = std::to_string(i);
-		location_light_position_eye_space[i] = get_uniform_location("lightPositionEyeSpace[" + str + "]");
-		location_light_color[i] = get_uniform_location("lightColor[" + str + "]");
+		location_light_position_eye_space[i] = get_uniform_location("light_position_eye_space[" + str + "]");
+		location_light_color[i] = get_uniform_location("light_color[" + str + "]");
 		location_attenuation[i] = get_uniform_location("attenuation[" + str + "]");
 	}
 }

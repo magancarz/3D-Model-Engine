@@ -43,10 +43,10 @@ void SkyboxShader::bind_attributes() {
 }
 
 void SkyboxShader::get_all_uniform_locations() {
-	location_projection_matrix = get_uniform_location("projectionMatrix");
-	location_view_matrix = get_uniform_location("viewMatrix");
-	location_fog_color = get_uniform_location("fogColor");
-	location_cube_map1 = get_uniform_location("cubeMap");
-	location_cube_map2 = get_uniform_location("cubeMap2");
-	location_blend_factor = get_uniform_location("blendFactor");
+	location_projection_matrix = get_uniform_location("proj");
+	location_view_matrix = get_uniform_location("view");
+	location_fog_color = get_uniform_location("fog_color");
+	location_cube_map1 = get_uniform_location("cube_map");
+	location_cube_map2 = get_uniform_location("cube_map2");
+	location_blend_factor = get_uniform_location("blend_factor");
 }

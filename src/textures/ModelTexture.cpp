@@ -28,7 +28,7 @@ void ModelTexture::set_normal_map(const unsigned int value) {
 }
 
 int ModelTexture::get_normal_map() const {
-	return m_normal_map;
+	return static_cast<int>(m_normal_map);
 }
 
 void ModelTexture::set_specular_map(const unsigned int value) { 

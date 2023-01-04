@@ -29,9 +29,17 @@ void WaterFrameBuffers::unbind_current_frame_buffer() {
 	glViewport(0, 0, DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
 }
 
-unsigned int WaterFrameBuffers::get_reflection_texture() const { return m_reflection_texture; }
-unsigned int WaterFrameBuffers::get_refraction_texture() const { return m_refraction_texture; }
-unsigned int WaterFrameBuffers::get_refraction_depth_texture() const { return m_refraction_depth_texture; }
+unsigned int WaterFrameBuffers::get_reflection_texture() const {
+	return m_reflection_texture;
+}
+
+unsigned int WaterFrameBuffers::get_refraction_texture() const {
+	return m_refraction_texture;
+}
+
+unsigned int WaterFrameBuffers::get_refraction_depth_texture() const {
+	return m_refraction_depth_texture;
+}
 
 void WaterFrameBuffers::initialise_reflection_frame_buffer() {
 	m_reflection_frame_buffer = create_frame_buffer();

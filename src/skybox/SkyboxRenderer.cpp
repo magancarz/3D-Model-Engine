@@ -27,7 +27,7 @@ void SkyboxRenderer::render(const std::shared_ptr<Camera>& camera, const float r
 	m_skybox_shader->stop();
 }
 
-void SkyboxRenderer::bind_textures() {
+void SkyboxRenderer::bind_textures() const {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_night_texture);
 }

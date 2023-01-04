@@ -12,9 +12,9 @@ void HorizontalBlurShader::load_target_width(const float width) const {
 
 void HorizontalBlurShader::bind_attributes() {
 	bind_attribute(0, "position");
-	bind_attribute(1, "textureCoords");
+	bind_attribute(1, "texture_coords");
 }
 
 void HorizontalBlurShader::get_all_uniform_locations() {
-	location_target_width = get_uniform_location("targetWidth");
+	location_target_width = get_uniform_location("target_width");
 }

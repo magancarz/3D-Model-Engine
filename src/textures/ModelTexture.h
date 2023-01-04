@@ -30,16 +30,16 @@ public:
 	int get_number_of_rows() const;
 
 private:
-	unsigned int m_texture_id,
-				 m_normal_map,
-				 m_specular_map;
+	unsigned int m_texture_id   = 0,
+				 m_normal_map   = 0,
+				 m_specular_map = 0;
 
-	float m_shine_damper = .5f;
+	float m_shine_damper = 0.5f;
 	float m_reflectivity = 0.0f;
 
-	bool m_has_transparency = false,
+	bool m_has_transparency  = false,
 		 m_use_fake_lighting = false,
-		 m_has_specular_map = false;
+		 m_has_specular_map  = false;
 
 	int m_number_of_rows = 1;
 };

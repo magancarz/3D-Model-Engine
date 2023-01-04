@@ -72,7 +72,7 @@ void StaticShader::load_clip_plane(const glm::vec4& plane) const {
 
 void StaticShader::bind_attributes() {
 	bind_attribute(0, "position");
-	bind_attribute(1, "textureCoords");
+	bind_attribute(1, "texture_coords");
 	bind_attribute(2, "normal");
 }
 
@@ -84,26 +84,26 @@ void StaticShader::get_all_uniform_locations() {
 
 	//Light calculation uniforms
 	for(const int i : std::views::iota(0, MAX_LIGHTS)) {
-		location_light_position[i] = get_uniform_location("lightPosition[" + std::to_string(i) + "]");
-		location_light_color[i] = get_uniform_location("lightColor[" + std::to_string(i) + "]");
+		location_light_position[i] = get_uniform_location("light_position[" + std::to_string(i) + "]");
+		location_light_color[i] = get_uniform_location("light_color[" + std::to_string(i) + "]");
 		location_attenuation[i] = get_uniform_location("attenuation[" + std::to_string(i) + "]");
 	}
-	location_shine_damper = get_uniform_location("shineDamper");
+	location_shine_damper = get_uniform_location("shine_damper");
 	location_reflectivity = get_uniform_location("reflectivity");
-	location_use_fake_lighting = get_uniform_location("useFakeLighting");
+	location_use_fake_lighting = get_uniform_location("use_fake_lighting");
 
 	//Fog calculation uniform
-	location_sky_color = get_uniform_location("skyColor");
+	location_sky_color = get_uniform_location("sky_color");
 
 	//Texture atlases uniforms
-	location_number_of_rows = get_uniform_location("numberOfRows");
+	location_number_of_rows = get_uniform_location("number_of_rows");
 	location_offset = get_uniform_location("offset");
 
 	//Clip plane
 	location_plane = get_uniform_location("plane");
 
 	//Specular map uniforms
-	location_specular_map = get_uniform_location("specularSampler");
-	location_model_texture = get_uniform_location("textureSampler");
-	location_uses_specular_map = get_uniform_location("usesSpecularMap");
+	location_specular_map = get_uniform_location("specular_sampler");
+	location_model_texture = get_uniform_location("texture_sampler");
+	location_uses_specular_map = get_uniform_location("uses_specular_map");
 }

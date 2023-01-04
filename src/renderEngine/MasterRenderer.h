@@ -28,7 +28,6 @@ public:
 	void process_terrain(const std::shared_ptr<Terrain>& terrain);
 
 	glm::mat4 get_projection_matrix() const;
-	unsigned int get_shadow_map_texture() const;
 
 	void clean_up_objects_maps();
 

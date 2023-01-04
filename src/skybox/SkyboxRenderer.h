@@ -10,7 +10,7 @@ public:
 	void render(const std::shared_ptr<Camera>& camera, float r, float g, float b);
 
 private:
-	void bind_textures();
+	void bind_textures() const;
 
 	static constexpr float SIZE = 500.0f;
 

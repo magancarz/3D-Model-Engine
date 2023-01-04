@@ -93,7 +93,7 @@ std::shared_ptr<RawModel> OBJLoader::load_obj(const std::string& file_name, cons
 	std::ifstream in_file(locations::models_folder_location + file_name + locations::model_extension, std::ios::in);
 
 	if(!in_file) {
-		throw std::runtime_error("Unable to load obj file!\n");
+		throw std::runtime_error("Unable to load " + file_name + " obj file!\n");
 	}
 
 	std::string line;

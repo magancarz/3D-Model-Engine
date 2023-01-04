@@ -60,7 +60,6 @@ std::shared_ptr<RawModel> Terrain::generate_terrain(
 	const auto texture_data = std::make_unique<TextureData>(image, width, height);
 
 	const int vertex_count = m_heights_size = height;
-	int count = vertex_count * vertex_count;
 
 	m_heights = new float*[vertex_count];
 	for(int i = 0; i < vertex_count; i++)
@@ -126,12 +125,8 @@ float Terrain::get_height(const int x, const int z, const std::unique_ptr<Textur
 }
 
 glm::vec3 Terrain::calculate_normal(const int x, const int z, const std::unique_ptr<TextureData>& texture_data) const {
-	const float height_l = get_height(x - 1, z, texture_data);
-	const float height_r = get_height(x + 1, z, texture_data);
-	const float height_u = get_height(x, z - 1, texture_data);
-	const float height_d = get_height(x, z + 1, texture_data);
-
-	glm::vec3 normal(height_l - height_r, 2.0f, height_d - height_u);
+	// for this moment, normal will point upwards
+	glm::vec3 normal(0, 1.0f, 0);
 	normal = glm::normalize(normal);
 
 	return normal;

@@ -15,5 +15,5 @@ void VerticalBlurShader::bind_attributes() {
 }
 
 void VerticalBlurShader::get_all_uniform_locations() {
-	location_target_height = get_uniform_location("targetHeight");
+	location_target_height = get_uniform_location("target_height");
 }

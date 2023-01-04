@@ -41,7 +41,7 @@ namespace NormalMappingOBJLoader {
 		std::vector<unsigned int>& indices,
 		std::vector<std::shared_ptr<VertexNM>>& vertices);
 
-	void remove_unused_vertices(std::vector<std::shared_ptr<VertexNM>>& vertices);
+	void remove_unused_vertices(const std::vector<std::shared_ptr<VertexNM>>& vertices);
 
 	std::shared_ptr<RawModel> load_normal_mapped_obj(
 		const std::string& obj_file_name,

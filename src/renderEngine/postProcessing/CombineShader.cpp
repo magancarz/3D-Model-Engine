@@ -16,6 +16,6 @@ void CombineShader::connect_texture_units() const {
 }
 
 void CombineShader::get_all_uniform_locations() {
-	location_color_texture = get_uniform_location("colorTexture");
-	location_highlight_texture = get_uniform_location("highlightTexture");
+	location_color_texture = get_uniform_location("color_texture");
+	location_highlight_texture = get_uniform_location("highlight_texture");
 }

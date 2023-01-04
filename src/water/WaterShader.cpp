@@ -45,13 +45,13 @@ void WaterShader::get_all_uniform_locations() {
 	location_projection_matrix = get_uniform_location("proj");
 	location_view_matrix = get_uniform_location("view");
 	location_model_matrix = get_uniform_location("model");
-	location_reflection_texture = get_uniform_location("reflectionTexture");
-	location_refraction_texture = get_uniform_location("refractionTexture");
-	location_dudv_map = get_uniform_location("dudvMap");
-	location_normal_map = get_uniform_location("normalMap");
-	location_depth_map = get_uniform_location("depthMap");
-	location_move_factor = get_uniform_location("moveFactor");
-	location_light_position = get_uniform_location("lightPosition");
-	location_light_color = get_uniform_location("lightColor");
-	location_camera_position = get_uniform_location("cameraPosition");
+	location_reflection_texture = get_uniform_location("reflection_texture");
+	location_refraction_texture = get_uniform_location("refraction_texture");
+	location_dudv_map = get_uniform_location("dudv_map");
+	location_normal_map = get_uniform_location("normal_map");
+	location_depth_map = get_uniform_location("depth_map");
+	location_move_factor = get_uniform_location("move_factor");
+	location_light_position = get_uniform_location("light_position");
+	location_light_color = get_uniform_location("light_color");
+	location_camera_position = get_uniform_location("camera_position");
 }
