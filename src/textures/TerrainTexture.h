@@ -2,10 +2,10 @@
 
 class TerrainTexture {
 public:
-	TerrainTexture(unsigned int textureID)
-		: m_textureID(textureID) {}
+	TerrainTexture(unsigned int texture_id);
 
-	inline unsigned int getTextureID() { return m_textureID; };
+	unsigned int get_texture_id() const;
+
 private:
-	unsigned int m_textureID;
+	unsigned int m_texture_id;
 };

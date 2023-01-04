@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\renderEngine\postProcessing\</FILEPATH>
+      <FILENAME>CombineFilter.cpp</FILENAME>
+      <LINE>11</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;CombineShader,std::default_delete&lt;CombineShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>CombineFilter::{ctor}</FUNCTION>
+    <DECORATED>??0CombineFilter@@QAE@XZ</DECORATED>
+    <FUNCLINE>5</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\renderEngine\postProcessing\</FILEPATH>
+      <FILENAME>CombineFilter.cpp</FILENAME>
+      <LINE>21</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;CombineShader,std::default_delete&lt;CombineShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>CombineFilter::render</FUNCTION>
+    <DECORATED>?render@CombineFilter@@QBEXII@Z</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

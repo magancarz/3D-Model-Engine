@@ -1,59 +1,55 @@
 #pragma once
 
-#include "../Headers.h"
-#include "../shaders/StaticShader.h"
-#include "../shaders/TerrainShader.h"
-#include "../skybox/SkyboxShader.h"
 #include "../skybox/SkyboxRenderer.h"
-#include "../normalMappingRenderer/NormalMappingRenderer.h"
-#include "../shadows/ShadowMapMasterRenderer.h"
-#include "EntityRenderer.h"
-#include "TerrainRenderer.h"
-
-void enableCulling();
-void disableCulling();
-const float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
-const float FOV = 70.0f;
-const float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
+#include "../entities/EntityRenderer.h"
+#include "../entities/Light.h"
+#include "../entities/NormalMappingRenderer.h"
+#include "../entities/NormalMappingShader.h"
+#include "../models/Loader.h"
+#include "../terrain/TerrainRenderer.h"
 
 class MasterRenderer {
 public:
-	MasterRenderer(Loader* loader, Camera* camera);
-	~MasterRenderer();
+	MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera);
 
-	void render(std::vector<Light*>& lights, Camera& camera, glm::vec4 clipPlane);
-	void renderShadowMap(std::vector<Entity*>* entityList, Light* sun);
+	void render(
+		const std::vector<std::shared_ptr<Light>>& lights,
+		const std::shared_ptr<Camera>& camera,
+		const glm::vec4& clip_plane) const;
 	
-	void prepare();
+	static void prepare();
 
-	void processEntity(Entity& entity);
-	void processEntities(std::vector<Entity*>* entityList);
-	void processNormalMapEntity(Entity& entity);
-	void processTerrain(Terrain* terrain);
+	static void enable_culling();
+	static void disable_culling();
 
-	inline glm::mat4 getProjectionMatrix() { return m_projectionMatrix; };
-	inline unsigned int getShadowMapTexture() { return m_shadowMapRenderer->getShadowMap(); }
+	void process_entity(const std::shared_ptr<Entity>& entity);
+	void process_entities(const std::vector<std::shared_ptr<Entity>>& entities);
 
-	void cleanUp();
+	void process_normal_map_entity(const std::shared_ptr<Entity>& entity);
+	void process_normal_map_entities(const std::vector<std::shared_ptr<Entity>>& entities);
+	void process_terrain(const std::shared_ptr<Terrain>& terrain);
+
+	glm::mat4 get_projection_matrix() const;
+
+	void clean_up_objects_maps();
+
+	inline static constexpr float RED = 0.0f, GREEN = 0.0f, BLUE = 0.0f;
+	inline static constexpr float FOV = 70.0f;
+	inline static constexpr float NEAR_PLANE = 0.1f, FAR_PLANE = 1000.0f;
+
 private:
-	StaticShader* m_shader;
-	NormalMappingShader* m_normalMappingShader;
-	EntityRenderer* m_renderer;
+	glm::mat4 m_projection_matrix;
+	
+	std::unique_ptr<NormalMappingShader> m_normal_mapped_objects_shader;
 
-	TerrainShader* m_terrainShader;
-	TerrainRenderer* m_terrainRenderer;
+	std::unique_ptr<EntityRenderer> m_entity_renderer;
+	std::unique_ptr<TerrainRenderer> m_terrain_renderer;
+	std::unique_ptr<SkyboxRenderer> m_skybox_renderer;
+	std::unique_ptr<NormalMappingRenderer> m_normal_mapping_renderer;
 
-	SkyboxRenderer* m_skyboxRenderer;
+	std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>> m_entities;
+	std::map<std::shared_ptr<TexturedModel>, std::vector<std::shared_ptr<Entity>>> m_normal_mapped_entities;
+	std::vector<std::shared_ptr<Terrain>> m_terrains;
 
-	NormalMappingRenderer* m_normalMappingRenderer;
-
-	ShadowMapMasterRenderer* m_shadowMapRenderer;
-
-	glm::mat4 m_projectionMatrix;
-
-	std::map<TexturedModel*, std::vector<Entity*>*>* m_entities;
-	std::map<TexturedModel*, std::vector<Entity*>*>* m_normalMappingEntities;
-	std::vector<Terrain*>* m_terrains;
-
-	void createProjectionMatrix();
+	void create_projection_matrix();
 };

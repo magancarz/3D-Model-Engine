@@ -4,43 +4,42 @@ class ModelTexture {
 public:
 	ModelTexture(unsigned int id);
 
-	void setShineDamper(float shineDamper) { m_shineDamper = shineDamper; }
-	void setReflectivity(float reflectivity) { m_reflectivity = reflectivity; }
+	void set_shine_damper(float shine_damper);
+	float get_shine_damper() const;
 
-	inline unsigned int getID() { return m_textureID; }
+	void set_reflectivity(float reflectivity);
+	float get_reflectivity() const;
 
-	inline void setNormalMap(int value) { m_normalMap = value; }
-	inline int getNormalMap() { return m_normalMap; }
+	unsigned int get_id() const;
 
-	inline float& getShineDamper() { return m_shineDamper; }
-	inline float& getReflectivity() { return m_reflectivity; }
+	void set_normal_map(unsigned int value);
+	int get_normal_map() const;
 
-	inline void setTransparency(bool value) { m_hasTransparency = value; }
-	inline bool getTransparency() { return m_hasTransparency; }
+	void set_specular_map(unsigned int value);
 
-	inline void useFakeLighting(bool value) { m_useFakeLighting = value; }
-	inline bool isUsingFakeLighting() { return m_useFakeLighting; }
+	bool has_specular_map() const;
+	unsigned int get_specular_map() const;
 
-	void setSpecularMap(int value) { 
-		m_specularMap = value;
-		m_hasSpecularMap = true; 
-	}
-	inline bool hasSpecularMap() { return m_hasSpecularMap; }
-	inline unsigned int getSpecularMap() { return m_specularMap; }
+	void set_transparency(bool value);
+	bool get_transparency() const;
 
-	inline void setNumberOfRows(int value) { m_numberOfRows = value; }
-	inline bool getNumberOfRows() { return m_numberOfRows; }
+	void use_fake_lighting(bool value);
+	bool is_using_fake_lighting() const;
+
+	void set_number_of_rows(int value);
+	int get_number_of_rows() const;
+
 private:
-	unsigned int m_textureID,
-				 m_normalMap,
-				 m_specularMap;
+	unsigned int m_texture_id   = 0,
+				 m_normal_map   = 0,
+				 m_specular_map = 0;
 
-	float m_shineDamper = 1.0f;
+	float m_shine_damper = 0.5f;
 	float m_reflectivity = 0.0f;
 
-	bool m_hasTransparency = false,
-		 m_useFakeLighting = false,
-		 m_hasSpecularMap = false;
+	bool m_has_transparency  = false,
+		 m_use_fake_lighting = false,
+		 m_has_specular_map  = false;
 
-	int m_numberOfRows = 1;
+	int m_number_of_rows = 1;
 };

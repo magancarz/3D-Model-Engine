@@ -1,23 +1,21 @@
 #pragma once
 
-#include "../Headers.h"
-
 class Input {
 public:
-	Input();
+	static void initialize_input();
 
-	void setKeyDown(unsigned int keyCode, bool value);
-	bool isKeyDown(unsigned int keyCode);
+	static void set_key_down(unsigned int key_code, bool value);
+	static bool is_key_down(unsigned int key_code);
 
-	inline void setLeftMouseButtonDown(bool value) { leftMouseButtonDown = value; };
-	inline void setRightMouseButtonDown(bool value) { rightMouseButtonDown = value; };
-	inline bool isLeftMouseButtonDown() { return leftMouseButtonDown; };
-	inline bool isRightMouseButtonDown() { return rightMouseButtonDown; };
+	static void set_left_mouse_button_down(bool value);
+	static void set_right_mouse_button_down(bool value);
+	static bool is_left_mouse_button_down();
+	static bool is_right_mouse_button_down();
 
 private:
-	static constexpr int NUM_KEYS = 512;
-	bool keyDown[NUM_KEYS];
+	inline static constexpr int NUM_KEYS = 512;
+	inline static bool key_down[NUM_KEYS];
 
-	bool leftMouseButtonDown = false,
-		 rightMouseButtonDown = false;
+	inline static bool left_mouse_button_down  = false,
+					   right_mouse_button_down = false;
 };

@@ -1,60 +1,62 @@
 #pragma once
 
-#include "../Headers.h"
+#include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
 
-#include "../toolbox/Input.h"
 #include "Player.h"
 
 #define CAMERA_HEIGHT 5
-
-extern Input inputManager;
 
 enum direction {FORWARD, BACKWARD, LEFT, RIGHT};
 
 class Camera {
 public:
-	Camera(Player& player, glm::vec3 position);
+	Camera(std::shared_ptr<Player> player, const glm::vec3& position);
 
 	void move();
-	void updateCameraVectors();
+	void update_camera_vectors();
 	void rotate();
 
-	void setPosition(glm::vec3 position) { m_position = position; };
-	void setPitch(float pitch) { m_pitch = pitch; };
-	void setYaw(float yaw) { m_yaw = yaw; };
-	void setRoll(float roll) { m_roll = roll; };
+	void invert_pitch();
 
-	void increasePitch(float pitch) { m_pitch += pitch * m_sensitivity; };
-	void increaseYaw(float yaw) { m_yaw += yaw * m_sensitivity; };
-	void increaseRoll(float roll) { m_roll += roll * m_sensitivity; };
+	glm::mat4 get_view() const;
 
-	void invertPitch();
+	void set_position(const glm::vec3& position);
+	void set_pitch(float pitch);
+	void set_yaw(float yaw);
+	void set_roll(float roll);
 
-	glm::mat4 getView();
+	void increase_pitch(float pitch);
+	void increase_yaw(float yaw);
+	void increase_roll(float roll);
 
-	inline glm::vec3& getPosition() { return m_position; };
-	inline float getPitch() const { return m_pitch; };
-	inline float getYaw() const { return m_yaw; };
-	inline float getRoll() const { return m_roll; };
-	inline float getSensitivity() const { return m_sensitivity; };
-	inline glm::vec3 getCameraFront() const { return m_front; }
-	inline glm::vec3 getCameraRight() const { return m_right; }
+	glm::vec3 get_position() const;
+	float get_pitch() const;
+	float get_yaw() const;
+	float get_roll() const;
+	float get_sensitivity() const;
+	glm::vec3 get_camera_front() const;
+	glm::vec3 get_camera_right() const;
 
 private:
-	void calculateCameraPosition(float horizontalDistance, float verticalDistance);
-	float calculateHorizontalDistance();
-	float calculateVerticalDistance();
-	void calculateZoom();
-	void calculatePitch();
-	void calculateAngleAroundThePlayer();
+	void calculate_camera_position(float horizontal_distance, float vertical_distance);
+	float calculate_horizontal_distance() const;
+	float calculate_vertical_distance() const;
+	void calculate_zoom();
+	void calculate_pitch();
+	void calculate_angle_around_the_player();
 
-	Player& m_player;
-	float m_distanceFromThePlayer = 50.0f,
-		  m_angleAroundThePlayer = 0;
+	std::shared_ptr<Player> m_player;
+
+	float m_distance_from_the_player = 50.0f,
+		  m_angle_around_the_player = 0;
 
 	glm::vec3 m_position;
-	glm::vec3 m_worldUp, m_front, m_right, m_up;
+	glm::vec3 m_world_up = glm::vec3(0.f, 0.f, 1.f),
+	          m_front    = glm::vec3(0.0f, 1.0f, 0.0f),
+			  m_right    = glm::vec3(0.0f),
+			  m_up       = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	float m_movementSpeed, m_sensitivity;
+	float m_movement_speed, m_sensitivity;
 	float m_pitch, m_yaw, m_roll;
 };

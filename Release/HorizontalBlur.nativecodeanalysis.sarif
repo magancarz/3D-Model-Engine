@@ -1,0 +1,1205 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Ignorowana wartość zwrotna: „std::unique_ptr<HorizontalBlurShader,std::default_delete<HorizontalBlurShader> >::->”."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/dev/3D-Model-Viewer/src/renderEngine/postProcessing/HorizontalBlur.cpp"
+                },
+                "region": {
+                  "startLine": 10,
+                  "startColumn": 2,
+                  "endLine": 10,
+                  "endColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "HorizontalBlur::{ctor}",
+                  "decoratedName": "??0HorizontalBlur@@QAE@II@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Ignorowana wartość zwrotna: „std::unique_ptr<HorizontalBlurShader,std::default_delete<HorizontalBlurShader> >::->”."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/dev/3D-Model-Viewer/src/renderEngine/postProcessing/HorizontalBlur.cpp"
+                },
+                "region": {
+                  "startLine": 18,
+                  "startColumn": 2,
+                  "endLine": 18,
+                  "endColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "HorizontalBlur::render",
+                  "decoratedName": "?render@HorizontalBlur@@QBEXI@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31630.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/dev/3D-Model-Viewer/src/renderEngine/postProcessing/HorizontalBlur.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "11081fcf4f59cc72fe832341e9a37b9105e101e91d0a3ba952b2d12069585509"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/renderengine/postprocessing/horizontalblur.h"
+          },
+          "hashes": {
+            "sha-256": "8c830e7fc55d588d69fe18e3eb4408c936e3c5f0f72c8cdcea6d5f3e38f30801"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/renderengine/postprocessing/horizontalblurshader.h"
+          },
+          "hashes": {
+            "sha-256": "036dc46af9c576ae595e948bb80493ea44869e64c40d6d86ab5154aff6906438"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/shaders/shaderprogram.h"
+          },
+          "hashes": {
+            "sha-256": "beef017158f8e6708e8d1b83d7db2914e421df284004bdfdb71b34d6b927be9c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/glm.hpp"
+          },
+          "hashes": {
+            "sha-256": "32d1d7eb18033d504dd54502562b0bf4677e4b0ecd7837d8ae0bf551818e71d7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/_fixes.hpp"
+          },
+          "hashes": {
+            "sha-256": "fa972e30228133d4a67cbdb1a05f0edfb32de4149c95c253650cf1ff1cf35ad1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/setup.hpp"
+          },
+          "hashes": {
+            "sha-256": "e1ab417f7dd01647216835a8a2cd6c74d8543289daef65bf3d31ea05cc7679c1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/simd/platform.h"
+          },
+          "hashes": {
+            "sha-256": "88aedb90d4d73e7eef99624f8a5c7546b556ec591dfbe4ff84f3cce14f743142"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/fwd.hpp"
+          },
+          "hashes": {
+            "sha-256": "6a7d35577a8abf2a5c15914bd0f14ff673d7313cc38af2f448dc81f9a588f048"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/qualifier.hpp"
+          },
+          "hashes": {
+            "sha-256": "f913d9917b04c9b392854d550e8d2ac9197b21338100f55038f64584a566edfc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/vec2.hpp"
+          },
+          "hashes": {
+            "sha-256": "471ef34e19e825f694d4c021dd0a8705e5e148b6dee9ea651d8455ec49ecaa00"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_bool2.hpp"
+          },
+          "hashes": {
+            "sha-256": "14dfb7baa6114b10d428991e1f998ad9fa8a3157ae45a245ba13321cf6c87043"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec2.hpp"
+          },
+          "hashes": {
+            "sha-256": "59b39affd4178d9186bb41abd79259126931ae339896b63b4a62e4abebc6a90c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec2.inl"
+          },
+          "hashes": {
+            "sha-256": "0a8061732ffabe5d715b1476c95e296fb757fd3766dadef722374772912d983c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/compute_vector_relational.hpp"
+          },
+          "hashes": {
+            "sha-256": "f4b44de6254936cd4f35756f93469934d60859f0062e821733bed79441f66abf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_bool2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "a84467a8f9aeeb8de3b76df1aa5f8085503b5f4050bd5c808a60b2527736b72c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_float2.hpp"
+          },
+          "hashes": {
+            "sha-256": "e04a566abf197f138dc8fb3156833cd2ba7fc4a92405f840b096b317fcc46961"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_float2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "a98bcd3d22935a48c693496dd13bd6020e98072079b94c45bc608b7b6d7a106d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_double2.hpp"
+          },
+          "hashes": {
+            "sha-256": "da0b99d0c93f97bc072c2714fccd5e7215577482b28de408e3b7e3b30c4fc27f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_double2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "4fa7175b87630322d224aef6f050549120eb6119f78628d0bf002484bc2325bd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_int2.hpp"
+          },
+          "hashes": {
+            "sha-256": "3f19cc4e45dca03b9f3a88608c942b9cf9d167c80e2766b83d6ab134284ad25c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_int2_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "572513d752d915c3c55242af93a36530f5a6e33c3861092da588653044701872"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/scalar_int_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "c67f75286949a38f86de6d3685832a86a4188e54bb22121cd8f2e2a2ebdfb399"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_uint2.hpp"
+          },
+          "hashes": {
+            "sha-256": "3d03953933445d262f9e838144218343dcbd92f01ddcafcba368e68712affecf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_uint2_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "ba689ecb7f59648be907b99e4b55d4b81237806bf445d020cbf1ac13400e63f1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/scalar_uint_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "88ba07e9947d52cd5c33409ab6ce52af42c6f25839f615e4b10d17753c1d1eca"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/vec3.hpp"
+          },
+          "hashes": {
+            "sha-256": "d97ddb71ad02da39a4ac96670d4fe792264a8ec2e19477f60d7c245ae1a301b4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_bool3.hpp"
+          },
+          "hashes": {
+            "sha-256": "8444556f70e1fa055558f8478ba741df295a734f142e287fc0786ffed9284a47"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec3.hpp"
+          },
+          "hashes": {
+            "sha-256": "29671afdebc7d159a1f69d5ab42f69662c5d71ec2595b0148af455594986aa2c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec3.inl"
+          },
+          "hashes": {
+            "sha-256": "fc85fc012d4cc025e13ab7027d4355f832f16eff246e7c12911bba41cf31beee"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_bool3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "764e4523aa8c416e0e3cf90f164332166eac1878a8784c232a8872fee5677f2b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_float3.hpp"
+          },
+          "hashes": {
+            "sha-256": "03d186b2344d390c32a512a9b7736707b6399f0c3f77b80ab0d49a7d0b983751"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_float3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "217037d131b93e061aec1cff60642f856c84e99056acac5788425763728ff6cc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_double3.hpp"
+          },
+          "hashes": {
+            "sha-256": "899740010c39bbe4e22b51daad27f6b4fa00da9bc4a4b70866036bd888afa984"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_double3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "936f965a1b879c915e970364b5baebc17bab7d649e879f6e0d96880e347f0621"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_int3.hpp"
+          },
+          "hashes": {
+            "sha-256": "1296aa5290c52bf8331b54e24af32fbb7769d089f6f0146b6f3cdfee89a7aed6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_int3_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "00fb3c97857b3e722284a2e782ebdd103e034ba7f35867875fbf848a393bb49a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_uint3.hpp"
+          },
+          "hashes": {
+            "sha-256": "48c423931390622043e17545a0308776dc4a322ba0d2e36e8ff7927d5e0b66fe"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_uint3_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "e8b2bb0ac1f67b8f37cc7c9bed17b1482322cd29926696477dfdb1f150a92a8c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/vec4.hpp"
+          },
+          "hashes": {
+            "sha-256": "8b44d493eb424728b5897924fd70c9f4a39c74e8886d2599c0cca669e7450016"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_bool4.hpp"
+          },
+          "hashes": {
+            "sha-256": "b9106d7154ed6df900ed9ed5919bed0b625d08058f761df8e783e14686daef39"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec4.hpp"
+          },
+          "hashes": {
+            "sha-256": "79c6e69900330e2169c9fcdc1520be74622829aecf7632d353e1b7f9c6f14f8c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec4.inl"
+          },
+          "hashes": {
+            "sha-256": "2f7b2ea5bf3d2cd5e5407f92af0d8b63bb67cf311210e2ee20556d80c1698342"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_bool4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "2df19112b8540023df6130ab9b72f150e5e7081fafa02c77bdb7e9abe9ebd0ef"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_float4.hpp"
+          },
+          "hashes": {
+            "sha-256": "b09270e5e76688f9093c055d4f92cf82d612cbc2f3d3d69e2343bbfd3acb8b13"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_float4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "9ab8578f82608014191f97a27413617faf029b9bf64311756de7a15fc47442ff"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_double4.hpp"
+          },
+          "hashes": {
+            "sha-256": "272762761a35813caaa8647db255606e5fa356595a052ea94ed87e612c458957"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_double4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "8102adb66c260325ad13df339843de450894bb45eafedaa05753c479b830a934"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_int4.hpp"
+          },
+          "hashes": {
+            "sha-256": "6115283d489e1d990ca4d88001f63c494ea4959cf216d44ef9e28dbf3d9b4620"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_int4_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "81bab05dc476f0d432ce425d4f7e56526eb1436b8a594e625b596973b65c7620"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_uint4.hpp"
+          },
+          "hashes": {
+            "sha-256": "1afbf32485cf310fb8abd8f9610be2c7fef1fd71a5c4495cad4b942c74832b16"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/vector_uint4_sized.hpp"
+          },
+          "hashes": {
+            "sha-256": "ce865c1ff455a477d3b3b153d99009ae2fe4ddc1a8d4af3b7a5f14f9fcc1ae3f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat2x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "1d72184e12db839cde03efd6301a33ae3dfe002930c382324ee4b53e89a775b8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double2x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "f162435d27c44b2123fb6aeabf6a1ad303038bc23ce2c4ce7c8d65059b4ff18d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat2x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "426e7dbf96f7be9f1766e1e538ac95098c9bcb8cb60dd0d939bd2dd0254cc0ec"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat2x2.inl"
+          },
+          "hashes": {
+            "sha-256": "db0e905014561780161d3f34b7540504aab5acfa665c327b4ca986e928415e39"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/matrix.hpp"
+          },
+          "hashes": {
+            "sha-256": "9c68e3878b8366a272769013a3a1fd42d1aa8a60c4a9fe85119fbb1624c33492"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat2x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "c4ab6c4610acbf6a2338fc8757fd50c0ae8837bda5119d8cb11a9f4aff48ab70"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double2x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "293555b0ed97a43a8943245ad856ae5dd7db047205cd518f3a6626475a3854f6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat2x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "41318f30cb64c4f866d86e9a20ac06ec5af4f16898492f2f4807af6ee760603f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat2x3.inl"
+          },
+          "hashes": {
+            "sha-256": "ed932ca6b41684f658b7841d28184abc7553f597e9009599aa74b85fd764c47b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double2x3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "5b0ebe9a915f87f396870eb4897253e60fa0bea6044435ce7a28ee3a1920d71c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float2x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "d731b656ddded3ca7b9eb26b52849445a1d438457e4fad02d1fe94fa349b39a0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float2x3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "f8bd301e8a43b15e92c9935edb71c455b9ecd922c5f0a2e6d1b32783819cb28c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat2x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "2fe1239791b39696fd11569cb3fcb0b6a2e980be451587322287db854e774abb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double2x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "8a220b383965f0457b2e60cee0e01328a8e0ddce266e9e101f98e5471fff47bd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat2x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "a5dee50d014b41aea2fc88cd938bcee494bd082b0df59bbb0510644008dfeb60"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat2x4.inl"
+          },
+          "hashes": {
+            "sha-256": "7dbaca0bad683a01b0a7466cd942fb5e5207e0e12d1f840a87f01f4dd12d9bb3"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double2x4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "1fd885f6484d863f6e43c8276ab2e3548e8789a584eb895a45dfb2479a032c02"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float2x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "f0be584885cc45b25708a181d859d69886d6919839f399f831ea727682c88a05"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float2x4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "15d8d7f61beeaacd077ef44296a5ed369a0c6aab5ec8481db9bd60f3290013dc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat3x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "f1f768b8ccf282c755a2d2ab4bd5529726de202b038813468752d00d8ca1c4bf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double3x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "21189033fd6644d820eb597cc1afa6c7ee4cc60e8f6d90d5a0d50b7e56f47e81"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat3x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "cedbf24e96b79830e3591634b38723511e934a8a1067b24c6c46d29c9e70497e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat3x2.inl"
+          },
+          "hashes": {
+            "sha-256": "80365a6b0d6ff85dbbb7cfb1ad28a8abc405dc6395f3d267d4dd09bd1f7e69af"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double3x2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "b8bfeb2bc4ad1e9a27673de6c6bf2a547a8db2c8766ee02a7324170b678ae60f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float3x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "bf9480997a190bf5eec0c6f248c67b32bc1d64e438228d7057c72606805ebc6c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float3x2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "ac403a7bf1ee8ad2799a4c8a9630d679156bd82f411696a4c9eba1de5f6dc8cb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat3x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "11feaa133f2164a0e1f68beb23d94ff774734dcd71ca4c1a1f41bc47f8c4e625"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double3x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "ce0212b641e65eddba35e02df72b6343056309af06b0e26464a908d19eece282"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat3x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "384d977fa78a375d592e9641013482531830221e431f3e0948c5d0941b270c14"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat3x3.inl"
+          },
+          "hashes": {
+            "sha-256": "a2101b4e7a376f0f9b527d765ffb43c4a61d61ba81757f8a4ae7fcb02a42704b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double3x3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "bf7ea325238b15767ae810e556bfdfdeaf3898aa248b75f374b2284e8afa9ef4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float3x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "13afb5c9a76cd00924bfd90338861bc7ba85097cc8a2c93a747862d9aef95737"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float3x3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "7dabb577886c2d26c752462118e55e67f03d7119a46877980991bc87b6bce4fa"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat3x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "e2dacd780eabf7f38c4e1f2ec37ff6df37cdb5c14c25a07a695ab5e9952f080d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double3x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "5751fac2e7d8955c1a67a558ae6cf53168c279a8dab43a915e14292b130b242c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat3x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "97a609c7230ae8d7ad62efd44eaa160a98c3dc48751fd3f3c6e33c7da2842226"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat3x4.inl"
+          },
+          "hashes": {
+            "sha-256": "4dd2ad0a2812867f30128e40526fdc0bc0ec45b3dd09816cc5a768144fd3bc71"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double3x4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "271e3c054da08e16732398f7d9b24cd0af6ab40f862260404b42999d457c0b19"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float3x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "5a964ddc2ffed1f1a8f5f8d392f34aa4f870a0c985eda0c92c29ac6cd5679543"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float3x4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "096f630c612e71c525269940cfccea7f76dac9a5f282127a0bf89d3b08527830"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat4x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "1aa01695b0cdcf5bed33a7d02011449e5b6a2f2bccc5fea34a380175dedd5144"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double4x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "b0c0155ff665e99994487a4750f703b2018e7bfb6010d3fbd756c5e5d25f4685"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat4x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "0187cae8727bf6b29957f5c19c9c6557622fc9f9820080fb17b37e39ca69e0f5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat4x2.inl"
+          },
+          "hashes": {
+            "sha-256": "1b329c559f103a331fd13a9beecf70821bacf88ee786e6e2ff8d2a995f347176"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double4x2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "660f21b84ed78dd631c00d25442d807074bc7fbeb5e9001f925f1a3d9e4ad04f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float4x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "c911e033c9268da984c9c2254cb92604060525d55220a333daf1688bf4575f6d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float4x2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "dbf3daf91ede9b5987c57c4e4ea609eae089ad241b936aa4ffa604ca89e0346f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat4x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "4037fa966d5bb14ef1fd078c3419b1f1b4b904e4c702c1318c071ac7cd615083"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double4x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "6f5202c9dd2a3a97901220d018f728a9dafb56c9895f3b3cf99ced0304be3095"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat4x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "a142bf286335dff576e06f4f40bfe5dabc3ea1862049097ef84a4d07f5e90738"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat4x3.inl"
+          },
+          "hashes": {
+            "sha-256": "1effc7fcc54bbd74dfe5a2bcf554f32491714db50b9ce72c196f859456948217"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double4x3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "131fe335a681ffb23348f043cee30e2427a9e1f45be9f1c71df1ecb5c7589f6b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float4x3.hpp"
+          },
+          "hashes": {
+            "sha-256": "c8d6bff74c2a51cff7573afcd9541f044d5da519694f4b344ec4bdebc1b6a213"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float4x3_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "e178488c0bd2d95c8d1e907e83e7b7f14bad2c9f6012c10514837b814fdeb9b8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/mat4x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "367342aa2234872e97b18a7aa17d33aadcb09b2e92f83721cf2556e21567e697"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double4x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "2cfc993535a19a8b52a5f6a6d71a0eb3ab646cbf9da0d3cf50f5f3248d3c2e35"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat4x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "ba26ebbdc28f38037fccb5607c795b95aacb682fded359c5165316343d1a69f6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_mat4x4.inl"
+          },
+          "hashes": {
+            "sha-256": "de270132656453051c2d70a80a57ba0eb682f9bd1031531f1be09243ca57e486"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double4x4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "1e906578cda07f564ff7c5b5bf31b4749c686fb6e4052da2bbbd46c9dd6abe00"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float4x4.hpp"
+          },
+          "hashes": {
+            "sha-256": "66dbcdd06c50852fa77660429f618ef9d35131b8a8097821247a869014366c15"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float4x4_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "e8688aa7c58fa5ad167a79075788b9685096202569e6d2186e0433c93647c5bf"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_matrix.inl"
+          },
+          "hashes": {
+            "sha-256": "a1f24be353bf8c0c3ddc846444cf9be3403ebb455ec3c7f173074e99107cea5b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/geometric.hpp"
+          },
+          "hashes": {
+            "sha-256": "9721362b403b952cf79c8ecfc7eeab02678673fa443e65c40541656134a615be"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_geometric.inl"
+          },
+          "hashes": {
+            "sha-256": "0aa17be2667d5447613a01c7db7d283fd3ec43e4d54331d6a73dfe6844d32edd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/exponential.hpp"
+          },
+          "hashes": {
+            "sha-256": "124955d8e89ab7e30fd51561f20a09848348d80d77044057aca07774fa06719b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec1.hpp"
+          },
+          "hashes": {
+            "sha-256": "1008d28b34a974c67d688a1006712ffdbf6221f3e7732fd0b9b2479bfada22c0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_vec1.inl"
+          },
+          "hashes": {
+            "sha-256": "a462f19977e2bd96f8976d20311b12068679226f90273f011d5f2e5da9447adc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_exponential.inl"
+          },
+          "hashes": {
+            "sha-256": "2e5d6796e3e1b7c3c0e550a26cfc5781494e7bf1bf1aa0f4f3b7f0e40a04420d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/vector_relational.hpp"
+          },
+          "hashes": {
+            "sha-256": "5c461ca06d43006ab7d236be00e25bad24614fe4cdfbc76d10f7d8c1e73900b8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_vector_relational.inl"
+          },
+          "hashes": {
+            "sha-256": "98481b9150953869dde39fb823f0a3eba606cfe6cd2ae1f6b3936e92c377a689"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/_vectorize.hpp"
+          },
+          "hashes": {
+            "sha-256": "da5f0b653ca062e22c8e456b6ef5e430309ac8681d2dba4cb1606d4e4df0aa2d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/common.hpp"
+          },
+          "hashes": {
+            "sha-256": "776ef2f5073aa29b7abd0c45c41e99122306b65efeb1dbff0247cc11564a6272"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_common.inl"
+          },
+          "hashes": {
+            "sha-256": "069dc499d749b55b795f474067dcbf13726c4308a141d873c9fc68a31dd34974"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/compute_common.hpp"
+          },
+          "hashes": {
+            "sha-256": "a9ab3f044664b596da81f081d1fa3690997011305b8b8654f0462b6e90245b8f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_double2x2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "870a26e88d5606eb59afd4dfeeaae03e4627fe3b2ac2412ef9909fde4a69c380"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float2x2.hpp"
+          },
+          "hashes": {
+            "sha-256": "ecf72a0f02fec9cf6747a4e5b3d62c9a6f07bbc35b4bbf949250a8100500c8ea"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/ext/matrix_float2x2_precision.hpp"
+          },
+          "hashes": {
+            "sha-256": "955c6d5c0b661dafdcd0169a0e104784deb5dd7862a8fb132720dafb22f4a780"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/trigonometric.hpp"
+          },
+          "hashes": {
+            "sha-256": "cb1c70dc29e437f1abf5e3e55738e88ade925fe0de0e95edac404a752e2d6e0a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_trigonometric.inl"
+          },
+          "hashes": {
+            "sha-256": "12452e0ba259301ece977d5339303437671e9c5939072d804d8ec5b3dc12e1cb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/packing.hpp"
+          },
+          "hashes": {
+            "sha-256": "beb3cec06933970594a957a9bc15f6a09883f113778ff5c648b701bf729d5b0e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_packing.inl"
+          },
+          "hashes": {
+            "sha-256": "60b1773a2531970a3112f774fb045122e7016cb51c9bc104a9a66160261910ec"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_half.hpp"
+          },
+          "hashes": {
+            "sha-256": "9f98c3e42ebf1ad0ca6a1f0d2211bf6d3c226c99555c8852b02ddc4d5c3fa1c5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/type_half.inl"
+          },
+          "hashes": {
+            "sha-256": "36b26467b7878742422c05bbe886e4ba46c1551d414994d67954408698975ef7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/integer.hpp"
+          },
+          "hashes": {
+            "sha-256": "cfaa556eeaa984a445a4c52687a8f8f9096a438b577521f95ff12527cccddf76"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/glm/detail/func_integer.inl"
+          },
+          "hashes": {
+            "sha-256": "8140e9964f4708d4351c798e6ac2c3c824d357314fe8fa60f086cc6a782b9d1a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/renderengine/postprocessing/imagerenderer.h"
+          },
+          "hashes": {
+            "sha-256": "69fc78f4dbdf2836f0b410c23a0aab374fba1eefea55c262a0d560125fb8d196"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/renderengine/postprocessing/fbo.h"
+          },
+          "hashes": {
+            "sha-256": "b6b2f94cfbbad83237ee0910b408806bca0546065b04aec99905156f80e45e6e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/dependencies/glew/include/gl/glew.h"
+          },
+          "hashes": {
+            "sha-256": "70dc1969d43ba3ee2d2f61173025dc69d9d7901594f662441517ce1ed0f4f929"
+          }
+        }
+      ]
+    }
+  ]
+}

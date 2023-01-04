@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../Headers.h"
+#include <glm/glm.hpp>
+
+#include <memory>
 
 #include "../models/TexturedModel.h"
 
@@ -8,41 +10,47 @@ const float GRAVITY = -50.0f;
 
 class Entity {
 public:
-	Entity(TexturedModel& model, glm::vec3 position, float rx, float ry, float rz, float scale);
+	Entity(
+		std::shared_ptr<TexturedModel> model,
+		const glm::vec3& position,
+		float rx, float ry, float rz, float scale);
 
-	Entity(TexturedModel& model, int textureIndex, glm::vec3 position, float rx, float ry, float rz, float scale);
+	Entity(
+		std::shared_ptr<TexturedModel> model,
+		int texture_index,
+		const glm::vec3& position,
+		float rx, float ry, float rz, float scale);
 	
-	void increasePosition(float dx, float dy, float dz);
-	void increaseRotation(float rx, float ry, float rz);
+	void increase_position(float dx, float dy, float dz);
+	void increase_rotation(float rx, float ry, float rz);
 
-	float getTextureXOffset();
-	float getTextureYOffset();
+	float get_texture_x_offset() const;
+	float get_texture_y_offset() const;
 
-	inline TexturedModel& getTexturedModel() { return m_model; };
-	inline glm::vec3 getPosition() const { return m_position; };
-	inline float getRotX() const { return m_rx; };
-	inline float getRotY() const { return m_ry; };
-	inline float getRotZ() const { return m_rz; };
-	inline float getScale() const { return m_scale; };
+	std::shared_ptr<TexturedModel> get_textured_model();
+	glm::vec3 get_position() const;
+	float get_rot_x() const;
+	float get_rot_y() const;
+	float get_rot_z() const;
+	float get_scale() const;
 
-	void setTexturedModel(TexturedModel& model) { m_model = model; };
-	void setPosition(glm::vec3 position) { m_position = position; };
-	void setRotX(float rx) { m_rx = rx; };
-	void setRotY(float ry) { m_ry = ry; };
-	void setRotZ(float rz) { m_rz = rz; };
-	void setScale(float scale) { m_scale = scale; };
-
-protected:
+	void set_textured_model(const std::shared_ptr<TexturedModel>& model);
+	void set_position(const glm::vec3& position);
+	void set_rot_x(float rx);
+	void set_rot_y(float ry);
+	void set_rot_z(float rz);
+	void set_scale(float scale);
+	
 	const float TERRAIN_HEIGHT = 0;
 	
-	bool isInAir = false;
+	bool m_is_in_air = false;
 
 private:
-	TexturedModel& m_model;
+	std::shared_ptr<TexturedModel> m_model;
 
 	glm::vec3 m_position;
 	float m_rx, m_ry, m_rz;
 	float m_scale;
 
-	int m_textureIndex = 0;
+	int m_texture_index = 0;
 };

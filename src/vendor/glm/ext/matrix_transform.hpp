@@ -64,9 +64,9 @@ namespace glm
 	GLM_FUNC_DECL mat<4, 4, T, Q> translate(
 		mat<4, 4, T, Q> const& m, vec<3, T, Q> const& v);
 
-	/// Builds a rotation 4 * 4 matrix created from an axis vector and an angle.
+	/// Builds a m_rotation 4 * 4 matrix created from an axis vector and an angle.
 	///
-	/// @param m Input matrix multiplied by this rotation matrix.
+	/// @param m Input matrix multiplied by this m_rotation matrix.
 	/// @param angle Rotation angle expressed in radians.
 	/// @param axis Rotation axis, recommended to be normalized.
 	///

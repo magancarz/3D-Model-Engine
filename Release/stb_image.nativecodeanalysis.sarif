@@ -1,0 +1,131 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "Przepełnienie arytmetyczne: użycie operatora „*” dla wartości bajtowej 4, a następnie rzutowanie wyniku na wartość bajtową 8. Rzutuj wartość na szerszy typ przed wywołaniem operatora „*” w celu uniknięcia przepełnienia (io.2)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/dev/3D-Model-Viewer/src/vendor/stb_image/stb_image.h"
+                },
+                "region": {
+                  "startLine": 1875,
+                  "startColumn": 34,
+                  "endLine": 1875,
+                  "endColumn": 55
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "stbi__hdr_to_ldr",
+                  "decoratedName": "?stbi__hdr_to_ldr@@YAPAEPAMHHH@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6262",
+          "message": {
+            "text": "Funkcja używa bajtów stosu „34968”. Rozważ przeniesienie niektórych danych do sterty."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/dev/3D-Model-Viewer/src/vendor/stb_image/stb_image.h"
+                },
+                "region": {
+                  "startLine": 6885,
+                  "startColumn": 14,
+                  "endLine": 6885,
+                  "endColumn": 14
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "stbi__load_gif_main",
+                  "decoratedName": "?stbi__load_gif_main@@YAPAXPAUstbi__context@@PAPAHPAH222H@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6262",
+          "message": {
+            "text": "Funkcja używa bajtów stosu „34932”. Rozważ przeniesienie niektórych danych do sterty."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/dev/3D-Model-Viewer/src/vendor/stb_image/stb_image.h"
+                },
+                "region": {
+                  "startLine": 6970,
+                  "startColumn": 14,
+                  "endLine": 6970,
+                  "endColumn": 14
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "stbi__gif_load",
+                  "decoratedName": "?stbi__gif_load@@YAPAXPAUstbi__context@@PAH11HPAUstbi__result_info@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31630.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/dev/3D-Model-Viewer/src/vendor/stb_image/stb_image.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "7ab64c138d098467356d41b8d3a20ebb85f2eb631993a3d1a744d96c17750598"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/vendor/stb_image/stb_image.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "e49af4367e089854ceb4427745a8077f2ae63472fa13835888f64986d03ff503"
+          }
+        }
+      ]
+    }
+  ]
+}

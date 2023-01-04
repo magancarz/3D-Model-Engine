@@ -35,7 +35,7 @@ namespace glm
 	///
 	/// @param q Source orientation
 	/// @param angle Angle expressed in radians.
-	/// @param axis Axis of the rotation
+	/// @param axis Axis of the m_rotation
 	///
 	/// @tparam T Floating-point scalar types
 	/// @tparam Q Value from qualifier enum

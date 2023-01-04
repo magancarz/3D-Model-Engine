@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\entities\</FILEPATH>
+      <FILENAME>NormalMappingRenderer.cpp</FILENAME>
+      <LINE>14</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;NormalMappingShader,std::default_delete&lt;NormalMappingShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>NormalMappingRenderer::{ctor}</FUNCTION>
+    <DECORATED>??0NormalMappingRenderer@@QAE@ABU?$mat@$03$03M$0A@@glm@@@Z</DECORATED>
+    <FUNCLINE>9</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\entities\</FILEPATH>
+      <FILENAME>NormalMappingRenderer.cpp</FILENAME>
+      <LINE>38</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;NormalMappingShader,std::default_delete&lt;NormalMappingShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>NormalMappingRenderer::render</FUNCTION>
+    <DECORATED>?render@NormalMappingRenderer@@QBEXABV?$map@V?$shared_ptr@VTexturedModel@@@std@@V?$vector@V?$shared_ptr@VEntity@@@std@@V?$allocator@V?$shared_ptr@VEntity@@@std@@@2@@2@U?$less@V?$shared_ptr@VTexturedModel@@@std@@@2@V?$allocator@U?$pair@$$CBV?$shared_ptr@VTexturedModel@@@std@@V?$vector@V?$shared_ptr@VEntity@@@std@@V?$allocator@V?$shared_ptr@VEntity@@@std@@@2@@2@@std@@@2@@std@@ABV?$vector@V?$shared_ptr@VLight@@@std@@V?$allocator@V?$shared_ptr@VLight@@@std@@@2@@3@ABV?$shared_ptr@VCamera@@@3@ABU?$vec@$03M$0A@@glm@@@Z</DECORATED>
+    <FUNCLINE>17</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

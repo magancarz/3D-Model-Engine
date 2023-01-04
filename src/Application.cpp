@@ -1,337 +1,208 @@
-#include "Headers.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
-#include "renderEngine/DisplayManager.h"
-#include "renderEngine/Loader.h"
+#include <random>
+#include <iostream>
+#include <ranges>
+
+#include "toolbox/DisplayManager.h"
 #include "renderEngine/MasterRenderer.h"
-#include "renderEngine/OBJLoader.h"
-#include "normalMappingRenderer/NormalMappingOBJLoader.h"
-#include "shaders/StaticShader.h"
-#include "models/RawModel.h"
 #include "models/TexturedModel.h"
+#include "models/OBJLoader.h"
+#include "models/NormalMappingOBJLoader.h"
 #include "entities/Camera.h"
 #include "entities/Player.h"
-#include "guis/GuiRenderer.h"
-#include "guis/GuiTexture.h"
-#include "toolbox/MousePicker.h"
 #include "water/WaterRenderer.h"
 #include "water/WaterFrameBuffers.h"
-#include "fontRendering/TextMaster.h"
-#include "particles/ParticleMaster.h"
-#include "particles/ParticleSystem.h"
-#include "renderEngine/FBO.h"
-#include "renderEngine/PostProcessing.h"
-#include "debugging/Debugging.h"
-
-#define DEBUG_ENABLED false
-
-//=====GLOBAL VARIABLES=====//
-//Main loop control
-bool isCloseRequested = false;
-
-//Input manager
-Input inputManager;
-
-//Display
-DisplayManager display;
-
-//Particle master
-ParticleMaster* particleMaster;
-
-//enabled/disabled post-processing
-bool POST_PROCESSING_ENABLED = true;
-
-void GLAPIENTRY
-MessageCallback( GLenum source,
-                 GLenum type,
-                 GLuint id,
-                 GLenum severity,
-                 GLsizei length,
-                 const GLchar* message,
-                 const void* userParam )
-{
-  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
-            type, severity, message );
-}
+#include "renderEngine/postProcessing/FBO.h"
+#include "renderEngine/postProcessing/PostProcessing.h"
+#include "terrain/Terrain.h"
+#include "textures/TerrainTexture.h"
+#include "textures/TerrainTexturePack.h"
+#include "toolbox/Input.h"
 
 int main(void) {
     /* initialize the glfw library */
     if(!glfwInit())
         return -1;
 
-    /* initialize display */
-    display.createDisplay();
-
-    /* enable debugging */
-    if(DEBUG_ENABLED) {
-        glEnable(GL_DEBUG_OUTPUT);
-        glDebugMessageCallback(MessageCallback, 0);
-    }
+    DisplayManager::create_display();
+    Input::initialize_input();
 
     /* check OpenGL version */
     std::cout << "OpenGL version supported by this platform: " << glGetString(GL_VERSION) << std::endl;
 
     /* initialize model loaders */
-    Loader* loader = new Loader;
-    NormalMappingOBJLoader* normalMappedLoader = new NormalMappingOBJLoader;
-
-    /* initialize fonts */
-    FontType font(loader->loadFontTexture("res/textures/candara.png"), "res/textures/candara.fnt");
-    textMaster.init(loader);
+    auto loader = std::make_shared<Loader>();
 
     /* create terrain */
-    TerrainTexture backgroundTexture(loader->loadTexture("res/textures/grass.png"));
-    TerrainTexture rTexture(loader->loadTexture("res/textures/mud.png"));
-    TerrainTexture gTexture(loader->loadTexture("res/textures/grassFlowers.png"));
-    TerrainTexture bTexture(loader->loadTexture("res/textures/path.png"));
+    auto background_texture = std::make_unique<TerrainTexture>(loader->load_texture("grass"));
+    auto r_texture = std::make_unique<TerrainTexture>(loader->load_texture("mud"));
+    auto g_texture = std::make_unique<TerrainTexture>(loader->load_texture("grassFlowers"));
+    auto b_texture = std::make_unique<TerrainTexture>(loader->load_texture("path"));
+    auto blend_map = std::make_shared<TerrainTexture>(loader->load_texture("black"));
 
-    TerrainTexturePack* texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-    TerrainTexture blendMap(loader->loadTexture("res/textures/black.png"));
+    auto terrain_texture_pack = std::make_shared<TerrainTexturePack>(std::move(background_texture), std::move(r_texture), std::move(g_texture), std::move(b_texture));
 
-    Terrain* terrain = new Terrain(0, 0, loader, texturePack, &blendMap);
+    auto terrain = std::make_shared<Terrain>(0, 0, loader, std::move(terrain_texture_pack), std::move(blend_map));
 
     /* load 3d models */
-    //=====OBJECTS=====///
-    RawModel* stallModel = loadOBJ("res/models/stall.obj", loader);
-    ModelTexture stallTexture(loader->loadTexture("res/textures/stallTexture.png"));
-    TexturedModel texturedStallModel(*stallModel, stallTexture);
-    //ModelTexture& stallTexture = texturedStallModel.getTexture();
-    //stallTexture.setShineDamper(10);
-    //stallTexture.setReflectivity(5.0f);
+    auto stall_model = OBJLoader::load_obj("stall", loader);
+    auto stall_texture = std::make_shared<ModelTexture>(loader->load_texture("stallTexture"));
+    auto textured_stall_model = std::make_shared<TexturedModel>(stall_model, stall_texture);
 
-    RawModel* treeModel = loadOBJ("res/models/tree.obj", loader);
-    ModelTexture treeTexture(loader->loadTexture("res/textures/tree.png"));
-    TexturedModel texturedTreeModel(*treeModel, treeTexture);
-    //ModelTexture& treeTexture = texturedTreeModel.getTexture();
-    //treeTexture.setShineDamper(10);
-    //treeTexture.setReflectivity(5.0f);
+    auto dragon_model = OBJLoader::load_obj("dragon", loader);
+    auto dragon_texture = std::make_shared<ModelTexture>(loader->load_texture("white"));
+    auto textured_dragon_model = std::make_shared<TexturedModel>(dragon_model, dragon_texture);
 
-    RawModel* cherryTreeModel = loadOBJ("res/models/cherry.obj", loader);
-    ModelTexture cherryTreeTexture(loader->loadTexture("res/textures/cherry.png"));
-    TexturedModel texturedCherryTreeModel(*cherryTreeModel, cherryTreeTexture);
-    //texturedCherryTreeModel.getTexture().setShineDamper(10);
-    //texturedCherryTreeModel.getTexture().setReflectivity(0.5f);
-    //texturedCherryTreeModel.getTexture().setSpecularMap(loader->loadTexture("res/textures/cherryS.png"));
+    auto cherry_tree_model = OBJLoader::load_obj("cherry", loader);
+    auto cherry_tree_texture = std::make_shared<ModelTexture>(loader->load_texture("cherry"));
+    auto textured_cherry_tree_model = std::make_shared<TexturedModel>(cherry_tree_model, cherry_tree_texture);
 
-    RawModel* lanternModel = loadOBJ("res/models/lantern.obj", loader);
-    ModelTexture lanternTexture(loader->loadTexture("res/textures/lantern.png"));
-    TexturedModel texturedLanternModel(*lanternModel, lanternTexture);
-    texturedLanternModel.getTexture().setSpecularMap(loader->loadTexture("res/textures/lanternS.png"));
+    auto lantern_model = OBJLoader::load_obj("lantern", loader);
+    auto lantern_texture = std::make_shared<ModelTexture>(loader->load_texture("lantern"));
+    lantern_texture->set_specular_map(loader->load_texture("lanternS"));
+    auto textured_lantern_model = std::make_shared<TexturedModel>(lantern_model, lantern_texture);
 
-    //treeTexture.setShineDamper(10);
-    //treeTexture.setReflectivity(5.0f);
+    auto barrel_model = NormalMappingOBJLoader::load_normal_mapped_obj("barrel", loader);
+    auto barrel_texture = std::make_shared<ModelTexture>(loader->load_texture("barrel"));
+    barrel_texture->set_normal_map(loader->load_texture("barrelNormal"));
+    barrel_texture->set_specular_map(loader->load_texture("barrelS"));
+    auto textured_barrel_model = std::make_shared<TexturedModel>(barrel_model, barrel_texture);
 
-    //=====NORMAL MAPPED OBJECTS=====//
-    RawModel* barrelModel = normalMappedLoader->loadNormalMappedOBJ("res/models/barrel.obj", *loader);
-    ModelTexture barrelTexture(loader->loadTexture("res/textures/barrel.png"));
-    TexturedModel texturedBarrelModel(*barrelModel, barrelTexture);
-    ModelTexture& texture2 = texturedBarrelModel.getTexture();
-    texture2.setNormalMap(loader->loadTexture("res/textures/barrelNormal.png"));
-    //texture2.setShineDamper(10);
-    //texture2.setReflectivity(5.0f);
-    
+    auto rock_model = NormalMappingOBJLoader::load_normal_mapped_obj("newRock", loader);
+    auto rock_texture = std::make_shared<ModelTexture>(loader->load_texture("rockDiffuse"));
+    rock_texture->set_normal_map(loader->load_texture("rockNormal"));
+    auto textured_rock_model = std::make_shared<TexturedModel>(rock_model, rock_texture);
+
     /* create light objects */
-    Light* sun = new Light(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.1f, 0.01f));
-    Light* light2 = new Light(glm::vec3(278, 12, 224), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
-    Light* light3 = new Light(glm::vec3(20, 0, 10), glm::vec3(0,1,0), glm::vec3(1, 0.01f, 0.002f));
-    Light* light4 = new Light(glm::vec3(30, 0, 10), glm::vec3(0,0,1), glm::vec3(1, 0.01f, 0.002f));
+    auto sun    = std::make_shared<Light>(glm::vec3(0, 20000, 0), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1, 0.001, 0.00001));
+    auto light1 = std::make_shared<Light>(glm::vec3(270, 12, 228), glm::vec3(0.65,0.65,0.65), glm::vec3(1, 0.01f, 0.002f));
 
-    std::vector<Light*> lights;
-    lights.push_back(sun);
-    lights.push_back(light2);
-    lights.push_back(light3);
-    lights.push_back(light4);
+    std::vector<std::shared_ptr<Light>> lights;
+    lights.push_back(light1);
 
     /* create player and camera */
-    //Player
-    Player player(texturedStallModel, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
+    auto player = std::make_shared<Player>(textured_stall_model, glm::vec3(280, 4.5f, 208), 0, 0, 0, 0.000001f);
 
-    //Camera
-    Camera* camera = new Camera(player, glm::vec3(-5.0f, 6.0f, -5.0f));
+    auto camera = std::make_shared<Camera>(player, glm::vec3(-5.0f, 6.0f, -5.0f));
 
-    /* create renderers */
-    MasterRenderer renderer(loader, camera);
+    /* create master renderer */
+    auto master_renderer = std::make_unique<MasterRenderer>(loader, camera);
 
-    GuiRenderer guiRenderer(loader);
-
-    /* create GUI */
-    //GUIText* text = new GUIText("Sample text!", 3, &font, glm::vec2(0, 0), 1.0f, true);
-
-    std::vector<GuiTexture>* guis = new std::vector<GuiTexture>;
-    //GuiTexture gui1(loader->loadTexture("res/textures/512px.jpg"), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f, 0.25f));
-    //GuiTexture shadowMap(renderer.getShadowMapTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
-    //guis->push_back(gui1);
-    //guis->push_back(shadowMap);
-
-    /* create particle master */
-    particleMaster = new ParticleMaster(loader, renderer.getProjectionMatrix());
-    
-    /* create mouse picker */
-    MousePicker* mousePicker = new MousePicker(*camera, renderer.getProjectionMatrix(), terrain);
-
-    /* create water renderer setup */
-    WaterShader* waterShader = new WaterShader();
-    WaterFrameBuffers* fbos = new WaterFrameBuffers();
-    WaterRenderer* waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
-    std::vector<WaterTile*> waters;
-    WaterTile* water = new WaterTile(400, 400, 0);
-    waters.push_back(water);
-    //GuiTexture waterGui(fbos->getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.5f, 0.5f));
-    //guis->push_back(waterGui);
-
-    /* create particle systems */
-    ParticleTexture* particleTexture = new ParticleTexture(loader->loadTexture("res/textures/fire.png"), 8);
-    ParticleSystem* system = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4.0f, 5.0f);
-    system->randomizeRotation();
-    system->setDirection(glm::vec3(0, 1, 0), 0.2f);
-    system->setLifeError(0.5f);
-    system->setSpeedError(0.5f);
-    system->setScaleError(0.5f);
+    /* create water renderer */
+    auto water_frame_buffers = std::make_shared<WaterFrameBuffers>();
+    auto water_renderer = std::make_unique<WaterRenderer>(loader, water_frame_buffers, master_renderer->get_projection_matrix());
+    std::vector<std::shared_ptr<WaterTile>> water_tiles;
+    auto water_tile = std::make_shared<WaterTile>(400, 400, 0);
+    water_tiles.push_back(water_tile);
 
     /* create entities */
-    std::vector<Entity*>* entities = new std::vector<Entity*>;
+    std::vector<std::shared_ptr<Entity>> entities;
+    std::vector<std::shared_ptr<Entity>> normal_mapped_entities;
+	entities.push_back(player);
     
-    entities->push_back(&player);
+    auto lantern = std::make_shared<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
+    entities.push_back(lantern);
 
-    Entity* lantern = new Entity(texturedLanternModel, glm::vec3(270, 0, 234), 0, 0, 0, 1);
-    entities->push_back(lantern);
+    auto dragon = std::make_shared<Entity>(textured_dragon_model, glm::vec3(270, 2, 215), 0, 0, 0, 1);
+    entities.push_back(dragon);
 
-    for(int i = 0; i < 300; i++) {
-        int treeX,
-            treeZ;
+    auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(282, 2, 229), 0, 90.f, 90.f, 1);
+    normal_mapped_entities.push_back(barrel);
+
+    auto rock = std::make_shared<Entity>(textured_rock_model, glm::vec3(265, 1, 230), 0, 0, 0, 3);
+    normal_mapped_entities.push_back(rock);
+
+    /* create tree objects */
+    std::uniform_real_distribution<float> map_distribution(0.f, TERRAIN_SIZE);
+    std::uniform_real_distribution<float> tree_rotation(0.f, 180.f);
+
+    /* predictable sequence of random values is what we want, because we are able to add other objects without collisions */
+	auto random_number_engine = std::mt19937{500};
+    auto map_distribution_generator = [&]() { return map_distribution(random_number_engine); };
+    auto tree_rotation_generator = [&]() { return tree_rotation(random_number_engine); };
+    for(const int i : std::views::iota(0, 300)) {
+    	float tree_x, tree_z;
+
         do {
-            treeX = rand() % TERRAIN_SIZE;
-            treeZ = rand() % TERRAIN_SIZE;
-        } while(terrain->getHeightOfTerrain(treeX, treeZ) <= 0);
-        int treeRotY = rand() % 180;
-        Entity* tree = new Entity(texturedCherryTreeModel, glm::vec3(treeX, terrain->getHeightOfTerrain(treeX, treeZ), treeZ), 0.0, treeRotY, 0.0, 5.0);
-        entities->push_back(tree);
+        	tree_x = map_distribution_generator(),
+        	tree_z = map_distribution_generator();
+        } while(terrain->get_height_of_terrain(tree_x, tree_z) <= 0);
+
+        float tree_rot_y = tree_rotation_generator();
+        entities.push_back(std::make_shared<Entity>(textured_cherry_tree_model, glm::vec3(tree_x, terrain->get_height_of_terrain(tree_x, tree_z), tree_z), 0.0, tree_rot_y, 0.0, 5.0));
     }
     
     /* post-processing effects */
-    FBO* multisampleFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT);
-    //FBO* multisampleFBO = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_RENDER_BUFFER);
-    FBO* outputFBO1 = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
-    FBO* outputFBO2 = new FBO(WINDOW_WIDTH, WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
-    if(POST_PROCESSING_ENABLED) POST_PROCESSING_INIT(loader);
+    auto post_processing = std::make_unique<PostProcessing>(loader);
+
+    auto multi_sample_fbo = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT);
+    auto output_fbo1 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
+    auto output_fbo2 = std::make_unique<FBO>(DisplayManager::WINDOW_WIDTH, DisplayManager::WINDOW_HEIGHT, FBO_DEPTH_TEXTURE);
 
     /* Loop until the user closes the window */
-    while(!isCloseRequested) {
-        //Events
-        player.move(*terrain, camera->getYaw(), camera->getPitch());
+    while(!DisplayManager::is_close_requested) {
+    	/* Events */
+        player->move(terrain, camera->get_yaw(), camera->get_pitch());
         camera->move();
 
-        mousePicker->update();
-
-        //system->generateParticles(glm::vec3(player.getPosition()));
-
-        //std::cout << player.getPosition().x << "    " << player.getPosition().y << std::endl;
-        //lights[1]->setPosition(glm::vec3(player.getPosition().x, 8.f, player.getPosition().z));
-
-        //Reset input values
-        display.resetInputValues();
+        /* Reset input values */
+        DisplayManager::reset_input_values();
 
         /* Poll for and process events */
         glfwPollEvents();
 
-        // before any rendering takes place, render shadow map
-        renderer.renderShadowMap(entities, sun);
-
-        //OpenGL calls
+        /* OpenGL calls */
         glEnable(GL_CLIP_DISTANCE0);
 
-        //Process terrains
-        renderer.processTerrain(terrain);
+        /* Process terrain objects */
+        master_renderer->process_terrain(terrain);
 
-        //Process entities
-        renderer.processEntities(entities);
+        /* Process entities */
+        master_renderer->process_entities(entities);
+        master_renderer->process_normal_map_entities(normal_mapped_entities);
 
-        //Water
-        fbos->bindReflectionFrameBuffer();
-        float distance = 2 * (camera->getPosition().y - water->getHeight());
-        camera->getPosition().y -= distance;
-        camera->invertPitch();
-        renderer.render(lights, *camera, glm::vec4(0, 1, 0, -water->getHeight()));
-        camera->getPosition().y += distance;
-        camera->invertPitch();
-        fbos->unbindCurrentFrameBuffer();
+        /* Water rendering */
+        water_frame_buffers->bind_reflection_frame_buffer();
+        const auto camera_position = camera->get_position();
+        float distance = 2 * (camera_position.y - water_tile->get_height());
+        camera->set_position(glm::vec3(camera_position.x, camera_position.y - distance, camera_position.z));
+        camera->invert_pitch();
+        master_renderer->render(lights, camera, glm::vec4(0, 1, 0, -water_tile->get_height()));
+        camera->set_position(glm::vec3(camera_position.x, camera_position.y, camera_position.z));
+        camera->invert_pitch();
+        water_frame_buffers->unbind_current_frame_buffer();
 
-        fbos->bindRefractionFrameBuffer();
-        renderer.render(lights, *camera, glm::vec4(0, -1, 0, water->getHeight()));
+        water_frame_buffers->bind_refraction_frame_buffer();
+        master_renderer->render(lights, camera, glm::vec4(0, -1, 0, water_tile->get_height()));
 
-        //Draw here
+        /* Draw here */
         glDisable(GL_CLIP_DISTANCE0);
-        fbos->unbindCurrentFrameBuffer();
+        water_frame_buffers->unbind_current_frame_buffer();
 
-        multisampleFBO->bindFrameBuffer();
-        renderer.render(lights, *camera, glm::vec4(0, -1, 0, 10000));
+        multi_sample_fbo->bind_frame_buffer();
+        master_renderer->render(lights, camera, glm::vec4(0, -1, 0, 10000));
 
-        waterRenderer->render(waters, *camera, *sun);
-
-        //Particles
-        particleMaster->renderParticles(camera);
+        water_renderer->render(water_tiles, camera, sun);
         
-        multisampleFBO->unbindFrameBuffer();
-        multisampleFBO->resolveToFBO(GL_COLOR_ATTACHMENT0, outputFBO1);
-        multisampleFBO->resolveToFBO(GL_COLOR_ATTACHMENT1, outputFBO2);
-        if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(outputFBO1->getColorTexture(), outputFBO2->getColorTexture());
-        //if(POST_PROCESSING_ENABLED) POST_PROCESSING_DRAW(multisampleFBO->getColorTexture());
+        multi_sample_fbo->unbind_frame_buffer();
+        multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT0, output_fbo1);
+        multi_sample_fbo->resolve_to_fbo(GL_COLOR_ATTACHMENT1, output_fbo2);
+        post_processing->draw(output_fbo1->get_color_texture(), output_fbo2->get_color_texture());
 
-        //Clean up renderer
-        renderer.cleanUp();
+        /* Clean up renderer */
+        master_renderer->clean_up_objects_maps();
 
-        //Render GUI
-        //guiRenderer.render(guis);
+        /*  Swap front and back buffers */
+        DisplayManager::update_display();
 
-        //Render texts
-        textMaster.render();
-
-        /* Swap front and back buffers */
-        display.updateDisplay();
-
-        //Check if window needs to close
-        display.checkCloseRequests();
-
-        /* some error checking */
-	    //glCheckError();
+        /* Check if window needs to close */
+        DisplayManager::check_close_requests();
     }
 
-    //Clean up resources
-    loader->cleanUp();
-    textMaster.cleanUp();
-    multisampleFBO->cleanUp();
-    if(POST_PROCESSING_ENABLED) POST_PROCESSING_CLEAN_UP();
-
-    delete outputFBO1;
-    delete outputFBO2;
-    delete multisampleFBO;
-
-    delete entities;
-
-    delete particleMaster;
-    delete waterRenderer;
-    delete waterShader;
-    delete fbos;
-
-    delete mousePicker;
-
-    delete sun;
-    delete light2;
-    delete light3;
-    delete light4;
-
-    delete guis;
-
-    delete stallModel;
-
-    delete texturePack;
-
-    delete normalMappedLoader;
-    delete loader;
-    delete camera;
-    delete terrain;
-
-    display.closeDisplay();
+    DisplayManager::close_display();
 
     return 0;
 }

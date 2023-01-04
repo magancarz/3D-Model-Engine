@@ -1,32 +1,37 @@
 #pragma once
 
-#include "../Headers.h"
+#include <glm/glm.hpp>
+
+#include <string>
 
 class ShaderProgram {
 public:
-	ShaderProgram(const std::string& vertexFile, const std::string& fragmentFile);
-	
-	void start();
-	void stop();
-	void cleanUp();
+	ShaderProgram(const std::string& vertex_file, const std::string& fragment_file);
+	~ShaderProgram();
+
+	void start() const;
+	static void stop();
+
+	void virtual bind_attributes() = 0;
+	void virtual get_all_uniform_locations() = 0;
+
 protected:
-	void virtual bindAttributes() = 0;
-	void virtual getAllUniformLocations() = 0;
+	void bind_attribute(unsigned int attribute, const char* variable_name) const;
 
-	void bindAttribute(const unsigned int attribute, const char* variableName);
+	int get_uniform_location(const std::string& uniform_name) const;
 
-	int getUniformLocation(const std::string& uniformName);
-	void loadInt(unsigned int location, int value);
-	void loadFloat(unsigned int location, float value);
-	void loadBoolean(unsigned int location, bool value);
-	void loadVector2f(unsigned int location, glm::vec2 vector);
-	void loadVector3f(unsigned int location, glm::vec3 vector);
-	void loadVector4f(unsigned int location, glm::vec4 vector);
-	void loadMatrix(unsigned int location, glm::mat4 matrix);
+	static void load_int(int location, int value);
+	static void load_float(int location, float value);
+	static void load_boolean(int location, bool value);
+	static void load_vector2_f(int location, const glm::vec2& vector);
+	static void load_vector3_f(int location, const glm::vec3& vector);
+	static void load_vector4_f(int location, const glm::vec4& vector);
+	static void load_matrix(int location, const glm::mat4& matrix);
+
 private:
-	unsigned int m_programID;
-	unsigned int m_vertexShaderID;
-	unsigned int m_fragmentShaderID;
+	unsigned int m_program_id;
+	unsigned int m_vertex_shader_id;
+	unsigned int m_fragment_shader_id;
 
-	unsigned int loadShader(const std::string& file, const unsigned int type);
+	unsigned int load_shader(const std::string& file, unsigned int type) const;
 };
