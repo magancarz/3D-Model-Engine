@@ -52,6 +52,10 @@ int main(void) {
     auto stall_texture = std::make_shared<ModelTexture>(loader->load_texture("stallTexture"));
     auto textured_stall_model = std::make_shared<TexturedModel>(stall_model, stall_texture);
 
+    auto dragon_model = OBJLoader::load_obj("dragon", loader);
+    auto dragon_texture = std::make_shared<ModelTexture>(loader->load_texture("white"));
+    auto textured_dragon_model = std::make_shared<TexturedModel>(dragon_model, dragon_texture);
+
     auto cherry_tree_model = OBJLoader::load_obj("cherry", loader);
     auto cherry_tree_texture = std::make_shared<ModelTexture>(loader->load_texture("cherry"));
     auto textured_cherry_tree_model = std::make_shared<TexturedModel>(cherry_tree_model, cherry_tree_texture);
@@ -102,7 +106,10 @@ int main(void) {
     auto lantern = std::make_shared<Entity>(textured_lantern_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
     entities.push_back(lantern);
 
-    auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(282, 0, 229), 0, 90.f, 90.f, 1);
+    auto dragon = std::make_shared<Entity>(textured_dragon_model, glm::vec3(270, 2, 215), 0, 0, 0, 1);
+    entities.push_back(dragon);
+
+    auto barrel = std::make_shared<Entity>(textured_barrel_model, glm::vec3(282, 2, 229), 0, 90.f, 90.f, 1);
     normal_mapped_entities.push_back(barrel);
 
     auto rock = std::make_shared<Entity>(textured_rock_model, glm::vec3(265, 1, 230), 0, 0, 0, 3);
