@@ -1,5 +1,8 @@
 #include "Camera.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "toolbox/DisplayManager.h"
 
 Camera::Camera(std::shared_ptr<Player> player, const glm::vec3& position) :
@@ -40,14 +43,6 @@ void Camera::rotate() {
 	const auto pitch = static_cast<float>(DisplayManager::get_mouse_y_offset());
 	m_pitch += yaw * m_sensitivity;
 	m_yaw += pitch * m_sensitivity;
-
-	if(m_pitch > 80.f)
-		m_pitch = 80.f;
-	else if(m_pitch < -80.f)
-		m_pitch = -80.f;
-
-	if(m_yaw > 360.f || m_yaw < -360.f)
-		m_yaw = 0.f;
 }
 
 void Camera::move() {
@@ -65,6 +60,14 @@ void Camera::move() {
 	m_position.x = m_player->get_position().x;
 	m_position.y = m_player->get_position().y + CAMERA_HEIGHT;
 	m_position.z = m_player->get_position().z;
+
+	if(m_pitch > 80.f)
+		m_pitch = 80.f;
+	else if(m_pitch < -80.f)
+		m_pitch = -80.f;
+
+	if(m_yaw > 360.f || m_yaw < -360.f)
+		m_yaw = 0.f;
 }
 
 void Camera::calculate_zoom() {

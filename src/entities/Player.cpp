@@ -20,13 +20,13 @@ void Player::move(const std::shared_ptr<Terrain>& terrain, const float camera_ya
 	m_current_turn_speed = 0;
 
 	float distance = m_current_speed_x * static_cast<float>(DisplayManager::get_frame_time_seconds());
-	float dx = distance * cos(glm::radians(camera_yaw - 90.f)) * cos(glm::radians(camera_pitch));
-	float dz = distance * sin(glm::radians(camera_yaw - 90.f)) * cos(glm::radians(camera_pitch));
+	float dx = distance * cos(glm::radians(camera_yaw - 90.f));
+	float dz = distance * sin(glm::radians(camera_yaw - 90.f));
 	increase_position(dx, 0, dz);
 
 	distance = m_current_speed_z * static_cast<float>(DisplayManager::get_frame_time_seconds());
-	dx = distance * cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-	dz = distance * sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+	dx = distance * cos(glm::radians(camera_yaw));
+	dz = distance * sin(glm::radians(camera_yaw));
 	increase_position(dx, 0, dz);
 
 	m_upwards_speed += GRAVITY * static_cast<float>(DisplayManager::get_frame_time_seconds());
