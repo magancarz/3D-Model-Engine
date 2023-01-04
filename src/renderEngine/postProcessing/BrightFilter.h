@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BrightFilterShader.h"
-#include "renderEngine/postProcessing/ImageRenderer.h"
+#include "../renderEngine/postProcessing/ImageRenderer.h"
 
 class BrightFilter {
 public:

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "../skybox/SkyboxRenderer.h"
-#include "entities/EntityRenderer.h"
-#include "entities/Light.h"
-#include "entities/NormalMappingRenderer.h"
-#include "entities/NormalMappingShader.h"
-#include "models/Loader.h"
-#include "terrain/TerrainRenderer.h"
+#include "../entities/EntityRenderer.h"
+#include "../entities/Light.h"
+#include "../entities/NormalMappingRenderer.h"
+#include "../entities/NormalMappingShader.h"
+#include "../models/Loader.h"
+#include "../terrain/TerrainRenderer.h"
 
 class MasterRenderer {
 public:

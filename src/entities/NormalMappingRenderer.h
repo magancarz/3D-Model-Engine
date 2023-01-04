@@ -7,7 +7,7 @@
 #include "../models/TexturedModel.h"
 #include "../entities/Entity.h"
 #include "../entities/Camera.h"
-#include "entities/Light.h"
+#include "../entities/Light.h"
 
 class NormalMappingRenderer {
 public:

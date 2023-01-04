@@ -1,7 +1,7 @@
 #include "TerrainRenderer.h"
 
-#include "renderEngine/MasterRenderer.h"
-#include "toolbox/Maths.h"
+#include "../renderEngine/MasterRenderer.h"
+#include "../toolbox/Maths.h"
 
 TerrainRenderer::TerrainRenderer(const glm::mat4& projection_matrix) {
 	m_terrain_shader = std::make_unique<TerrainShader>();

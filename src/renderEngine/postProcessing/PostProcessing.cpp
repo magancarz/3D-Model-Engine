@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "toolbox/DisplayManager.h"
+#include "../toolbox/DisplayManager.h"
 
 PostProcessing::PostProcessing(const std::shared_ptr<Loader>& loader) {
 	m_quad = loader->load_to_vao(QUAD_POSITIONS, 2);

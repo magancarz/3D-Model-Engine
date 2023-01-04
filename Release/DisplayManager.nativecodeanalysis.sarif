@@ -1,0 +1,97 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26451",
+          "message": {
+            "text": "Przepełnienie arytmetyczne: użycie operatora „-” dla wartości bajtowej 4, a następnie rzutowanie wyniku na wartość bajtową 8. Rzutuj wartość na szerszy typ przed wywołaniem operatora „-” w celu uniknięcia przepełnienia (io.2)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/dev/3D-Model-Viewer/src/toolbox/DisplayManager.cpp"
+                },
+                "region": {
+                  "startLine": 113,
+                  "startColumn": 30,
+                  "endLine": 113,
+                  "endColumn": 51
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "DisplayManager::update_display",
+                  "decoratedName": "?update_display@DisplayManager@@SAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31630.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/dev/3D-Model-Viewer/src/toolbox/DisplayManager.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "898d1d615b2aa0007e9c8c6fe426165c0de0c66844fe29878ca515c93c882900"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/toolbox/displaymanager.h"
+          },
+          "hashes": {
+            "sha-256": "18896e51a3e229795808fac026a6b3d8d51b9709bb6a7bb148c937988830d756"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/dependencies/glew/include/gl/glew.h"
+          },
+          "hashes": {
+            "sha-256": "70dc1969d43ba3ee2d2f61173025dc69d9d7901594f662441517ce1ed0f4f929"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/dependencies/glfw/include/glfw/glfw3.h"
+          },
+          "hashes": {
+            "sha-256": "b74fcc4f2d9335fa66ce2f75a5605dbd3ffe2fc9fb85e3e1c42321d181571a9e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/toolbox/input.h"
+          },
+          "hashes": {
+            "sha-256": "2cf909a93cff22ed328060c5f4e75a9c6b90ae1f733cfb931c04f6c95fa0c80d"
+          }
+        }
+      ]
+    }
+  ]
+}

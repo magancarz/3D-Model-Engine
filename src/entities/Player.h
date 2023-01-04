@@ -1,7 +1,9 @@
 #pragma once
 
-#include "terrain/Terrain.h"
+#include "../terrain/Terrain.h"
 #include "Entity.h"
+
+class Terrain;
 
 class Player : public Entity {
 public:

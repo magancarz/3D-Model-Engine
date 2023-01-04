@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ContrastShader.h"
-#include "renderEngine/postProcessing/ImageRenderer.h"
+#include "../renderEngine/postProcessing/ImageRenderer.h"
 
 class ContrastChanger {
 public:

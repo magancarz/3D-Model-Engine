@@ -1,0 +1,51 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31630.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/textures/terraintexturepack.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "ddd81b9566b727cbab5834a96a29542ae982a599a4e0a406f98fc43a128a8254"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/textures/terraintexturepack.h"
+          },
+          "hashes": {
+            "sha-256": "55c4597f0cdcc08f728933a270e5dbc948f4d6e3c69a406fd0165b4e360660e1"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/dev/3d-model-viewer/src/textures/terraintexture.h"
+          },
+          "hashes": {
+            "sha-256": "e9cb7057127b75c73d8a7bbee5ad15f93e768210860d6abbb4ed9f06ada9d380"
+          }
+        }
+      ]
+    }
+  ]
+}

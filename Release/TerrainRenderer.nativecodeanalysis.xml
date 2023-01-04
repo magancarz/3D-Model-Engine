@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\terrain\</FILEPATH>
+      <FILENAME>TerrainRenderer.cpp</FILENAME>
+      <LINE>11</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;TerrainShader,std::default_delete&lt;TerrainShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>TerrainRenderer::{ctor}</FUNCTION>
+    <DECORATED>??0TerrainRenderer@@QAE@ABU?$mat@$03$03M$0A@@glm@@@Z</DECORATED>
+    <FUNCLINE>6</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\terrain\</FILEPATH>
+      <FILENAME>TerrainRenderer.cpp</FILENAME>
+      <LINE>31</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;TerrainShader,std::default_delete&lt;TerrainShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>TerrainRenderer::render</FUNCTION>
+    <DECORATED>?render@TerrainRenderer@@QBEXABV?$vector@V?$shared_ptr@VTerrain@@@std@@V?$allocator@V?$shared_ptr@VTerrain@@@std@@@2@@std@@ABV?$vector@V?$shared_ptr@VLight@@@std@@V?$allocator@V?$shared_ptr@VLight@@@std@@@2@@3@ABV?$shared_ptr@VCamera@@@3@ABU?$vec@$03M$0A@@glm@@@Z</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

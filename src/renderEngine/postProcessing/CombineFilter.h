@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CombineShader.h"
-#include "renderEngine/postProcessing/ImageRenderer.h"
+#include "../renderEngine/postProcessing/ImageRenderer.h"
 
 class CombineFilter {
 public:

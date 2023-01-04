@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ostream>
 
-#include "toolbox/DisplayManager.h"
+#include "../toolbox/DisplayManager.h"
 
 Camera::Camera(std::shared_ptr<Player> player, const glm::vec3& position) :
 m_player(std::move(player)), m_position(position) {

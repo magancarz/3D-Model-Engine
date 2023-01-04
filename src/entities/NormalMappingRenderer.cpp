@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../renderEngine/MasterRenderer.h"
-#include "toolbox/Maths.h"
+#include "../toolbox/Maths.h"
 
 NormalMappingRenderer::NormalMappingRenderer(const glm::mat4& projection_matrix) {
 	m_normal_mapping_shader = std::make_unique<NormalMappingShader>();

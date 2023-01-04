@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\vendor\stb_image\</FILEPATH>
+      <FILENAME>stb_image.h</FILENAME>
+      <LINE>1875</LINE>
+      <COLUMN>52</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Przepełnienie arytmetyczne: użycie operatora „*” dla wartości bajtowej 4, a następnie rzutowanie wyniku na wartość bajtową 8. Rzutuj wartość na szerszy typ przed wywołaniem operatora „*” w celu uniknięcia przepełnienia (io.2).</DESCRIPTION>
+    <FUNCTION>stbi__hdr_to_ldr</FUNCTION>
+    <DECORATED>?stbi__hdr_to_ldr@@YAPAEPAMHHH@Z</DECORATED>
+    <FUNCLINE>1864</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\vendor\stb_image\</FILEPATH>
+      <FILENAME>stb_image.h</FILENAME>
+      <LINE>6885</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>6262</DEFECTCODE>
+    <DESCRIPTION>Funkcja używa bajtów stosu „34968”. Rozważ przeniesienie niektórych danych do sterty.</DESCRIPTION>
+    <FUNCTION>stbi__load_gif_main</FUNCTION>
+    <DECORATED>?stbi__load_gif_main@@YAPAXPAUstbi__context@@PAPAHPAH222H@Z</DECORATED>
+    <FUNCLINE>6885</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\vendor\stb_image\</FILEPATH>
+      <FILENAME>stb_image.h</FILENAME>
+      <LINE>6970</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>6262</DEFECTCODE>
+    <DESCRIPTION>Funkcja używa bajtów stosu „34932”. Rozważ przeniesienie niektórych danych do sterty.</DESCRIPTION>
+    <FUNCTION>stbi__gif_load</FUNCTION>
+    <DECORATED>?stbi__gif_load@@YAPAXPAUstbi__context@@PAH11HPAUstbi__result_info@@@Z</DECORATED>
+    <FUNCLINE>6970</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

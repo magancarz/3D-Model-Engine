@@ -1,8 +1,10 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "terrain/TerrainShader.h"
+#include "Terrain.h"
+#include "../terrain/TerrainShader.h"
 
 class TerrainRenderer {
 public:

@@ -4,7 +4,7 @@
 
 #include "../entities/Camera.h"
 #include "../entities/Light.h"
-#include "shaders/ShaderProgram.h"
+#include "../shaders/ShaderProgram.h"
 
 class NormalMappingShader : public ShaderProgram {
 public:

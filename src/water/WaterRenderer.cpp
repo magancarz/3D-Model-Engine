@@ -1,6 +1,6 @@
 #include "WaterRenderer.h"
 
-#include "toolbox/Maths.h"
+#include "../toolbox/Maths.h"
 
 WaterRenderer::WaterRenderer(
 		const std::shared_ptr<Loader>& loader,

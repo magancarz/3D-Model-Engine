@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\renderEngine\postProcessing\</FILEPATH>
+      <FILENAME>VerticalBlur.cpp</FILENAME>
+      <LINE>11</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;VerticalBlurShader,std::default_delete&lt;VerticalBlurShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>VerticalBlur::{ctor}</FUNCTION>
+    <DECORATED>??0VerticalBlur@@QAE@II@Z</DECORATED>
+    <FUNCLINE>5</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\renderEngine\postProcessing\</FILEPATH>
+      <FILENAME>VerticalBlur.cpp</FILENAME>
+      <LINE>19</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::unique_ptr&lt;VerticalBlurShader,std::default_delete&lt;VerticalBlurShader&gt; &gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>VerticalBlur::render</FUNCTION>
+    <DECORATED>?render@VerticalBlur@@QBEXI@Z</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

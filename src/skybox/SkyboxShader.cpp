@@ -1,6 +1,6 @@
 #include "SkyboxShader.h"
 
-#include "toolbox/DisplayManager.h"
+#include "../toolbox/DisplayManager.h"
 
 SkyboxShader::SkyboxShader() :
 ShaderProgram("res/shaders/skyboxVertShader.glsl", "res/shaders/skyboxFragShader.glsl") {

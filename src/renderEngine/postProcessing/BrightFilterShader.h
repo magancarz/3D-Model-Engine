@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shaders/ShaderProgram.h"
+#include "../shaders/ShaderProgram.h"
 
 class BrightFilterShader : public ShaderProgram {
 public:

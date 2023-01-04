@@ -1,7 +1,7 @@
 #pragma once
 
-#include "renderEngine/postProcessing/FBO.h"
-#include "toolbox/DisplayManager.h"
+#include "../renderEngine/postProcessing/FBO.h"
+#include "../toolbox/DisplayManager.h"
 
 class WaterFrameBuffers {
 public:

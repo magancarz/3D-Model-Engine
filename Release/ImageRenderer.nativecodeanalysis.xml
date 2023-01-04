@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\dev\3D-Model-Viewer\src\renderEngine\postProcessing\</FILEPATH>
+      <FILENAME>ImageRenderer.cpp</FILENAME>
+      <LINE>18</LINE>
+      <COLUMN>2</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Ignorowana wartość zwrotna: „std::shared_ptr&lt;FBO&gt;::-&gt;”.</DESCRIPTION>
+    <FUNCTION>ImageRenderer::render_quad</FUNCTION>
+    <DECORATED>?render_quad@ImageRenderer@@QBEXXZ</DECORATED>
+    <FUNCLINE>9</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

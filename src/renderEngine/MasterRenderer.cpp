@@ -1,6 +1,6 @@
 #include "MasterRenderer.h"
 
-#include "toolbox/DisplayManager.h"
+#include "../toolbox/DisplayManager.h"
 
 MasterRenderer::MasterRenderer(const std::shared_ptr<Loader>& loader, const std::shared_ptr<Camera>& camera) {
 	create_projection_matrix();

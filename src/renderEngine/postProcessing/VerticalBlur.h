@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VerticalBlurShader.h"
-#include "renderEngine/postProcessing/ImageRenderer.h"
+#include "../renderEngine/postProcessing/ImageRenderer.h"
 
 class VerticalBlur {
 public:

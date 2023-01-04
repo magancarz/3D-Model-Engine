@@ -2,8 +2,8 @@
 
 #include <gl/glew.h>
 
-#include "renderEngine/MasterRenderer.h"
-#include "toolbox/Maths.h"
+#include "../renderEngine/MasterRenderer.h"
+#include "../toolbox/Maths.h"
 
 EntityRenderer::EntityRenderer(const glm::mat4& projection_matrix) {
 	m_static_shader = std::make_unique<StaticShader>();

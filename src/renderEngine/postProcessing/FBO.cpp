@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "toolbox/DisplayManager.h"
+#include "../toolbox/DisplayManager.h"
 
 FBO::FBO(const int width, const int height, const unsigned int depth_buffer_type) :
 m_width(width), m_height(height) {

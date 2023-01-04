@@ -3,8 +3,8 @@
 #include <iostream>
 #include <GL/glew.h>
 
-#include "toolbox/DisplayManager.h"
-#include "toolbox/Input.h"
+#include "../toolbox/DisplayManager.h"
+#include "../toolbox/Input.h"
 
 Player::Player(
 		std::shared_ptr<TexturedModel> model,
