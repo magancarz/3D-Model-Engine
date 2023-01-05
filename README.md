@@ -1,5 +1,5 @@
 # 3D Model Engine
-## About aplication
+## About application
 It's a simple 3D model application written in C++ using OpenGL API with implemented:
 - 3D model .obj extension files loader including those with normal mapping,
 - water renderer,
