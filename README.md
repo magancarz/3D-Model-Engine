@@ -13,10 +13,10 @@ It's a simple 3D model application written in C++ using OpenGL API with implemen
 I am sure that the list will expand in the future with shadow rendering, GUIs, cel shading, text implementation and some maps other than this one with lake. Here are nice images of what will you encounter if you run the application.
 
 <div style="text-align:center">
-<img src="images/rock.png" alt="normal mapped rock" width="1000" height="500" style="border: 1px solid black" />
+<img src="images/rock.png" alt="mainpage" width="1000" height="500" style="border: 1px solid black" />
 </div>
 <div style="text-align:center">
-<img src="images/scene1.png" alt="scene 1" width="1000" height="500" style="border: 1px solid black" />
+<img src="images/scene1.png" alt="mainpage" width="1000" height="500" style="border: 1px solid black" />
 </div>
 
 ## How to run:
@@ -25,24 +25,24 @@ Easiest way to run this application is to go in Release folder and run Applicati
 ## How to expand and modify the project
 
 If you wish to add some of your models or you want to modify current map (ie. add some more entities and lights), you can modify the code in Application.cpp. To add new model, you need to move your .obj and .png model files in resources ("res") models and textures directory respectively and add this chunk of code after other models initialization (around line 50):
-
-`   auto your_model = OBJLoader::load_obj("yourModel", loader);
+```
+    auto your_model = OBJLoader::load_obj("yourModel", loader);
     auto your_texture = std::make_shared<ModelTexture>(loader->load_texture("yourTexture"));
-    auto your_textured_model = std::make_shared<TexturedModel>(your_model, your_texture);`
-    
+    auto your_textured_model = std::make_shared<TexturedModel>(your_model, your_texture);
+``` 
 First line is simple, you create RawModel object which holds ID and information about your model. Next line will create ModelTexture object to carry the weight of the model texture. In the end, you need to combine this to things in the TexturedModel object. Then you can create new Entity object with it (after around line 103 when vector of entities is created):
-
-`auto your_entity = std::make_shared<Entity>(your_textured_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
-    entities.push_back(your_entity);`
-    
+```
+    auto your_entity = std::make_shared<Entity>(your_textured_model, glm::vec3(270, 0, 234), 0, 0, 0, 1);
+    entities.push_back(your_entity);
+```
 First parameter is your textured model, second is position in the world map and last four are object rotations and scale. If you want to test your normal mapped model with specular map, you could add these lines in the model creation part:
-
-`   auto your_model = NormalMappingOBJLoader::load_normal_mapped_obj("yourModel", loader);
+```
+    auto your_model = NormalMappingOBJLoader::load_normal_mapped_obj("yourModel", loader);
     auto your_texture = std::make_shared<ModelTexture>(loader->load_texture("yourTexture"));
     your_texture->set_normal_map(loader->load_texture("modelNormal"));
     your_texture->set_specular_map(loader->load_texture("modelS"));
-    auto your_textured_model = std::make_shared<TexturedModel>(your_model, your_texture);`
-    
+    auto your_textured_model = std::make_shared<TexturedModel>(your_model, your_texture);
+```
 Feel free to ask me about anything if you want to modify current map :)
     
 ## Quick overview of files and folders structure
