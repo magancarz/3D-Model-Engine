@@ -8,6 +8,8 @@
 EntityRenderer::EntityRenderer(const glm::mat4& projection_matrix) {
 	m_static_shader = std::make_unique<StaticShader>();
 	m_static_shader->start();
+	m_static_shader->bind_attributes();
+	m_static_shader->get_all_uniform_locations();
 	m_static_shader->load_projection_matrix(projection_matrix);
 	m_static_shader->connect_texture_units();
 	m_static_shader->stop();

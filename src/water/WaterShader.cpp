@@ -1,10 +1,7 @@
 #include "WaterShader.h"
 
 WaterShader::WaterShader() :
-ShaderProgram("res/shaders/waterVert.glsl", "res/shaders/waterFrag.glsl") {
-	bind_attributes();
-	get_all_uniform_locations();
-}
+ShaderProgram("res/shaders/waterVert.glsl", "res/shaders/waterFrag.glsl") {}
 
 void WaterShader::load_projection_matrix(const glm::mat4& projection) const {
 	load_matrix(location_projection_matrix, projection);

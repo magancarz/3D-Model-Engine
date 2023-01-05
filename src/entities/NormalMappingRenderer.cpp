@@ -9,6 +9,8 @@
 NormalMappingRenderer::NormalMappingRenderer(const glm::mat4& projection_matrix) {
 	m_normal_mapping_shader = std::make_unique<NormalMappingShader>();
 	m_normal_mapping_shader->start();
+	m_normal_mapping_shader->bind_attributes();
+	m_normal_mapping_shader->get_all_uniform_locations();
 	m_normal_mapping_shader->load_projection_matrix(projection_matrix);
 	m_normal_mapping_shader->connect_texture_units();
 	m_normal_mapping_shader->stop();
