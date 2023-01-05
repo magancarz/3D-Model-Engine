@@ -7,7 +7,7 @@ class SkyboxRenderer {
 public:
 	SkyboxRenderer(const std::shared_ptr<Loader>& loader, const glm::mat4& projection_matrix);
 
-	void render(const std::shared_ptr<Camera>& camera, float r, float g, float b);
+	void render(const std::shared_ptr<Camera>& camera, float r, float g, float b) const;
 
 private:
 	void bind_textures() const;

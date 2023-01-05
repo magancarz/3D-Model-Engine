@@ -4,6 +4,11 @@
 
 ContrastChanger::ContrastChanger() {
 	m_shader = std::make_unique<ContrastShader>();
+	m_shader->start();
+	m_shader->bind_attributes();
+	m_shader->get_all_uniform_locations();
+	m_shader->stop();
+
 	m_renderer = std::make_unique<ImageRenderer>();
 }
 

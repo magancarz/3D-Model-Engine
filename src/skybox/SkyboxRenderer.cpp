@@ -7,12 +7,14 @@ SkyboxRenderer::SkyboxRenderer(const std::shared_ptr<Loader>& loader, const glm:
 
 	m_skybox_shader = std::make_unique<SkyboxShader>();
 	m_skybox_shader->start();
+	m_skybox_shader->bind_attributes();
+	m_skybox_shader->get_all_uniform_locations();
 	m_skybox_shader->connect_texture_units();
 	m_skybox_shader->load_projection_matrix(projection_matrix);
 	m_skybox_shader->stop();
 }
 
-void SkyboxRenderer::render(const std::shared_ptr<Camera>& camera, const float r, const float g, const float b) {
+void SkyboxRenderer::render(const std::shared_ptr<Camera>& camera, const float r, const float g, const float b) const {
 	m_skybox_shader->start();
 	m_skybox_shader->load_view_matrix(camera);
 	m_skybox_shader->load_fog_color(r, g, b);

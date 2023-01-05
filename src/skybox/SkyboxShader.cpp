@@ -3,10 +3,7 @@
 #include "../toolbox/DisplayManager.h"
 
 SkyboxShader::SkyboxShader() :
-ShaderProgram("res/shaders/skyboxVertShader.glsl", "res/shaders/skyboxFragShader.glsl") {
-	bind_attributes();
-	get_all_uniform_locations();
-}
+ShaderProgram("res/shaders/skyboxVertShader.glsl", "res/shaders/skyboxFragShader.glsl") {}
 
 
 void SkyboxShader::load_projection_matrix(const glm::mat4& matrix) const {

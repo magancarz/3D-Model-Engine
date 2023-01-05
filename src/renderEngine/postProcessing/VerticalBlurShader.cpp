@@ -1,10 +1,7 @@
 #include "VerticalBlurShader.h"
 
 VerticalBlurShader::VerticalBlurShader() :
-ShaderProgram("res/shaders/verticalBlurVert.glsl", "res/shaders/blurFrag.glsl") {
-	bind_attributes();
-	get_all_uniform_locations();
-}
+ShaderProgram("res/shaders/verticalBlurVert.glsl", "res/shaders/blurFrag.glsl") {}
 
 void VerticalBlurShader::load_target_height(const float width) const {
 	load_float(location_target_height, width);

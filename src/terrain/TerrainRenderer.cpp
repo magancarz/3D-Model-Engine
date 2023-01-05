@@ -6,6 +6,8 @@
 TerrainRenderer::TerrainRenderer(const glm::mat4& projection_matrix) {
 	m_terrain_shader = std::make_unique<TerrainShader>();
 	m_terrain_shader->start();
+	m_terrain_shader->bind_attributes();
+	m_terrain_shader->get_all_uniform_locations();
 	m_terrain_shader->load_projection_matrix(projection_matrix);
 	m_terrain_shader->connect_texture_units();
 	m_terrain_shader->stop();

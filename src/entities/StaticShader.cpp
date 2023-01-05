@@ -4,10 +4,7 @@
 
 StaticShader::StaticShader() :
 ShaderProgram("res/shaders/vert.glsl", "res/shaders/frag.glsl" ),
-location_transformation_matrix(0) {
-	bind_attributes();
-	get_all_uniform_locations();
-}
+location_transformation_matrix(0) {}
 
 void StaticShader::load_transformation_matrix(const glm::mat4& matrix) const {
 	load_matrix(location_transformation_matrix, matrix);

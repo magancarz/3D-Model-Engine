@@ -1,10 +1,7 @@
 #include "CombineShader.h"
 
 CombineShader::CombineShader() :
-ShaderProgram("res/shaders/simpleVert.glsl", "res/shaders/combineFrag.glsl") {
-	bind_attributes();
-	get_all_uniform_locations();
-}
+ShaderProgram("res/shaders/simpleVert.glsl", "res/shaders/combineFrag.glsl") {}
 
 void CombineShader::bind_attributes() {
 	bind_attribute(0, "position");

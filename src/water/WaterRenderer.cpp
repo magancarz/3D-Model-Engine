@@ -10,6 +10,8 @@ m_water_frame_buffers(std::move(water_frame_buffers)) {
 	
 	m_water_shader = std::make_unique<WaterShader>();
 	m_water_shader->start();
+	m_water_shader->bind_attributes();
+	m_water_shader->get_all_uniform_locations();
 	m_water_shader->connect_texture_units();
 	m_water_shader->load_projection_matrix(projection);
 	m_water_shader->stop();

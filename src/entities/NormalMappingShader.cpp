@@ -6,10 +6,7 @@
 #include <ranges>
 
 NormalMappingShader::NormalMappingShader() :
-ShaderProgram("res/shaders/normalMapVert.glsl", "res/shaders/normalMapFrag.glsl") {
-	bind_attributes();
-	get_all_uniform_locations();
-}
+ShaderProgram("res/shaders/normalMapVert.glsl", "res/shaders/normalMapFrag.glsl") {}
 
 void NormalMappingShader::connect_texture_units() const {
 	load_int(location_model_texture, 0);
